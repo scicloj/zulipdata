@@ -27,7 +27,7 @@
 (defn run-tests
   "Run tests via cognitect test runner"
   [opts]
-  (b/process {:command-args ["clojure" "-M:test" "-m" "cognitect.test-runner"]})
+  (b/process {:command-args ["clojure" "-M:dev:test" "-m" "cognitect.test-runner"]})
   opts)
 
 (defn- pom-template [version]
