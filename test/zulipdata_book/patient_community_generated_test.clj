@@ -61,7 +61,7 @@
   (->
    timeline
    (tc/select-rows
-    (fn* [p1__70051#] (scicloj-channels (:channel p1__70051#)))))))
+    (fn* [p1__70814#] (scicloj-channels (:channel p1__70814#)))))))
 
 
 (def v9_l55 (tc/row-count cluster))
@@ -93,8 +93,8 @@
     per-user
     (filter
      (fn*
-      [p1__70052#]
-      (and (>= (:span p1__70052#) 5) (>= (:channels p1__70052#) 5))))
+      [p1__70815#]
+      (and (>= (:span p1__70815#) 5) (>= (:channels p1__70815#) 5))))
     (sort-by (fn [u] (* (:channels u) (:span u))) >)
     (take 15)))))
 
@@ -109,7 +109,7 @@
   (->
    cluster
    (tc/select-rows
-    (fn* [p1__70053#] (backbone-set (:user-key p1__70053#))))
+    (fn* [p1__70816#] (backbone-set (:user-key p1__70816#))))
    (tc/group-by [:user-key :month-date])
    (tc/aggregate {:msgs tc/row-count}))))
 
@@ -132,7 +132,7 @@
    [sorted-users
     (->>
      backbone-set
-     (sort-by (fn* [p1__70054#] (- (presence-by-user p1__70054# 0)))))]
+     (sort-by (fn* [p1__70817#] (- (presence-by-user p1__70817# 0)))))]
    (zipmap sorted-users (range)))))
 
 
@@ -144,29 +144,25 @@
    backbone-monthly
    (tc/add-column
     :user-rank
-    (fn [ds] (mapv backbone-rank (:user-key ds))))
-   (tc/add-column
-    :log-msgs
-    (fn
-     [ds]
-     (mapv (fn* [p1__70055#] (Math/log10 p1__70055#)) (:msgs ds)))))))
+    (fn [ds] (mapv backbone-rank (:user-key ds)))))))
 
 
 (def
- v19_l117
+ v19_l115
  (->
   backbone-display
-  (pj/lay-tile :month-date :user-rank {:fill :log-msgs})
+  (pj/lay-tile :month-date :user-rank {:fill :msgs})
+  (pj/scale :fill :log)
   (pj/options
    {:width 900,
     :height 380,
     :y-label "backbone rank (0 = most consistent)",
-    :color-label "log10(messages)"})
+    :color-label "messages"})
   pj/plot))
 
 
 (def
- v21_l126
+ v21_l125
  (->
   backbone-users
   (->>
@@ -183,13 +179,13 @@
 
 
 (def
- v23_l149
+ v23_l148
  (def
   covid-monthly
   (->
    cluster
    (tc/select-rows
-    (fn* [p1__70056#] (= "covid-19" (:channel p1__70056#))))
+    (fn* [p1__70818#] (= "covid-19" (:channel p1__70818#))))
    (tc/group-by [:month-date])
    (tc/aggregate
     {:msgs tc/row-count,
@@ -197,17 +193,17 @@
    (tc/order-by [:month-date]))))
 
 
-(def v24_l157 covid-monthly)
+(def v24_l156 covid-monthly)
 
 
 (def
- v26_l163
+ v26_l162
  (def
   ds-around-covid
   (->
    cluster
    (tc/select-rows
-    (fn* [p1__70057#] (= "data-science" (:channel p1__70057#))))
+    (fn* [p1__70819#] (= "data-science" (:channel p1__70819#))))
    (tc/group-by [:month-date])
    (tc/aggregate {:msgs tc/row-count})
    (tc/select-rows
@@ -220,7 +216,7 @@
 
 
 (def
- v27_l176
+ v27_l175
  (->
   ds-around-covid
   (pj/lay-line :month-date :msgs)
@@ -234,7 +230,7 @@
 
 
 (def
- v29_l192
+ v29_l191
  (def
   first-cluster-month-by-user
   (->>
@@ -249,7 +245,7 @@
 
 
 (def
- v30_l199
+ v30_l198
  (def
   gathering-moments
   (->
@@ -257,18 +253,18 @@
     first-cluster-month-by-user
     vals
     frequencies
-    (map (fn [[d n]] {:month-date d, :new-users n, :label (str d)}))
+    (map (fn [[d n]] {:month-date d, :new-users n}))
     tc/dataset)
    (tc/order-by [:new-users] [:desc])
    (tc/head 10))))
 
 
 (def
- v31_l206
+ v31_l205
  (->
   gathering-moments
   (tc/order-by [:new-users] [:asc])
-  (pj/lay-lollipop :label :new-users {:x-type :categorical})
+  (pj/lay-lollipop :month-date :new-users {:x-type :categorical})
   (pj/coord :flip)
   (pj/options
    {:width 720,
@@ -278,7 +274,7 @@
 
 
 (def
- v33_l217
+ v33_l216
  (tc/dataset
   [{:month "2021-11",
     :new-users 63,
@@ -305,7 +301,7 @@
 
 
 (def
- v35_l240
+ v35_l239
  (def
   dying-channels
   #{"saite-dev"
@@ -318,7 +314,7 @@
 
 
 (def
- v36_l244
+ v36_l243
  (def
   migration
   (->>
@@ -330,7 +326,7 @@
      (let
       [in-dying
        (filter
-        (fn* [p1__70058#] (dying-channels (:channel p1__70058#)))
+        (fn* [p1__70820#] (dying-channels (:channel p1__70820#)))
         msgs)]
       (when
        (>= (count in-dying) 5)
@@ -340,10 +336,10 @@
          msgs
          (filter
           (fn*
-           [p1__70059#]
+           [p1__70821#]
            (and
-            (not (dying-channels (:channel p1__70059#)))
-            (> (:timestamp p1__70059#) last-ts))))
+            (not (dying-channels (:channel p1__70821#)))
+            (> (:timestamp p1__70821#) last-ts))))
          (group-by :channel)
          (map
           (fn
@@ -352,7 +348,7 @@
 
 
 (def
- v37_l259
+ v37_l258
  (def
   n-tracked
   (->>
@@ -364,19 +360,19 @@
      (>=
       (count
        (filter
-        (fn* [p1__70060#] (dying-channels (:channel p1__70060#)))
+        (fn* [p1__70822#] (dying-channels (:channel p1__70822#)))
         msgs))
       5)))
    count)))
 
 
 (def
- v38_l266
+ v38_l265
  (def n-continued (->> migration (map :user) distinct count)))
 
 
 (def
- v40_l274
+ v40_l273
  (tc/dataset
   [{:metric "users with ≥5 messages in a dying channel",
     :value n-tracked}
@@ -387,7 +383,7 @@
 
 
 (def
- v42_l282
+ v42_l281
  (def
   migration-destinations
   (->>
@@ -404,7 +400,7 @@
 
 
 (def
- v43_l292
+ v43_l291
  (->
   migration-destinations
   tc/dataset
@@ -417,7 +413,7 @@
 
 
 (def
- v45_l314
+ v45_l313
  (def
   yearly-joy
   (->
@@ -431,16 +427,16 @@
     (fn
      [ds]
      (mapv
-      (fn* [p1__70061# p2__70062#] (double (/ p1__70061# p2__70062#)))
+      (fn* [p1__70823# p2__70824#] (double (/ p1__70823# p2__70824#)))
       (:rxn-sum ds)
       (:msgs ds))))
    (tc/order-by [:year])
    (tc/select-rows
-    (fn* [p1__70063#] (<= 2019 (:year p1__70063#) 2025))))))
+    (fn* [p1__70825#] (<= 2019 (:year p1__70825#) 2025))))))
 
 
 (def
- v46_l327
+ v46_l326
  (->
   yearly-joy
   (pj/lay-line :year :rxn-per-msg)
@@ -454,7 +450,7 @@
 
 
 (def
- v48_l344
+ v48_l343
  (def
   joyful-channels
   (->>
@@ -469,11 +465,11 @@
       (double (/ (apply + (map :reaction-count msgs)) (count msgs))),
       :first-date
       (nar/ts->month-date (apply min (map :timestamp msgs)))}))
-   (filter (fn* [p1__70064#] (>= (:messages p1__70064#) 200)))
+   (filter (fn* [p1__70826#] (>= (:messages p1__70826#) 200)))
    (sort-by :rxn-per-msg >)
    (take 10)
    (sort-by :first-date)
    tc/dataset)))
 
 
-(def v49_l360 joyful-channels)
+(def v49_l359 joyful-channels)

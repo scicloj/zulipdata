@@ -67,7 +67,7 @@
   (->
    timeline
    (tc/select-rows
-    (fn* [p1__69841#] (scicloj-channels (:channel p1__69841#)))))))
+    (fn* [p1__40222#] (scicloj-channels (:channel p1__40222#)))))))
 
 
 (def
@@ -84,29 +84,25 @@
   lifecycle-display
   (->
    scicloj-lifecycles
-   (tc/add-column :rank (fn [ds] (range (tc/row-count ds))))
-   (tc/add-column
-    :log10-total
-    (fn
-     [ds]
-     (mapv (fn* [p1__69842#] (Math/log10 p1__69842#)) (:total ds)))))))
+   (tc/add-column :rank (fn [ds] (range (tc/row-count ds)))))))
 
 
 (def
- v15_l90
+ v15_l88
  (->
   lifecycle-display
-  (pj/lay-point :first-date :rank {:size :log10-total})
+  (pj/lay-point :first-date :rank {:size :total})
+  (pj/scale :size :log)
   (pj/options
    {:width 900,
     :height 720,
     :y-label "channels (ordered by birth)",
-    :size-label "log10(messages)"})
+    :size-label "messages"})
   pj/plot))
 
 
 (def
- v17_l99
+ v17_l98
  (->
   scicloj-lifecycles
   (tc/select-columns
@@ -119,63 +115,63 @@
 
 
 (def
- v19_l113
+ v19_l112
  (->
   scicloj-lifecycles
   (tc/select-rows
-   (fn* [p1__69843#] (<= (.getYear (:first-date p1__69843#)) 2019)))
+   (fn* [p1__40223#] (<= (.getYear (:first-date p1__40223#)) 2019)))
   (tc/select-columns [:channel :first-date :total :distinct-users])
   (tc/order-by [:first-date])))
 
 
 (def
- v21_l129
+ v21_l128
  (->
   scicloj-lifecycles
   (tc/select-rows
-   (fn* [p1__69844#] (= 2020 (.getYear (:first-date p1__69844#)))))
+   (fn* [p1__40224#] (= 2020 (.getYear (:first-date p1__40224#)))))
   (tc/select-columns [:channel :first-date :total :distinct-users])
   (tc/order-by [:first-date])))
 
 
 (def
- v23_l143
+ v23_l142
  (->
   scicloj-lifecycles
   (tc/select-rows
-   (fn* [p1__69845#] (= 2021 (.getYear (:first-date p1__69845#)))))
+   (fn* [p1__40225#] (= 2021 (.getYear (:first-date p1__40225#)))))
   (tc/select-columns [:channel :first-date :total :distinct-users])
   (tc/order-by [:first-date])))
 
 
 (def
- v25_l157
+ v25_l156
  (->
   scicloj-lifecycles
   (tc/select-rows
    (fn*
-    [p1__69846#]
+    [p1__40226#]
     (let
-     [y (.getYear (:first-date p1__69846#))]
+     [y (.getYear (:first-date p1__40226#))]
      (or
       (= y 2022)
       (= y 2023)
       (and
        (= y 2024)
-       (<= (.getMonthValue (:first-date p1__69846#)) 6))))))
+       (<= (.getMonthValue (:first-date p1__40226#)) 6))))))
   (tc/select-columns [:channel :first-date :total :distinct-users])
   (tc/order-by [:first-date])))
 
 
 (def
- v27_l172
+ v27_l171
  (->
   scicloj-lifecycles
   (tc/select-rows
    (fn*
-    [p1__69847#]
+    [p1__40227#]
     (let
-     [d (:first-date p1__69847#)]
+     [d (:first-date p1__40227#)]
      (or
       (and (= 2024 (.getYear d)) (>= (.getMonthValue d) 7))
       (>= (.getYear d) 2025)))))
@@ -184,7 +180,7 @@
 
 
 (def
- v29_l186
+ v29_l185
  (def
   heatmap-data
   (let
@@ -198,29 +194,25 @@
     (tc/aggregate {:msgs tc/row-count})
     (tc/add-column
      :channel-rank
-     (fn [ds] (mapv rank-of (:channel ds))))
-    (tc/add-column
-     :log10-msgs
-     (fn
-      [ds]
-      (mapv (fn* [p1__69848#] (Math/log10 p1__69848#)) (:msgs ds))))))))
+     (fn [ds] (mapv rank-of (:channel ds))))))))
 
 
 (def
- v30_l198
+ v30_l196
  (->
   heatmap-data
-  (pj/lay-tile :year :channel-rank {:fill :log10-msgs})
+  (pj/lay-tile :year :channel-rank {:fill :msgs})
+  (pj/scale :fill :log)
   (pj/options
    {:width 720,
     :height 720,
     :y-label "channels (ordered by birth date, 0 = earliest)",
-    :color-label "log10(messages)"})
+    :color-label "messages"})
   pj/plot))
 
 
 (def
- v32_l212
+ v32_l211
  (def
   first-scicloj-month-by-user
   (->>
@@ -235,7 +227,7 @@
 
 
 (def
- v33_l219
+ v33_l218
  (def
   newcomer-cohorts
   (->
@@ -249,7 +241,7 @@
 
 
 (def
- v34_l225
+ v34_l224
  (->
   newcomer-cohorts
   (pj/lay-line :month-date :new-users)
@@ -259,17 +251,17 @@
 
 
 (def
- v36_l233
+ v36_l232
  (-> newcomer-cohorts (tc/order-by [:new-users] [:desc]) (tc/head 5)))
 
 
 (def
- v38_l247
+ v38_l246
  (nar/prior-channels-of-newcomers scicloj-timeline "noj-dev" "2022-04"))
 
 
 (def
- v40_l252
+ v40_l251
  (nar/prior-channels-of-newcomers
   scicloj-timeline
   "clay-dev"
@@ -277,7 +269,7 @@
 
 
 (def
- v42_l257
+ v42_l256
  (nar/prior-channels-of-newcomers
   scicloj-timeline
   "kindly-dev"
@@ -285,7 +277,7 @@
 
 
 (def
- v44_l267
+ v44_l266
  (def
   cluster-summary
   (let
@@ -301,4 +293,4 @@
      {:metric "distinct contributors", :value usrs}]))))
 
 
-(def v45_l276 cluster-summary)
+(def v45_l275 cluster-summary)
