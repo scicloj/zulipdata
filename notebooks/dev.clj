@@ -1,33 +1,35 @@
 (ns dev
   (:require [scicloj.clay.v2.api :as clay]))
 
-(defn- read-chapters []
-  (-> "notebooks/chapters.edn" slurp clojure.edn/read-string))
+(def ^:private read-chapters
+  (fn []
+    (-> "notebooks/chapters.edn" slurp clojure.edn/read-string)))
 
-(defn- chapters->source-paths
-  "Convert chapters map to flat vector of source paths."
-  [chapters]
-  (into [] (mapcat (fn [[_part names]]
-                     (map #(format "zulipdata_book/%s.clj" %) names)))
-        chapters))
+(def ^:private chapters->source-paths
+  (fn [chapters]
+    (into [] (mapcat (fn [[_part names]]
+                       (map #(format "zulipdata_book/%s.clj" %) names)))
+          chapters)))
 
-(defn- chapters->parts
-  "Convert chapters map to Clay's :source-path part structure."
-  [chapters]
-  (mapv (fn [[part names]]
-          {:part part
-           :chapters (mapv #(format "zulipdata_book/%s.clj" %) names)})
-        chapters))
+(def ^:private chapters->parts
+  (fn [chapters]
+    (mapv (fn [[part names]]
+            {:part part
+             :chapters (mapv #(format "zulipdata_book/%s.clj" %) names)})
+          chapters)))
 
 (defn make-book!
-  "Render book HTML through Quarto."
-  []
-  (clay/make! {:format [:quarto :html]
-               :base-source-path "notebooks"
-               :source-path (into ["index.clj"] (chapters->parts (read-chapters)))
-               :base-target-path "docs"
-               :book {:title "zulipdata"}
-               :clean-up-target-dir true}))
+  "Render book HTML through Quarto.
+  Use `:docs true` to render to the `docs` directory for publishing."
+  [{:keys [docs]}]
+  (clay/make! (merge {:format [:quarto :html]
+                      :base-source-path "notebooks"
+                      :source-path (into ["index.clj"] (chapters->parts (read-chapters)))
+                      :book {:title "Plotje"}
+                      :clean-up-target-dir true
+                      :base-target-path (if docs
+                                          "docs"
+                                          ".clay-temp-docs")})))
 
 (defn make-gfm!
   "Render all (or specified) notebooks as GitHub-flavored Markdown."
@@ -40,7 +42,27 @@
                :base-target-path "gfm"
                :show false}))
 
+(defn make-readme!
+  "Render readme.clj as GitHub-flavored Markdown to the repo root.
+   Produces README.md and readme_files/ with SVG images."
+  []
+  (clay/make! {:format [:gfm]
+               :base-source-path "notebooks"
+               :source-path ["readme.clj"]
+               :base-target-path "."
+               :show false})
+  ;; Rename to conventional uppercase README.md
+  (let [src (java.io.File. "readme.md")
+        dst (java.io.File. "README.md")]
+    (when (.exists src)
+      (.delete dst)
+      (.renameTo src dst))))
+
 (comment
-  (make-book!)
+  (make-readme!)
+  (make-book! {:docs true})
+  (make-book! {:docs false})
   (make-gfm!)
   (make-gfm! "zulipdata_book/quickstart.clj"))
+
+
