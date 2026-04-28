@@ -76,6 +76,35 @@ me
 
 (-> streams-response :streams first keys sort)
 
+;; ### Web-public channels
+;;
+;; Among those streams, some are marked **web-public**: their
+;; messages are readable without a Zulip account. The flag lives on
+;; the stream entry as `:is_web_public`.
+
+(def web-public-channels
+  (->> streams-response
+       :streams
+       (filter :is_web_public)
+       (mapv :name)
+       sort))
+
+(count web-public-channels)
+
+;; The full list, alphabetised:
+
+web-public-channels
+
+;; The distinction matters when sharing data downstream — content
+;; from a non-web-public channel should not appear in artifacts that
+;; leave your machine, while content from web-public channels is fair
+;; game. The
+;; [**Tablecloth views**](./zulipdata_book.views.html#showing-real-content-from-web-public-channels)
+;; chapter uses `gratitude` (web-public) to show real `:content`
+;; and sender names; everywhere else in this book we either hide
+;; content or run on the
+;; [**Anonymized views**](./zulipdata_book.anonymize.html).
+
 ;; ## Fetching messages
 ;;
 ;; `get-messages` is the message-history endpoint. It takes a *narrow*

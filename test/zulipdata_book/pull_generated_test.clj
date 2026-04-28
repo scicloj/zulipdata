@@ -36,28 +36,30 @@
 (deftest t15_l82 (is (= v14_l80 5000)))
 
 
-(def v17_l95 (def kindly-walk (pull/pull-channel! "kindly-dev" 0)))
+(def v17_l95 (def kindly-dev-pull (pull/pull-channel! "kindly-dev" 0)))
 
 
-(def v18_l98 (:message-count kindly-walk))
+(def v18_l98 (:message-count kindly-dev-pull))
 
 
-(def v19_l100 (count (:pages kindly-walk)))
+(def v19_l100 (count (:pages kindly-dev-pull)))
 
 
-(def v21_l108 (def kindly-messages (pull/all-messages kindly-walk)))
+(def
+ v21_l108
+ (def kindly-dev-messages (pull/all-messages kindly-dev-pull)))
 
 
-(def v22_l110 (count kindly-messages))
+(def v22_l110 (count kindly-dev-messages))
 
 
-(deftest t23_l112 (is (= v22_l110 (:message-count kindly-walk))))
+(deftest t23_l112 (is (= v22_l110 (:message-count kindly-dev-pull))))
 
 
 (def
  v25_l117
  (->
-  kindly-messages
+  kindly-dev-messages
   first
   (select-keys [:id :sender_full_name :timestamp])))
 
@@ -72,7 +74,7 @@
 (def v28_l129 (get-in pulled ["kindly-dev" :message-count]))
 
 
-(deftest t29_l131 (is (= v28_l129 (:message-count kindly-walk))))
+(deftest t29_l131 (is (= v28_l129 (:message-count kindly-dev-pull))))
 
 
 (def v31_l136 (:not-found pulled))
@@ -91,16 +93,18 @@
 (def
  v36_l168
  (def
-  kindly-fresh
+  kindly-dev-pull-fresh
   (pull/pull-channel! "kindly-dev" 0 :refresh-tip? true)))
 
 
-(def v37_l171 (:message-count kindly-fresh))
+(def v37_l171 (:message-count kindly-dev-pull-fresh))
 
 
 (def
  v39_l176
- (>= (:message-count kindly-fresh) (:message-count kindly-walk)))
+ (>=
+  (:message-count kindly-dev-pull-fresh)
+  (:message-count kindly-dev-pull)))
 
 
 (deftest t40_l178 (is (= v39_l176 true)))

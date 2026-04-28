@@ -92,12 +92,12 @@ pull/default-batch-size
 ;; To walk from the very beginning, start at id zero — the first real
 ;; message will satisfy the anchor and the walk runs from there.
 
-(def kindly-walk
+(def kindly-dev-pull
   (pull/pull-channel! "kindly-dev" 0))
 
-(:message-count kindly-walk)
+(:message-count kindly-dev-pull)
 
-(count (:pages kindly-walk))
+(count (:pages kindly-dev-pull))
 
 ;; ## Flattening pages into messages
 ;;
@@ -105,16 +105,16 @@ pull/default-batch-size
 ;; concatenates their `:messages` and de-duplicates by `:id` (windows
 ;; are non-overlapping by construction; the dedup is belt-and-braces).
 
-(def kindly-messages (pull/all-messages kindly-walk))
+(def kindly-dev-messages (pull/all-messages kindly-dev-pull))
 
-(count kindly-messages)
+(count kindly-dev-messages)
 
 (kind/test-last
- (= (:message-count kindly-walk)))
+ (= (:message-count kindly-dev-pull)))
 
 ;; A single message:
 
-(-> kindly-messages first (select-keys [:id :sender_full_name :timestamp]))
+(-> kindly-dev-messages first (select-keys [:id :sender_full_name :timestamp]))
 
 ;; ## Pulling several channels at once
 ;;
@@ -129,7 +129,7 @@ pull/default-batch-size
 (get-in pulled ["kindly-dev" :message-count])
 
 (kind/test-last
- (= (:message-count kindly-walk)))
+ (= (:message-count kindly-dev-pull)))
 
 ;; The unknown channel ends up in `:not-found`:
 
@@ -165,15 +165,15 @@ pull/default-batch-size
 ;; windows now appear. This is the right option for keeping a corpus
 ;; up to date without rebuilding it from scratch.
 
-(def kindly-fresh
+(def kindly-dev-pull-fresh
   (pull/pull-channel! "kindly-dev" 0 :refresh-tip? true))
 
-(:message-count kindly-fresh)
+(:message-count kindly-dev-pull-fresh)
 
 ;; The fresh count is at least the cached count — typically equal, or
 ;; slightly larger if new messages arrived since:
 
-(>= (:message-count kindly-fresh) (:message-count kindly-walk))
+(>= (:message-count kindly-dev-pull-fresh) (:message-count kindly-dev-pull))
 
 (kind/test-last
  (= true))

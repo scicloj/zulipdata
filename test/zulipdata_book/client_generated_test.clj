@@ -33,7 +33,25 @@
 
 
 (def
- v16_l89
+ v16_l85
+ (def
+  web-public-channels
+  (->>
+   streams-response
+   :streams
+   (filter :is_web_public)
+   (mapv :name)
+   sort)))
+
+
+(def v17_l92 (count web-public-channels))
+
+
+(def v19_l96 web-public-channels)
+
+
+(def
+ v21_l118
  (def
   one-message-response
   (client/get-messages
@@ -43,32 +61,32 @@
     :num-after 0})))
 
 
-(def v17_l96 (-> one-message-response :messages count))
+(def v22_l125 (-> one-message-response :messages count))
 
 
-(deftest t18_l98 (is (= v17_l96 1)))
+(deftest t23_l127 (is (= v22_l125 1)))
 
 
-(def v20_l103 (-> one-message-response :messages first keys sort))
+(def v25_l132 (-> one-message-response :messages first keys sort))
 
 
 (def
- v22_l109
+ v27_l138
  (select-keys
   one-message-response
   [:found_anchor :found_oldest :found_newest]))
 
 
-(def v24_l121 client/base-url)
+(def v29_l150 client/base-url)
 
 
 (deftest
- t25_l123
- (is (= v24_l121 "https://clojurians.zulipchat.com/api/v1")))
+ t30_l152
+ (is (= v29_l150 "https://clojurians.zulipchat.com/api/v1")))
 
 
 (def
- v27_l129
+ v32_l158
  (->
   (client/api-get "/server_settings")
   (select-keys [:realm_name :realm_uri :zulip_version])))

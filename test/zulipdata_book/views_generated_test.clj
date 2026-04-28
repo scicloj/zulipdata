@@ -109,9 +109,36 @@
    (fn
     [ds]
     (mapv
-     (fn* [p1__48759#] (some-> p1__48759# (java.net.URI.) .getHost))
+     (fn* [p1__51253#] (some-> p1__51253# (java.net.URI.) .getHost))
      (:link-url ds))))
   (tc/group-by [:host])
   (tc/aggregate {:n tc/row-count})
   (tc/order-by [:n] [:desc])
   (tc/head 5)))
+
+
+(def
+ v37_l174
+ (def
+  gratitude-messages
+  (->>
+   (pull/pull-channels! ["gratitude"])
+   (filter (fn [[k _]] (string? k)))
+   (mapcat (fn [[_ r]] (pull/all-messages r))))))
+
+
+(def
+ v38_l179
+ (def gratitude-timeline (views/messages-timeline gratitude-messages)))
+
+
+(def
+ v40_l185
+ (->
+  gratitude-timeline
+  (tc/select-columns [:sender :subject :content])
+  (tc/map-columns
+   :content
+   [:content]
+   (fn [c] (subs c 0 (min 160 (count c)))))
+  (tc/head 4)))

@@ -157,6 +157,41 @@
 ;; links. Each view is independently complete — joins are *additional*
 ;; structure, not required structure.
 
+;; ## Showing real content (from web-public channels)
+;;
+;; The four-channel fixture above is from non-web-public channels, so
+;; the `:content` and `:sender_full_name` columns are present in the
+;; views but not safe to display in the rendered book. For
+;; demonstration purposes, this section pulls
+;; [`gratitude`](https://clojurians.zulipchat.com/#narrow/channel/474994-gratitude)
+;; — a small (~20-message) **web-public** channel where members
+;; thank one another. Web-public means anyone can read the content
+;; without a Clojurians account, so showing real names and message
+;; bodies in the docs is fine. See
+;; [**Web-public channels**](./zulipdata_book.client.html#web-public-channels)
+;; in the client chapter for how to identify them.
+
+(def gratitude-messages
+  (->> (pull/pull-channels! ["gratitude"])
+       (filter (fn [[k _]] (string? k)))
+       (mapcat (fn [[_ r]] (pull/all-messages r)))))
+
+(def gratitude-timeline (views/messages-timeline gratitude-messages))
+
+;; A few rows showing real senders, topics, and content (truncated).
+;; Notice the inline emoji codes (`:gratitude:`, `:pray:`) and
+;; `@**Real Name**` mentions Zulip uses for tagging.
+
+(-> gratitude-timeline
+    (tc/select-columns [:sender :subject :content])
+    (tc/map-columns :content [:content]
+                    (fn [c] (subs c 0 (min 160 (count c)))))
+    (tc/head 4))
+
+;; The same view shape applies — `:reaction-count`, `:content-length`,
+;; `:edited?`, `:timestamp`, etc. — but here you see the columns the
+;; rest of the book deliberately keeps hidden.
+
 ;; ## Where to go next
 ;;
 ;; - [**Anonymized views**](./zulipdata_book.anonymize.html) —
