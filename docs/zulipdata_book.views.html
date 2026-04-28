@@ -265,6 +265,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#one-row-per-edit" id="toc-one-row-per-edit" class="nav-link" data-scroll-target="#one-row-per-edit">One row per edit</a></li>
   <li><a href="#one-row-per-linked-url" id="toc-one-row-per-linked-url" class="nav-link" data-scroll-target="#one-row-per-linked-url">One row per linked URL</a></li>
   <li><a href="#a-note-on-join-keys" id="toc-a-note-on-join-keys" class="nav-link" data-scroll-target="#a-note-on-join-keys">A note on join keys</a></li>
+  <li><a href="#showing-real-content-from-web-public-channels" id="toc-showing-real-content-from-web-public-channels" class="nav-link" data-scroll-target="#showing-real-content-from-web-public-channels">Showing real content (from web-public channels)</a></li>
   <li><a href="#where-to-go-next" id="toc-where-to-go-next" class="nav-link" data-scroll-target="#where-to-go-next">Where to go next</a></li>
   </ul>
 </nav>
@@ -637,6 +638,72 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="a-note-on-join-keys" class="level2">
 <h2 class="anchored" data-anchor-id="a-note-on-join-keys">A note on join keys</h2>
 <p>All four views carry <code>:message-id</code> (or <code>:id</code> in the timeline) and <code>:stream-id</code> so you can join them back together when you need both a message’s content and its reactions, or both its content and its links. Each view is independently complete — joins are <em>additional</em> structure, not required structure.</p>
+</section>
+<section id="showing-real-content-from-web-public-channels" class="level2">
+<h2 class="anchored" data-anchor-id="showing-real-content-from-web-public-channels">Showing real content (from web-public channels)</h2>
+<p>The four-channel fixture above is from non-web-public channels, so the <code>:content</code> and <code>:sender_full_name</code> columns are present in the views but not safe to display in the rendered book. For demonstration purposes, this section pulls <a href="https://clojurians.zulipchat.com/#narrow/channel/474994-gratitude"><code>gratitude</code></a> — a small (~20-message) <strong>web-public</strong> channel where members thank one another. Web-public means anyone can read the content without a Clojurians account, so showing real names and message bodies in the docs is fine. See <a href="./zulipdata_book.client.html#web-public-channels"><strong>Web-public channels</strong></a> in the client chapter for how to identify them.</p>
+<div class="sourceClojure">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>(<span class="bu">def</span><span class="fu"> gratitude-messages</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  (<span class="kw">-&gt;&gt;</span> (pull/pull-channels! [<span class="st">"gratitude"</span>])</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>       (<span class="kw">filter</span> (<span class="kw">fn</span> [[k _]] (<span class="kw">string?</span> k)))</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>       (<span class="kw">mapcat</span> (<span class="kw">fn</span> [[_ r]] (pull/all-messages r)))))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="sourceClojure">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>(<span class="bu">def</span><span class="fu"> gratitude-timeline </span>(views/messages-timeline gratitude-messages))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>A few rows showing real senders, topics, and content (truncated). Notice the inline emoji codes (<code>:gratitude:</code>, <code>:pray:</code>) and <code>@**Real Name**</code> mentions Zulip uses for tagging.</p>
+<div class="sourceClojure">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">-&gt;</span> gratitude-timeline</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>    (tc/select-columns [<span class="at">:sender</span> <span class="at">:subject</span> <span class="at">:content</span>])</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>    (tc/map-columns <span class="at">:content</span> [<span class="at">:content</span>]</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>                    (<span class="kw">fn</span> [c] (<span class="kw">subs</span> c <span class="dv">0</span> (<span class="kw">min</span> <span class="dv">160</span> (<span class="kw">count</span> c)))))</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>    (tc/head <span class="dv">4</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="clay-dataset">
+<p>_unnamed [4 3]:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 9%">
+<col style="width: 8%">
+<col style="width: 82%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>:sender</th>
+<th>:subject</th>
+<th>:content</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Notification Bot</td>
+<td>channel events</td>
+<td><strong>Public</strong> channel created by <span class="citation" data-cites="_">@_</span><strong>Gert Goet|137562</strong>. <strong>Description:</strong></td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td><code>quote                                                                                                                                                       | |                  |                | Thank someone for what they do, spread the gratitude 💜🌸                                                                                                        | |                  |                |</code></td>
+</tr>
+<tr class="odd">
+<td>pez</td>
+<td>Gert Goet</td>
+<td>My warm and fuzzy feelings of gratitude :gratitude: towards <span class="citation" data-cites="*">@*</span>*Gert Goet** right now. Thanks for keeping this home for Clojurians welcoming and open for so long</td>
+</tr>
+<tr class="even">
+<td>Kira Howe</td>
+<td>new members</td>
+<td>Just discovered this channel! I’m grateful for <span class="citation" data-cites="*">@*</span>*Gert Goet** administering this zulip and super excited that community heavyweights <span class="citation" data-cites="*">@*</span>*Sean Corfield** and <span class="citation" data-cites="*">@*</span>*p</td>
+</tr>
+<tr class="odd">
+<td>Gert Goet</td>
+<td>Gert Goet</td>
+<td>Thanks for the kind words Peter! :blush: and thank <em>you</em> for help shaping the community here and taking the leap :jump: :pray:</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The same view shape applies — <code>:reaction-count</code>, <code>:content-length</code>, <code>:edited?</code>, <code>:timestamp</code>, etc. — but here you see the columns the rest of the book deliberately keeps hidden.</p>
 </section>
 <section id="where-to-go-next" class="level2">
 <h2 class="anchored" data-anchor-id="where-to-go-next">Where to go next</h2>
