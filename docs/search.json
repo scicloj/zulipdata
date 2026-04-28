@@ -1,0 +1,920 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Zulipdata",
+    "section": "",
+    "text": "1 Preface\nA Clojure library for pulling, anonymizing, and analyzing chat history on the Clojurians Zulip.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Preface</span>"
+    ]
+  },
+  {
+    "objectID": "index.html#general-info",
+    "href": "index.html#general-info",
+    "title": "Zulipdata",
+    "section": "General info",
+    "text": "General info\n\n\n\nWebsite\nhttps://scicloj.github.io/zulipdata/\n\n\nSource\nhttps://github.com/scicloj/zulipdata\n\n\nLicense\nMIT\n\n\nStatus\n🛠alpha — actively rewriting🛠",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Preface</span>"
+    ]
+  },
+  {
+    "objectID": "index.html#what-it-does",
+    "href": "index.html#what-it-does",
+    "title": "Zulipdata",
+    "section": "What it does",
+    "text": "What it does\n\nResumable cached pulls of channel history.\nTablecloth projections of raw messages into purpose-built datasets.\nAnonymized views suitable for sharing.\nNarrative helpers for channel lifecycles, cohorts, migrations.\nGraph operations for co-membership, co-presence, and community detection.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Preface</span>"
+    ]
+  },
+  {
+    "objectID": "index.html#built-on",
+    "href": "index.html#built-on",
+    "title": "Zulipdata",
+    "section": "Built on",
+    "text": "Built on\n\ntablecloth — dataset manipulation\nhato — HTTP client\ncharred — JSON\npocket — disk cache\nJGraphT — graph algorithms",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Preface</span>"
+    ]
+  },
+  {
+    "objectID": "index.html#license",
+    "href": "index.html#license",
+    "title": "Zulipdata",
+    "section": "License",
+    "text": "License\nMIT. See LICENSE.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Preface</span>"
+    ]
+  },
+  {
+    "objectID": "index.html#chapters-in-this-book",
+    "href": "index.html#chapters-in-this-book",
+    "title": "Zulipdata",
+    "section": "Chapters in this book",
+    "text": "Chapters in this book\n\nGetting Started\n\nQuickstart\n\nTutorial\n\nThe REST client\nPulling and caching channels\nTablecloth views\nAnonymized views\nNarrative helpers\nGraph views\n\nReference\n\nAPI Reference\n\nRepository\n\nRepository\n\n\n\nsource: notebooks/index.clj",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Preface</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.quickstart.html",
+    "href": "zulipdata_book.quickstart.html",
+    "title": "2  Quickstart",
+    "section": "",
+    "text": "Authenticating\nA walkthrough of the zulipdata library’s core API: authenticating, listing public channels, pulling channel messages, and shaping them into a tablecloth dataset. Run this notebook end-to-end to confirm your setup works.\nCredentials are read from ZULIP_EMAIL / ZULIP_API_KEY env vars or ~/.zuliprc — see the project README.\nclient/whoami calls /users/me and returns a small summary of the authenticated identity.",
+    "crumbs": [
+      "Getting Started",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Quickstart</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.quickstart.html#authenticating",
+    "href": "zulipdata_book.quickstart.html#authenticating",
+    "title": "2  Quickstart",
+    "section": "",
+    "text": "(def me (client/whoami))\n\n\n(:email me)\n\n\n\"explore-bot@clojurians.zulipchat.com\"\n\n\n(:user-id me)\n\n\n820164",
+    "crumbs": [
+      "Getting Started",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Quickstart</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.quickstart.html#listing-public-channels",
+    "href": "zulipdata_book.quickstart.html#listing-public-channels",
+    "title": "2  Quickstart",
+    "section": "Listing public channels",
+    "text": "Listing public channels\npull/public-channel-names returns every channel the bot can read — both fully public and the smaller subset that is web-public.\n\n(def public-channels (pull/public-channel-names))\n\n\n(count public-channels)\n\n\n178\n\nA few names:\n\n(take 5 (sort public-channels))\n\n\n(\"Cursive\" \"Defi\" \"Disorganized\" \"Emacs\" \"Graalvm\")",
+    "crumbs": [
+      "Getting Started",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Quickstart</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.quickstart.html#pulling-messages-from-one-channel",
+    "href": "zulipdata_book.quickstart.html#pulling-messages-from-one-channel",
+    "title": "2  Quickstart",
+    "section": "Pulling messages from one channel",
+    "text": "Pulling messages from one channel\npull/pull-channels! walks forward through a list of channels in cached windows. The first run populates the disk cache; subsequent runs are served from cache. We pull a single small channel here.\n\n(def pulled\n  (pull/pull-channels! [\"kindly-dev\"]))\n\n\n(def message-count\n  (get-in pulled [\"kindly-dev\" :message-count]))\n\n\nmessage-count\n\n\n1134\n\nFlatten the cached windows into a single seq of raw messages:\n\n(def raw-messages\n  (pull/all-messages (get pulled \"kindly-dev\")))\n\n\n(count raw-messages)\n\n\n1134",
+    "crumbs": [
+      "Getting Started",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Quickstart</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.quickstart.html#building-a-timeline-view",
+    "href": "zulipdata_book.quickstart.html#building-a-timeline-view",
+    "title": "2  Quickstart",
+    "section": "Building a timeline view",
+    "text": "Building a timeline view\nviews/messages-timeline projects raw messages into a tablecloth dataset with one row per message and scalar columns only.\n\n(def timeline (views/messages-timeline raw-messages))\n\n\n(tc/row-count timeline)\n\n\n1134\n\nThe dataset’s columns:\n\n(tc/column-names timeline)\n\n\n(:instant\n :content\n :last-edit-ts\n :client\n :channel\n :edited?\n :stream-id\n :content-length\n :id\n :sender\n :sender-id\n :timestamp\n :subject)",
+    "crumbs": [
+      "Getting Started",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Quickstart</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.quickstart.html#next-steps",
+    "href": "zulipdata_book.quickstart.html#next-steps",
+    "title": "2  Quickstart",
+    "section": "Next steps",
+    "text": "Next steps\nThe rest of this book is one chapter per namespace:\n\nThe REST client — what client/whoami is doing under the hood, plus the four endpoints the library wraps.\nPulling and caching channels — the cache model behind pull/pull-channels!, plus options like :refresh-tip? for keeping a corpus up to date.\nTablecloth views — views/messages-timeline, views/reactions-long, views/edits-long, and views/topic-links-long.\nAnonymized views — scicloj.zulipdata.anonymize mirrors the plain views with HMAC-hashed user keys and dropped content, suitable for sharing dataset views without leaking real names or message text.\nNarrative helpers — scicloj.zulipdata.narrative for date columns, channel lifecycles, and newcomer tracking.\nGraph views — scicloj.zulipdata.graph for co-membership and co-presence graphs, community detection, and rendering.\n\n\nsource: notebooks/zulipdata_book/quickstart.clj",
+    "crumbs": [
+      "Getting Started",
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Quickstart</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.client.html",
+    "href": "zulipdata_book.client.html",
+    "title": "3  The REST client",
+    "section": "",
+    "text": "Credentials\nscicloj.zulipdata.client is the lowest layer of the library: a thin wrapper over Zulip’s HTTP REST API for the Clojurians instance. Almost all analyses can stay on the higher-level pull namespace, but it helps to know what is happening underneath, and the client is the right tool when you need to call an endpoint the rest of the library does not cover.\nThis chapter walks through:\nThe client looks for credentials in two places, in order:\nThe environment wins if both are present. If ~/.zuliprc points at a different site value, the client refuses rather than hitting the wrong host. If neither path yields a complete pair, the first request raises an exception with instructions for fixing it.\nYou can generate an API key from Settings → Account & privacy → API key in any Clojurians Zulip account — admin rights are not required.\nCredentials are resolved lazily and memoized — the file is read at most once per JVM.",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>The REST client</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.client.html#credentials",
+    "href": "zulipdata_book.client.html#credentials",
+    "title": "3  The REST client",
+    "section": "",
+    "text": "The environment variables ZULIP_EMAIL and ZULIP_API_KEY.\nThe [api] section of ~/.zuliprc (the standard Zulip CLI config file), with email, key, and site = https://clojurians.zulipchat.com.",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>The REST client</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.client.html#a-first-request",
+    "href": "zulipdata_book.client.html#a-first-request",
+    "title": "3  The REST client",
+    "section": "A first request",
+    "text": "A first request\nwhoami is the simplest possible round-trip: it hits /users/me and returns a small summary of the authenticated identity. It is the right first call after configuring credentials.\n\n(def me (client/whoami))\n\n\nme\n\n\n{:email \"explore-bot@clojurians.zulipchat.com\",\n :full-name \"explore\",\n :user-id 820164,\n :is-bot? true,\n :is-admin? false,\n :role 400}\n\nThe shape:\n\n(keys me)\n\n\n(:email :full-name :user-id :is-bot? :is-admin? :role)\n\nIf you need the full /users/me response — including fields whoami does not surface, like timezone or avatar URL — use get-me. We just print the count of fields here:\n\n(-&gt; (client/get-me) keys count)\n\n\n20",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>The REST client</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.client.html#listing-channels",
+    "href": "zulipdata_book.client.html#listing-channels",
+    "title": "3  The REST client",
+    "section": "Listing channels",
+    "text": "Listing channels\nget-streams calls /streams and returns the full Zulip API response, including every channel the authenticated user can see.\n\n(def streams-response (client/get-streams))\n\n\n(-&gt; streams-response :streams count)\n\n\n178\n\nA single stream entry, with its raw Zulip field names:\n\n(-&gt; streams-response :streams first keys sort)\n\n\n(:can_add_subscribers_group\n :can_administer_channel_group\n :can_create_topic_group\n :can_delete_any_message_group\n :can_delete_own_message_group\n :can_move_messages_out_of_channel_group\n :can_move_messages_within_channel_group\n :can_remove_subscribers_group\n :can_resolve_topics_group\n :can_send_message_group\n :can_subscribe_group\n :creator_id\n :date_created\n :description\n :first_message_id\n :folder_id\n :history_public_to_subscribers\n :invite_only\n :is_announcement_only\n :is_archived\n :is_recently_active\n :is_web_public\n :message_retention_days\n :name\n :rendered_description\n :stream_id\n :stream_post_policy\n :stream_weekly_traffic\n :subscriber_count\n :topics_policy)",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>The REST client</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.client.html#fetching-messages",
+    "href": "zulipdata_book.client.html#fetching-messages",
+    "title": "3  The REST client",
+    "section": "Fetching messages",
+    "text": "Fetching messages\nget-messages is the message-history endpoint. It takes a narrow (a vector of operator/operand maps), an anchor (an id, or one of the keywords \"newest\", \"oldest\", \"first_unread\"), and counts of messages to fetch before and after the anchor.\nA single message from kindly-dev, one of the small channels we reuse as a fixture throughout this book:\n\n(def one-message-response\n  (client/get-messages\n   {:narrow     [{:operator \"channel\" :operand \"kindly-dev\"}]\n    :anchor     \"newest\"\n    :num-before 1\n    :num-after  0}))\n\n\n(-&gt; one-message-response :messages count)\n\n\n1\n\nThe fields a message carries (a sample — full set varies):\n\n(-&gt; one-message-response :messages first keys sort)\n\n\n(:avatar_url\n :client\n :content\n :content_type\n :display_recipient\n :flags\n :id\n :is_me_message\n :reactions\n :recipient_id\n :sender_email\n :sender_full_name\n :sender_id\n :sender_realm_str\n :stream_id\n :subject\n :submessages\n :timestamp\n :topic_links\n :type)\n\nThe response also tells you whether the window touches the start or end of the channel’s history — this is what pull/pull-channel! uses to decide when to stop walking forward:\n\n(select-keys one-message-response\n             [:found_anchor :found_oldest :found_newest])\n\n\n{:found_anchor false, :found_oldest false, :found_newest true}",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>The REST client</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.client.html#the-general-purpose-endpoint",
+    "href": "zulipdata_book.client.html#the-general-purpose-endpoint",
+    "title": "3  The REST client",
+    "section": "The general-purpose endpoint",
+    "text": "The general-purpose endpoint\napi-get is the thin function the others are built on. Use it for any endpoint not covered above — pass a path (relative to the API base) and an optional query-params map.\nThe base-url def is the prefix that path arguments are appended to. It points at the Clojurians instance:\n\nclient/base-url\n\n\n\"https://clojurians.zulipchat.com/api/v1\"\n\nA direct call. /server_settings is unauthenticated metadata — a harmless example.\n\n(-&gt; (client/api-get \"/server_settings\")\n    (select-keys [:realm_name :realm_uri :zulip_version]))\n\n\n{:realm_name \"Clojurians\",\n :realm_uri \"https://clojurians.zulipchat.com\",\n :zulip_version \"12.0-beta2-5-gacde61d6b0\"}",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>The REST client</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.client.html#reliability-timeouts-and-retries",
+    "href": "zulipdata_book.client.html#reliability-timeouts-and-retries",
+    "title": "3  The REST client",
+    "section": "Reliability: timeouts and retries",
+    "text": "Reliability: timeouts and retries\nThe client wraps every request in a small retry loop with exponential backoff (up to four retries) for I/O errors and timeouts. A single request times out after ninety seconds. This is opaque from the outside — calls just succeed or, after exhausting retries, throw — but it is worth knowing when interpreting unusual latencies.",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>The REST client</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.client.html#where-to-go-next",
+    "href": "zulipdata_book.client.html#where-to-go-next",
+    "title": "3  The REST client",
+    "section": "Where to go next",
+    "text": "Where to go next\n\nPulling and caching channels — scicloj.zulipdata.pull builds on this client to walk a channel’s full history in resumable, cached windows.\nTablecloth views — scicloj.zulipdata.views projects raw messages into purpose-built datasets.\nAPI Reference — every public function in one chapter, with docstrings and a worked example each.\n\n\nsource: notebooks/zulipdata_book/client.clj",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>The REST client</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.pull.html",
+    "href": "zulipdata_book.pull.html",
+    "title": "4  Pulling and caching channels",
+    "section": "",
+    "text": "Where the cache lives\nscicloj.zulipdata.pull sits above the REST client. It walks a channel’s full message history in windows, caches each window on disk, and stitches the windows back together. This chapter explains the cache model, then tours every public function.\nThe big idea: each window is identified by (channel-name, anchor-id, batch-size). Once a window has been fetched, it is cached, and any future call with the same triple is served from disk. That makes pulls resumable (a crashed pull picks up where it left off), idempotent (re-running is free), and incremental (only new tail windows need to be re-fetched).\nThe cache is backed by pocket, which serialises values with nippy under a directory we control. The directory is read from ZULIP_CACHE_DIR, falling back to ~/.cache/zulipdata-clojurians/. The directory is created on first use.\nEach cached window lives in a sharded subdirectory keyed by a hash of the call. You should not need to inspect the cache directly — but if you ever need to start over for a particular window, the right move is (pocket/invalidate! ...), not rm -rf.",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Pulling and caching channels</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.pull.html#listing-channels-you-can-pull",
+    "href": "zulipdata_book.pull.html#listing-channels-you-can-pull",
+    "title": "4  Pulling and caching channels",
+    "section": "Listing channels you can pull",
+    "text": "Listing channels you can pull\npublic-channel-names filters /streams down to channels that are either fully public or web-public — i.e. the ones a research bot can read.\n\n(def public-channels (pull/public-channel-names))\n\n\n(count public-channels)\n\n\n178\n\n\n(take 5 (sort public-channels))\n\n\n(\"Cursive\" \"Defi\" \"Disorganized\" \"Emacs\" \"Graalvm\")",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Pulling and caching channels</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.pull.html#pulling-one-window",
+    "href": "zulipdata_book.pull.html#pulling-one-window",
+    "title": "4  Pulling and caching channels",
+    "section": "Pulling one window",
+    "text": "Pulling one window\nfetch-window is the cached unit. It returns the raw page map from Zulip — the same shape client/get-messages returns, including the :found_newest flag the walker uses.\nThe first call hits the network; the second is served from the cache. Both are identical from the caller’s point of view. We reach for the small kindly-dev channel as our example.\n\n(def first-window\n  (pull/fetch-window \"kindly-dev\" 0 100))\n\n\n(-&gt; first-window :messages count)\n\n\n100\n\n\n(:found_anchor first-window)\n\n\nfalse\n\nThe walker stops once it sees :found_newest true, but a single small window like this one usually does not reach the tip:\n\n(:found_newest first-window)\n\n\nfalse",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Pulling and caching channels</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.pull.html#the-default-batch-size",
+    "href": "zulipdata_book.pull.html#the-default-batch-size",
+    "title": "4  Pulling and caching channels",
+    "section": "The default batch size",
+    "text": "The default batch size\ndefault-batch-size is the number of messages requested per window when callers do not specify one. Zulip caps it around 5000, and that is also our default — large enough that a busy channel takes only a few windows, small enough to stay well within request limits.\n\npull/default-batch-size\n\n\n5000",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Pulling and caching channels</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.pull.html#walking-a-whole-channel",
+    "href": "zulipdata_book.pull.html#walking-a-whole-channel",
+    "title": "4  Pulling and caching channels",
+    "section": "Walking a whole channel",
+    "text": "Walking a whole channel\npull-channel! walks forward from a starting anchor in cached windows. The result is a map with the page list and the total message count — :pages keeps every window so you can flatten or reconsume them, and :message-count summarises.\nTo walk from the very beginning, start at id zero — the first real message will satisfy the anchor and the walk runs from there.\n\n(def kindly-walk\n  (pull/pull-channel! \"kindly-dev\" 0))\n\n\n(:message-count kindly-walk)\n\n\n1134\n\n\n(count (:pages kindly-walk))\n\n\n1",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Pulling and caching channels</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.pull.html#flattening-pages-into-messages",
+    "href": "zulipdata_book.pull.html#flattening-pages-into-messages",
+    "title": "4  Pulling and caching channels",
+    "section": "Flattening pages into messages",
+    "text": "Flattening pages into messages\nA walk’s :pages is a vector of raw page maps. all-messages concatenates their :messages and de-duplicates by :id (windows are non-overlapping by construction; the dedup is belt-and-braces).\n\n(def kindly-messages (pull/all-messages kindly-walk))\n\n\n(count kindly-messages)\n\n\n1134\n\nA single message:\n\n(-&gt; kindly-messages first (select-keys [:id :sender_full_name :timestamp]))\n\n\n{:id 468115793,\n :sender_full_name \"Notification Bot\",\n :timestamp 1725611765}",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Pulling and caching channels</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.pull.html#pulling-several-channels-at-once",
+    "href": "zulipdata_book.pull.html#pulling-several-channels-at-once",
+    "title": "4  Pulling and caching channels",
+    "section": "Pulling several channels at once",
+    "text": "Pulling several channels at once\npull-channels! is the convenient batch form. It looks up each channel’s first-message id from /streams, walks each channel, and returns a map keyed by name. Channels that do not exist on the server are collected under :not-found.\n\n(def pulled\n  (pull/pull-channels! [\"kindly-dev\" \"definitely-not-a-real-channel\"]))\n\n\n(get-in pulled [\"kindly-dev\" :message-count])\n\n\n1134\n\nThe unknown channel ends up in :not-found:\n\n(:not-found pulled)\n\n\n[\"definitely-not-a-real-channel\"]\n\nThe successful entries also carry the stream id and the channel’s first-message id — those are looked up by the function and included for downstream use:\n\n(-&gt; (get pulled \"kindly-dev\")\n    (select-keys [:stream-id :first-message-id :message-count]))\n\n\n{:stream-id 454856, :first-message-id 468115793, :message-count 1134}",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Pulling and caching channels</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.pull.html#pulling-everything-public",
+    "href": "zulipdata_book.pull.html#pulling-everything-public",
+    "title": "4  Pulling and caching channels",
+    "section": "Pulling everything public",
+    "text": "Pulling everything public\npull-public-channels! is the convenience wrapper used by the full-corpus analyses: it pulls every channel in public-channel-names with whatever options you pass. We do not run it here — a full pull on a fresh cache can take minutes — but this is the call to reach for when building a corpus-wide dataset.",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Pulling and caching channels</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.pull.html#catching-up-the-refresh-tip-option",
+    "href": "zulipdata_book.pull.html#catching-up-the-refresh-tip-option",
+    "title": "4  Pulling and caching channels",
+    "section": "Catching up: the :refresh-tip? option",
+    "text": "Catching up: the :refresh-tip? option\nBy default, repeated calls are entirely cache-served. That is usually what you want — but it means a re-run misses any messages posted since the last pull, because the final cached window will have been stored with :found_newest true.\nPass :refresh-tip? true to invalidate any cached page with :found_newest true, re-fetch it, and continue walking if new full windows now appear. This is the right option for keeping a corpus up to date without rebuilding it from scratch.\n\n(def kindly-fresh\n  (pull/pull-channel! \"kindly-dev\" 0 :refresh-tip? true))\n\n\n\n\n\n\n\nNoteERR\n\n\n\n[nREPL-session-2e6b3d7d-ed47-41c9-823b-e68b8a40efe8] INFO scicloj.pocket.impl.cache - Invalidated: /home/daslu/.cache/zulipdata-clojurians//bb/(scicloj.zulipdata.pull_fetch-window-impl \"kindly-dev\" 0 5000) existed= true\n[nREPL-session-2e6b3d7d-ed47-41c9-823b-e68b8a40efe8] INFO scicloj.pocket.impl.cache - Cache miss, computing: scicloj.zulipdata.pull/fetch-window-impl\n\n\n\n\n(:message-count kindly-fresh)\n\n\n1134\n\nThe fresh count is at least the cached count — typically equal, or slightly larger if new messages arrived since:\n\n(&gt;= (:message-count kindly-fresh) (:message-count kindly-walk))\n\n\ntrue",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Pulling and caching channels</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.pull.html#where-to-go-next",
+    "href": "zulipdata_book.pull.html#where-to-go-next",
+    "title": "4  Pulling and caching channels",
+    "section": "Where to go next",
+    "text": "Where to go next\nYou now have raw messages — vectors of maps with Zulip’s snake_case field names. The next step is shaping them into datasets:\n\nTablecloth views — scicloj.zulipdata.views projects raw messages into one-row-per-thing datasets (timeline, reactions, edits, links).\nAnonymized views — scicloj.zulipdata.anonymize produces parallel datasets with sender identities and topic strings replaced by stable hash keys.\nAPI Reference — every public function in one chapter, with docstrings and a worked example each.\n\n\nsource: notebooks/zulipdata_book/pull.clj",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Pulling and caching channels</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.views.html",
+    "href": "zulipdata_book.views.html",
+    "title": "5  Tablecloth views",
+    "section": "",
+    "text": "Setting up a small fixture\nRaw Zulip messages are nested maps with snake_case keys. Useful for some things, awkward for analysis. scicloj.zulipdata.views offers four projections that turn a sequence of raw messages into tablecloth datasets — flat, scalar-only, ready for grouping and plotting.\nTwo design choices worth knowing about:\nWe use the same four-channel sample as the later chapters: small enough to render quickly, varied enough that every view has non-empty rows. Subsequent runs are cache-served.\npull/pull-channels! returns a map keyed by channel name plus a :not-found entry for any unknown names. The (filter (string? k)) step keeps only the channel-keyed entries before flattening their pages into a single seq of raw messages. This same idiom recurs in the later chapters.",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Tablecloth views</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.views.html#setting-up-a-small-fixture",
+    "href": "zulipdata_book.views.html#setting-up-a-small-fixture",
+    "title": "5  Tablecloth views",
+    "section": "",
+    "text": "(def fixture-channels\n  [\"kindly-dev\" \"tableplot-dev\" \"clay-dev\" \"noj-dev\"])\n\n\n(def messages\n  (-&gt;&gt; (pull/pull-channels! fixture-channels)\n       (filter (fn [[k _]] (string? k)))\n       (mapcat (fn [[_ r]] (pull/all-messages r)))))\n\n\n(count messages)\n\n\n6950",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Tablecloth views</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.views.html#one-row-per-message",
+    "href": "zulipdata_book.views.html#one-row-per-message",
+    "title": "5  Tablecloth views",
+    "section": "One row per message",
+    "text": "One row per message\nmessages-timeline is the primary view. One row per message, only scalar columns — no reactions list, no edit history, no nested topic-link records. Those live in their own views.\n\n(def timeline (views/messages-timeline messages))\n\n\n(tc/row-count timeline)\n\n\n6950\n\nThe columns:\n\n(tc/column-names timeline)\n\n\n(:instant\n :content\n :last-edit-ts\n :client\n :channel\n :edited?\n :stream-id\n :content-length\n :id\n :sender\n :sender-id\n :timestamp\n :subject)\n\nA peek at the first three rows, with a few interesting columns:\n\n(-&gt; timeline\n    (tc/select-columns [:id :instant :channel :sender :content-length :edited?])\n    (tc/head 3))\n\n\n_unnamed [3 6]:\n\n\n\n\n\n\n\n\n\n\n\n:id\n:instant\n:channel\n:sender\n:content-length\n:edited?\n\n\n\n\n468115793\n2024-09-06T08:36:05Z\nkindly-dev\nNotification Bot\n109\nfalse\n\n\n468115883\n2024-09-06T08:36:32Z\nkindly-dev\nDaniel Slutsky\n124\ntrue\n\n\n468617117\n2024-09-08T19:34:42Z\nkindly-dev\nDaniel Slutsky\n124\ntrue\n\n\n\n\nThe :instant column is a Java Instant derived from :timestamp (epoch seconds). Both are kept — :timestamp is good for arithmetic, :instant for display and time-zone work.\n\n(-&gt; timeline :instant first type)\n\n\njava.time.Instant\n\nThe :edited? column is a structural derivation from the raw message — true iff :last_edit_timestamp is present.\n\n(-&gt; timeline (tc/select-rows :edited?) tc/row-count)\n\n\n1244",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Tablecloth views</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.views.html#one-row-per-reaction",
+    "href": "zulipdata_book.views.html#one-row-per-reaction",
+    "title": "5  Tablecloth views",
+    "section": "One row per reaction",
+    "text": "One row per reaction\nA message can have any number of reactions. reactions-long flattens them into a one-row-per-reaction dataset, with the message-level identifiers carried alongside.\n\n(def reactions (views/reactions-long messages))\n\n\n(tc/row-count reactions)\n\n\n1123\n\n\n(tc/column-names reactions)\n\n\n(:message-id\n :channel\n :user-id\n :stream-id\n :emoji-name\n :message-ts\n :emoji-code\n :subject\n :reaction-type)\n\nTop emoji across the fixture, by reaction count:\n\n(-&gt; reactions\n    (tc/group-by [:emoji-name])\n    (tc/aggregate {:n tc/row-count})\n    (tc/order-by [:n] [:desc])\n    (tc/head 5))\n\n\n_unnamed [5 2]:\n\n\n\n:emoji-name\n:n\n\n\n\n\n+1\n550\n\n\ntada\n81\n\n\nthank_you\n53\n\n\nheart\n49\n\n\neyes\n34",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Tablecloth views</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.views.html#one-row-per-edit",
+    "href": "zulipdata_book.views.html#one-row-per-edit",
+    "title": "5  Tablecloth views",
+    "section": "One row per edit",
+    "text": "One row per edit\nZulip stores an edit_history for every message that has been edited or moved. edits-long flattens those events. Note: an “edit” here may be a content edit, a topic move, or a stream move — :prev-content, :prev-subject, and :prev-stream indicate which by being non-nil.\n\n(def edits (views/edits-long messages))\n\n\n(tc/row-count edits)\n\n\n2360\n\n\n(tc/column-names edits)\n\n\n(:message-id\n :stream-id\n :channel\n :edit-ts\n :edit-user-id\n :prev-content\n :prev-subject\n :prev-stream)\n\nA few rows. We project the columns to keep the table narrow and avoid showing prior message text.\n\n(-&gt; edits\n    (tc/select-columns [:message-id :edit-ts :edit-user-id])\n    (tc/head 3))\n\n\n_unnamed [3 3]:\n\n\n\n:message-id\n:edit-ts\n:edit-user-id\n\n\n\n\n468115883\n1725824532\n138175\n\n\n468617117\n1725828308\n138175\n\n\n468617117\n1725828272\n138175",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Tablecloth views</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.views.html#one-row-per-linked-url",
+    "href": "zulipdata_book.views.html#one-row-per-linked-url",
+    "title": "5  Tablecloth views",
+    "section": "One row per linked URL",
+    "text": "One row per linked URL\nZulip auto-detects URLs in messages and records them in :topic_links. topic-links-long flattens those into a one-row-per-link dataset.\n\n(def links (views/topic-links-long messages))\n\n\n(tc/row-count links)\n\n\n102\n\n\n(tc/column-names links)\n\n\n(:message-id :stream-id :channel :link-text :link-url)\n\nThe most-linked URL hosts:\n\n(-&gt; links\n    (tc/add-column :host\n                   (fn [ds]\n                     (mapv #(some-&gt; %\n                                    (java.net.URI.)\n                                    .getHost)\n                           (:link-url ds))))\n    (tc/group-by [:host])\n    (tc/aggregate {:n tc/row-count})\n    (tc/order-by [:n] [:desc])\n    (tc/head 5))\n\n\n_unnamed [5 2]:\n\n\n\n:host\n:n\n\n\n\n\nmetamorph.ml\n54\n\n\nscicloj.ml\n27\n\n\nscicloj.ml.smile\n16\n\n\ngithub.io\n3\n\n\ngithub.com\n2",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Tablecloth views</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.views.html#a-note-on-join-keys",
+    "href": "zulipdata_book.views.html#a-note-on-join-keys",
+    "title": "5  Tablecloth views",
+    "section": "A note on join keys",
+    "text": "A note on join keys\nAll four views carry :message-id (or :id in the timeline) and :stream-id so you can join them back together when you need both a message’s content and its reactions, or both its content and its links. Each view is independently complete — joins are additional structure, not required structure.",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Tablecloth views</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.views.html#where-to-go-next",
+    "href": "zulipdata_book.views.html#where-to-go-next",
+    "title": "5  Tablecloth views",
+    "section": "Where to go next",
+    "text": "Where to go next\n\nAnonymized views — scicloj.zulipdata.anonymize mirrors messages-timeline, reactions-long, and edits-long with sender names and topic strings replaced by stable hash keys, and message content dropped. Use those for any artifact that leaves your machine.\nAPI Reference — every public function in one chapter, with docstrings and a worked example each.\n\n\nsource: notebooks/zulipdata_book/views.clj",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Tablecloth views</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.anonymize.html",
+    "href": "zulipdata_book.anonymize.html",
+    "title": "6  Anonymized views",
+    "section": "",
+    "text": "How the keys are derived\nThe plain views in scicloj.zulipdata.views carry real names, topic strings, and message text. That is the right shape for analyses that stay on your machine — but the moment a chart, a markdown table, or an exported dataset leaves your laptop, real identities and quoted content travel with it.\nscicloj.zulipdata.anonymize produces parallel views with:\nSame shape, same join keys, no real names or message bodies.\nBoth keys come from HMAC-SHA256 with a single committed salt — see src/scicloj/zulipdata/anonymize.clj. The salt is in source on purpose: re-running the analysis must produce the same keys, so that follow-up work links back to prior artifacts.\nThis means the published artifacts are pseudonymous, not anonymous. Anyone with the salt and access to the original Zulip data can re-identify by re-hashing. The point is to keep real names and message text from appearing in checked-in markdown, slides, or dashboards — not to be unbreakable.\nThe key sizes were chosen so collisions are not a practical concern at this corpus’s scale: 48 bits for users (with low-thousands of users) and 64 bits for subjects (with low-thousands of subjects).",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Anonymized views</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.anonymize.html#hashing-one-value",
+    "href": "zulipdata_book.anonymize.html#hashing-one-value",
+    "title": "6  Anonymized views",
+    "section": "Hashing one value",
+    "text": "Hashing one value\nThe two key functions, user-key and subject-key, are exposed for ad-hoc use. They are pure functions, accept nil, and return deterministic hex strings.\n\n(anon/user-key 42)\n\n\n\"62b81b15a641\"\n\nThe output is stable: hashing the same input always returns the same key.\n\n(= (anon/user-key 42) (anon/user-key 42))\n\n\ntrue\n\nDifferent inputs almost certainly hash to different keys:\n\n(not= (anon/user-key 42) (anon/user-key 43))\n\n\ntrue\n\nA nil sender id (which can happen for system messages) maps to nil rather than to a hash:\n\n(anon/user-key nil)\n\n\nnil\n\n\n(anon/subject-key \"channel introductions\")\n\n\n\"b61cd3d678d6f0da\"",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Anonymized views</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.anonymize.html#a-small-fixture",
+    "href": "zulipdata_book.anonymize.html#a-small-fixture",
+    "title": "6  Anonymized views",
+    "section": "A small fixture",
+    "text": "A small fixture\nA single channel, kindly-dev, is enough to illustrate the anonymization layer. The cross-channel patterns come back in the narrative and graph chapters.\n\n(def messages\n  (-&gt; (pull/pull-channels! [\"kindly-dev\"])\n      (get \"kindly-dev\")\n      pull/all-messages))",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Anonymized views</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.anonymize.html#one-row-per-message-anonymized",
+    "href": "zulipdata_book.anonymize.html#one-row-per-message-anonymized",
+    "title": "6  Anonymized views",
+    "section": "One row per message — anonymized",
+    "text": "One row per message — anonymized\nanonymized-timeline mirrors views/messages-timeline but with sender ids, sender names, subject strings, and message content replaced or removed.\n\n(def anon-timeline (anon/anonymized-timeline messages))\n\n\n(tc/row-count anon-timeline)\n\n\n1134\n\n\n(tc/column-names anon-timeline)\n\n\n(:last-edit-ts\n :client\n :reaction-count\n :channel\n :user-key\n :edited?\n :stream-id\n :content-length\n :id\n :subject-key\n :timestamp)\n\nA few rows — note that :user-key and :subject-key are hex strings, and there is no :content column.\n\n(-&gt; anon-timeline\n    (tc/select-columns [:id :timestamp :channel :user-key :subject-key\n                        :content-length :reaction-count])\n    (tc/head 3))\n\n\n_unnamed [3 7]:\n\n\n\n\n\n\n\n\n\n\n\n\n:id\n:timestamp\n:channel\n:user-key\n:subject-key\n:content-length\n:reaction-count\n\n\n\n\n468115793\n1725611765\nkindly-dev\na150cbcc9f0e\n28c21dbfe5d7f7c2\n109\n0\n\n\n468115883\n1725611792\nkindly-dev\nd19c7e5c3106\n4335e23a0728e371\n124\n0\n\n\n468617117\n1725824082\nkindly-dev\nd19c7e5c3106\n4335e23a0728e371\n124\n0\n\n\n\n\nThe number of distinct user-keys in this channel:\n\n(-&gt; anon-timeline :user-key distinct count)\n\n\n21",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Anonymized views</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.anonymize.html#one-row-per-reaction-anonymized",
+    "href": "zulipdata_book.anonymize.html#one-row-per-reaction-anonymized",
+    "title": "6  Anonymized views",
+    "section": "One row per reaction — anonymized",
+    "text": "One row per reaction — anonymized\nanonymized-reactions keeps the emoji name (community-sentiment signal, not message content) but anonymizes both the reactor’s identity and the message’s subject.\n\n(def anon-reactions (anon/anonymized-reactions messages))\n\n\n(tc/row-count anon-reactions)\n\n\n113\n\n\n(tc/column-names anon-reactions)\n\n\n(:message-id\n :channel\n :stream-id\n :emoji-name\n :message-ts\n :emoji-code\n :subject-key\n :reactor-user-key\n :reaction-type)",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Anonymized views</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.anonymize.html#one-row-per-edit-anonymized",
+    "href": "zulipdata_book.anonymize.html#one-row-per-edit-anonymized",
+    "title": "6  Anonymized views",
+    "section": "One row per edit — anonymized",
+    "text": "One row per edit — anonymized\nanonymized-edits mirrors views/edits-long with the editor and prior subject anonymized and prior content dropped. :prev-stream (a numeric stream id, not PII) is left as-is.\n\n(def anon-edits (anon/anonymized-edits messages))\n\n\n(tc/row-count anon-edits)\n\n\n362\n\n\n(tc/column-names anon-edits)\n\n\n(:message-id\n :stream-id\n :channel\n :edit-ts\n :editor-user-key\n :prev-subject-key\n :prev-stream)",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Anonymized views</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.anonymize.html#what-the-anonymized-data-can-and-cannot-answer",
+    "href": "zulipdata_book.anonymize.html#what-the-anonymized-data-can-and-cannot-answer",
+    "title": "6  Anonymized views",
+    "section": "What the anonymized data can — and cannot — answer",
+    "text": "What the anonymized data can — and cannot — answer\nThe anonymized views are designed for who-when-where, not what analyses.\nCan be answered:\n\nActivity patterns over time, per channel, per user.\nCohort tenure, retention, cross-channel migration.\nReaction culture (emoji names are preserved).\nEdit rates and topic moves.\nSubject recurrence: same subject-key in many messages means the same topic thread, even though the topic text is hidden.\n\nCannot be answered without un-anonymizing:\n\nWhat was discussed (no content, no subject text).\nWho specifically did what (no names).\nSentiment beyond what reactions carry.",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Anonymized views</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.anonymize.html#where-to-go-next",
+    "href": "zulipdata_book.anonymize.html#where-to-go-next",
+    "title": "6  Anonymized views",
+    "section": "Where to go next",
+    "text": "Where to go next\n\nNarrative helpers — scicloj.zulipdata.narrative adds time columns, channel-lifecycle summaries, and newcomer-tracking helpers that operate on the anonymized timeline.\nGraph views — scicloj.zulipdata.graph builds co-membership and co-presence graphs from the same anonymized timeline.\nAPI Reference — every public function in one chapter, with docstrings and a worked example each.\n\n\nsource: notebooks/zulipdata_book/anonymize.clj",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Anonymized views</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.narrative.html",
+    "href": "zulipdata_book.narrative.html",
+    "title": "7  Narrative helpers",
+    "section": "",
+    "text": "A multi-channel fixture\nscicloj.zulipdata.narrative is a small toolkit for the kinds of questions that recur across analyses on this corpus: enriching a timeline with date columns, summarising channel lifecycles, selecting a sub-set of channels by name or by shared user-base, tracing newcomers’ prior paths, and counting monthly activity.\nEverything in this chapter operates on an anonymized timeline — a tablecloth dataset with :channel, :user-key, and :timestamp columns produced by scicloj.zulipdata.anonymize/anonymized-timeline. The helpers do not care that it is anonymized; they just want those columns. We work on the anonymized form throughout because that is what the next step (graph views) expects, and because there is no reason to handle real names for these aggregates.\nThis chapter needs more than one channel — channels-by-shared-users and prior-channels-of-newcomers are about cross-channel structure. We use four small-to-medium scicloj channels with overlapping contributors. Subsequent runs are cache-served.",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Narrative helpers</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.narrative.html#a-multi-channel-fixture",
+    "href": "zulipdata_book.narrative.html#a-multi-channel-fixture",
+    "title": "7  Narrative helpers",
+    "section": "",
+    "text": "(def fixture-channels\n  [\"kindly-dev\" \"tableplot-dev\" \"clay-dev\" \"noj-dev\"])\n\n\n(def messages\n  (-&gt;&gt; (pull/pull-channels! fixture-channels)\n       (filter (fn [[k _]] (string? k)))\n       (mapcat (fn [[_ r]] (pull/all-messages r)))))\n\n\n(count messages)\n\n\n6950\n\n\n(def base-timeline\n  (anon/anonymized-timeline messages))\n\n\n(tc/row-count base-timeline)\n\n\n6950",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Narrative helpers</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.narrative.html#adding-date-columns",
+    "href": "zulipdata_book.narrative.html#adding-date-columns",
+    "title": "7  Narrative helpers",
+    "section": "Adding date columns",
+    "text": "Adding date columns\nMost analyses bucket activity by month or year. with-time-columns adds three derived columns from :timestamp (epoch seconds, UTC): :month-date (a LocalDate set to the first of the month), :year-month (a \"YYYY-MM\" string), and :year (an integer).\nThe three are different shapes for different uses: LocalDate values plot on a real calendar axis, strings sort lexicographically for grouping, integers behave well as numeric facets.\n\n(def timeline (nar/with-time-columns base-timeline))\n\n\n(tc/column-names timeline)\n\n\n(:last-edit-ts\n :client\n :reaction-count\n :channel\n :user-key\n :edited?\n :stream-id\n :content-length\n :id\n :subject-key\n :timestamp\n :month-date\n :year-month\n :year)\n\nThe three new columns:\n\n(-&gt; timeline\n    (tc/select-columns [:timestamp :month-date :year-month :year])\n    (tc/head 3))\n\n\n_unnamed [3 4]:\n\n\n\n:timestamp\n:month-date\n:year-month\n:year\n\n\n\n\n1725611765\n2024-09-01\n2024-09\n2024\n\n\n1725611792\n2024-09-01\n2024-09\n2024\n\n\n1725824082\n2024-09-01\n2024-09\n2024\n\n\n\n\nThe same three derivations are also exposed as scalar helpers (ts-&gt;month-date, ts-&gt;year-month, ts-&gt;year), in case you need them for one-off arithmetic without a dataset:\n\n(let [ts (-&gt; timeline :timestamp first)]\n  {:ts         ts\n   :month-date (nar/ts-&gt;month-date ts)\n   :year-month (nar/ts-&gt;year-month ts)\n   :year       (nar/ts-&gt;year ts)})\n\n\n{:ts 1725611765,\n :month-date #object[java.time.LocalDate 0x74bde8cf \"2024-09-01\"],\n :year-month \"2024-09\",\n :year 2024}",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Narrative helpers</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.narrative.html#channel-lifecycles",
+    "href": "zulipdata_book.narrative.html#channel-lifecycles",
+    "title": "7  Narrative helpers",
+    "section": "Channel lifecycles",
+    "text": "Channel lifecycles\nchannel-lifecycle is the one-row-per-channel summary that drives most “where are we?” reports. It collapses every message in the timeline into five columns per channel: first month, last month, total messages, distinct active months, and distinct (anonymized) users. Sorted ascending by first-date.\n\n(def lifecycles (nar/channel-lifecycle timeline))\n\n\nlifecycles\n\n\n_unnamed [4 6]:\n\n\n\n\n\n\n\n\n\n\n\n:channel\n:first-date\n:last-date\n:total\n:active-months\n:distinct-users\n\n\n\n\nnoj-dev\n2022-04-01\n2026-04-01\n2278\n28\n23\n\n\nclay-dev\n2024-01-01\n2026-04-01\n3123\n28\n51\n\n\ntableplot-dev\n2024-06-01\n2026-04-01\n415\n18\n14\n\n\nkindly-dev\n2024-09-01\n2026-04-01\n1134\n19\n21\n\n\n\n\nThe number of channels matches the number of distinct channels in the timeline:\n\n(tc/row-count lifecycles)\n\n\n4",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Narrative helpers</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.narrative.html#selecting-channels-by-name-pattern",
+    "href": "zulipdata_book.narrative.html#selecting-channels-by-name-pattern",
+    "title": "7  Narrative helpers",
+    "section": "Selecting channels by name pattern",
+    "text": "Selecting channels by name pattern\nchannels-by-name-pattern is a thin convenience around re-find against the distinct :channel values. Cheap and useful for grabbing a name-defined cluster — but fragile because it depends on naming conventions.\n\n(nar/channels-by-name-pattern timeline #\"clay|tableplot\")\n\n\n[\"clay-dev\" \"tableplot-dev\"]",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Narrative helpers</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.narrative.html#selecting-channels-by-shared-user-base",
+    "href": "zulipdata_book.narrative.html#selecting-channels-by-shared-user-base",
+    "title": "7  Narrative helpers",
+    "section": "Selecting channels by shared user-base",
+    "text": "Selecting channels by shared user-base\nchannels-by-shared-users is the user-overlap counterpart to the name pattern. Pick a seed-channel, take its top-N posters, and return every channel where those users account for at least share of activity. Use this to grow a cluster around a seed channel by who-posts-there, rather than by name.\nIn a real corpus pull this finds many more channels than a naive name pattern; in our four-channel fixture it picks up only the ones that share a substantial slice of clay-dev’s voices.\n\n(nar/channels-by-shared-users timeline \"clay-dev\"\n                              :share 0.4 :min-msgs 30 :top-n 30)\n\n\n[\"clay-dev\" \"kindly-dev\" \"noj-dev\" \"tableplot-dev\"]",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Narrative helpers</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.narrative.html#first-posters-of-a-channel",
+    "href": "zulipdata_book.narrative.html#first-posters-of-a-channel",
+    "title": "7  Narrative helpers",
+    "section": "First posters of a channel",
+    "text": "First posters of a channel\nfirst-posters-of-channel returns the first n distinct :user-keys to ever post in a channel, with the date of their first post. Useful for telling a “who started this” story.\n\n(nar/first-posters-of-channel timeline \"kindly-dev\" 5)\n\n\n_unnamed [5 2]:\n\n\n\n:user-key\n:first-post-date\n\n\n\n\nf936fd411b38\n2024-09-01\n\n\nd19c7e5c3106\n2024-09-01\n\n\n2a7920fa288b\n2024-09-01\n\n\na150cbcc9f0e\n2024-09-01\n\n\ne991fe149be5\n2024-10-01",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Narrative helpers</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.narrative.html#tracing-newcomers-prior-channels",
+    "href": "zulipdata_book.narrative.html#tracing-newcomers-prior-channels",
+    "title": "7  Narrative helpers",
+    "section": "Tracing newcomers’ prior channels",
+    "text": "Tracing newcomers’ prior channels\nprior-channels-of-newcomers answers: for everyone whose first post in channel falls in year-month, where else had they been posting in the timeline before that first post? Returns one row per prior channel with the count of newcomers who passed through it.\nA caveat on scope. “Prior channels” is restricted to whatever you pulled. In our four-channel fixture, anyone whose only prior activity was in data-science or slack-archive will not show up. Run the same call on a corpus-wide timeline and the answer covers the whole community.\n\n(nar/prior-channels-of-newcomers timeline \"kindly-dev\" \"2024-09\")\n\n\n_unnamed [3 2]:\n\n\n\n:prior-channel\n:newcomers-touched\n\n\n\n\ntableplot-dev\n3\n\n\nclay-dev\n3\n\n\nnoj-dev\n3",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Narrative helpers</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.narrative.html#monthly-activity-per-channel",
+    "href": "zulipdata_book.narrative.html#monthly-activity-per-channel",
+    "title": "7  Narrative helpers",
+    "section": "Monthly activity per channel",
+    "text": "Monthly activity per channel\nchannel-monthly-activity is the long-form basis for any activity-over-time chart: one row per (channel, month-date) with a :msgs count. Pass an optional set of channel names to restrict the output.\n\n(def kindly-monthly\n  (nar/channel-monthly-activity timeline #{\"kindly-dev\"}))\n\n\n(tc/head kindly-monthly 3)\n\n\n_unnamed [3 3]:\n\n\n\n:channel\n:month-date\n:msgs\n\n\n\n\nkindly-dev\n2024-09-01\n15\n\n\nkindly-dev\n2024-10-01\n22\n\n\nkindly-dev\n2024-11-01\n38\n\n\n\n\nThe total over the channel matches the lifecycle row:\n\n(reduce + (:msgs kindly-monthly))\n\n\n1134",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Narrative helpers</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.narrative.html#where-to-go-next",
+    "href": "zulipdata_book.narrative.html#where-to-go-next",
+    "title": "7  Narrative helpers",
+    "section": "Where to go next",
+    "text": "Where to go next\n\nGraph views — scicloj.zulipdata.graph builds co-membership and co-presence graphs from the same anonymized timeline, plus utilities for community detection and rendering.\nAPI Reference — every public function in one chapter, with docstrings and a worked example each.\n\n\nsource: notebooks/zulipdata_book/narrative.clj",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Narrative helpers</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.graph.html",
+    "href": "zulipdata_book.graph.html",
+    "title": "8  Graph views",
+    "section": "",
+    "text": "A multi-channel fixture\nscicloj.zulipdata.graph lifts the corpus into graph-shaped structures backed by JGraphT. Two graphs cover most analyses:\nA third — migration — is directed and answers “after these users last posted in from-set, where did they show up next?”\nPlus utilities for community detection (Girvan-Newman, Label Propagation), betweenness centrality, and conversion to shapes that kind/cytoscape and kind/graphviz know how to render.\nThe same four-channel anonymized timeline used in the previous chapter — small enough to render, large enough to have non-trivial structure.",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Graph views</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.graph.html#a-multi-channel-fixture",
+    "href": "zulipdata_book.graph.html#a-multi-channel-fixture",
+    "title": "8  Graph views",
+    "section": "",
+    "text": "(def fixture-channels\n  [\"kindly-dev\" \"tableplot-dev\" \"clay-dev\" \"noj-dev\"])\n\n\n(def timeline\n  (-&gt;&gt; (pull/pull-channels! fixture-channels)\n       (filter (fn [[k _]] (string? k)))\n       (mapcat (fn [[_ r]] (pull/all-messages r)))\n       anon/anonymized-timeline\n       nar/with-time-columns))\n\n\n(tc/row-count timeline)\n\n\n6950",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Graph views</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.graph.html#users-to-channels",
+    "href": "zulipdata_book.graph.html#users-to-channels",
+    "title": "8  Graph views",
+    "section": "Users to channels",
+    "text": "Users to channels\nThe building block both whole-graph constructors share: user-channel-sets returns a map from user-key to the set of channels they have posted in. min-channels is a lower bound — users in fewer than min-channels channels are dropped.\n\n(def u-&gt;chans (graph/user-channel-sets timeline))\n\n\n(count u-&gt;chans)\n\n\n64\n\nA peek at five entries:\n\n(-&gt;&gt; u-&gt;chans (take 5) (into {}))\n\n\n{\"b7b54d61bcd4\" #{\"kindly-dev\" \"clay-dev\"},\n \"5cebaee51f75\" #{\"clay-dev\"},\n \"563648fe0ef5\" #{\"kindly-dev\" \"clay-dev\"},\n \"d3a87fc057dc\" #{\"noj-dev\" \"tableplot-dev\" \"clay-dev\"},\n \"3a6ab2db8b6f\" #{\"kindly-dev\"}}\n\nThe distribution over how many channels users participate in:\n\n(-&gt;&gt; u-&gt;chans\n     vals\n     (map count)\n     frequencies\n     (into (sorted-map)))\n\n\n{1 38, 2 13, 3 7, 4 6}",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Graph views</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.graph.html#channel-co-membership",
+    "href": "zulipdata_book.graph.html#channel-co-membership",
+    "title": "8  Graph views",
+    "section": "Channel co-membership",
+    "text": "Channel co-membership\nchannel-comembership-graph returns a JGraphT DefaultUndirectedWeightedGraph. Nodes are channels, edges are weighted by the number of shared users. The :min-shared option drops thin edges.\n\n(def co-channel\n  (graph/channel-comembership-graph timeline :min-shared 1))\n\n\n(.vertexSet co-channel)\n\n\n#{\"clay-dev\" \"kindly-dev\" \"noj-dev\" \"tableplot-dev\"}\n\n\n(count (.edgeSet co-channel))\n\n\n6\n\nThe edge-weight table:\n\n(-&gt;&gt; (.edgeSet co-channel)\n     (map (fn [e]\n            {:from   (.getEdgeSource co-channel e)\n             :to     (.getEdgeTarget co-channel e)\n             :weight (.getEdgeWeight co-channel e)}))\n     (sort-by :weight &gt;)\n     tc/dataset)\n\n\n_unnamed [6 3]:\n\n\n\n:from\n:to\n:weight\n\n\n\n\nclay-dev\nnoj-dev\n19.0\n\n\nclay-dev\nkindly-dev\n14.0\n\n\nnoj-dev\ntableplot-dev\n11.0\n\n\nclay-dev\ntableplot-dev\n11.0\n\n\nkindly-dev\nnoj-dev\n9.0\n\n\nkindly-dev\ntableplot-dev\n6.0",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Graph views</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.graph.html#user-co-presence",
+    "href": "zulipdata_book.graph.html#user-co-presence",
+    "title": "8  Graph views",
+    "section": "User co-presence",
+    "text": "User co-presence\nuser-copresence-graph flips the construction: nodes are users, edges are weighted by shared-channel count. The defaults (:min-shared 3 :min-channels 3) are tuned for corpus-scale runs where you want to see only the densely-connected core. We loosen them for our four-channel fixture.\n\n(def co-user\n  (graph/user-copresence-graph timeline :min-shared 2 :min-channels 2))\n\nNode and edge counts:\n\n{:nodes (count (.vertexSet co-user))\n :edges (count (.edgeSet co-user))}\n\n\n{:nodes 26, :edges 246}",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Graph views</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.graph.html#migration-where-did-people-go-next",
+    "href": "zulipdata_book.graph.html#migration-where-did-people-go-next",
+    "title": "8  Graph views",
+    "section": "Migration: where did people go next?",
+    "text": "Migration: where did people go next?\nmigration-graph is directed. For each user with at least five posts in from-set, it looks at every channel they posted in after their last from-set post, and adds an edge from each from-set source they used to each later destination. Edges with fewer than :min-users are dropped.\nIn our fixture, taking clay-dev as the seed shows where clay-dev posters subsequently appeared (within the four channels we pulled).\n\n(def migration\n  (graph/migration-graph timeline #{\"clay-dev\"} :min-users 1))\n\n\n(-&gt;&gt; (.edgeSet migration)\n     (map (fn [e]\n            {:from   (.getEdgeSource migration e)\n             :to     (.getEdgeTarget migration e)\n             :weight (.getEdgeWeight migration e)}))\n     (sort-by :weight &gt;)\n     tc/dataset)\n\n\n_unnamed [3 3]:\n\n\n\n:from\n:to\n:weight\n\n\n\n\nclay-dev\nnoj-dev\n9.0\n\n\nclay-dev\nkindly-dev\n4.0\n\n\nclay-dev\ntableplot-dev\n1.0",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Graph views</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.graph.html#centrality",
+    "href": "zulipdata_book.graph.html#centrality",
+    "title": "8  Graph views",
+    "section": "Centrality",
+    "text": "Centrality\nbetweenness returns a map from node to its betweenness centrality score — the share of shortest paths that pass through the node.\n\n(graph/betweenness co-channel)\n\n\n{\"noj-dev\" 0.0, \"clay-dev\" 0.0, \"kindly-dev\" 0.0, \"tableplot-dev\" 0.0}\n\nAll four scores are zero on this graph — every pair of channels is directly connected, so no node ever lies on the interior of a shortest path. Betweenness comes alive on graphs with structural bottlenecks; on a four-node clique there are none.",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Graph views</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.graph.html#communities",
+    "href": "zulipdata_book.graph.html#communities",
+    "title": "8  Graph views",
+    "section": "Communities",
+    "text": "Communities\nTwo algorithms, both returning a vector of node-sets — one set per cluster.\nGirvan-Newman needs you to pick k (the desired number of clusters). On a four-node graph, k = 2 produces the most useful split.\n\n(graph/girvan-newman co-channel 2)\n\n\n[#{\"clay-dev\"} #{\"noj-dev\" \"tableplot-dev\" \"kindly-dev\"}]\n\nLabel propagation chooses k itself. On a small dense graph it will often collapse to one cluster — which is informative in its own right.\n\n(graph/label-propagation co-channel)\n\n\n[#{\"noj-dev\" \"tableplot-dev\" \"kindly-dev\" \"clay-dev\"}]",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Graph views</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.graph.html#rendering-kindcytoscape",
+    "href": "zulipdata_book.graph.html#rendering-kindcytoscape",
+    "title": "8  Graph views",
+    "section": "Rendering: kind/cytoscape",
+    "text": "Rendering: kind/cytoscape\n-&gt;cytoscape-elements converts a JGraphT graph to the :elements shape that kind/cytoscape consumes. Optional :node-attrs and :edge-attrs functions inject extra attributes into each :data map — handy for colour-coding by community or thickness by weight.\n\n(kind/cytoscape\n {:elements (graph/-&gt;cytoscape-elements co-channel)\n  :style    [{:selector \"node\"\n              :css      {:label   \"data(id)\"\n                         :content \"data(id)\"}}\n             {:selector \"edge\"\n              :css      {:width \"mapData(weight, 0, 50, 1, 8)\"}}]\n  :layout   {:name \"cose\"}})",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Graph views</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.graph.html#rendering-kindgraphviz",
+    "href": "zulipdata_book.graph.html#rendering-kindgraphviz",
+    "title": "8  Graph views",
+    "section": "Rendering: kind/graphviz",
+    "text": "Rendering: kind/graphviz\n-&gt;dot returns a Graphviz DOT string. Pass it straight to kind/graphviz for a static rendering. directed?, node-label, and edge-label are optional knobs.\n\n(def co-channel-dot\n  (graph/-&gt;dot co-channel\n               :directed? false\n               :edge-label (fn [[_ _ w]] (str (long w)))))\n\n\n(kind/graphviz co-channel-dot)",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Graph views</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.graph.html#a-note-on-scale",
+    "href": "zulipdata_book.graph.html#a-note-on-scale",
+    "title": "8  Graph views",
+    "section": "A note on scale",
+    "text": "A note on scale\nAll examples in this chapter use a four-channel slice. The graph helpers were designed for corpus-scale work — full-corpus analyses over (pull/pull-public-channels!) build co-membership graphs of dozens of channels and co-presence graphs of around a thousand users. The same functions, the same shapes, just larger inputs.",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Graph views</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.graph.html#where-to-go-next",
+    "href": "zulipdata_book.graph.html#where-to-go-next",
+    "title": "8  Graph views",
+    "section": "Where to go next",
+    "text": "Where to go next\nYou have now walked the full tutorial. From here:\n\nAPI Reference — every public function in one chapter, with docstrings and a worked example each. The right place to look when you know which function you want.\nThe source under src/scicloj/zulipdata/ is small enough to read straight through whenever a docstring leaves you uncertain.\n\n\nsource: notebooks/zulipdata_book/graph.clj",
+    "crumbs": [
+      "Tutorial",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Graph views</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.api_reference.html",
+    "href": "zulipdata_book.api_reference.html",
+    "title": "9  API Reference",
+    "section": "",
+    "text": "Sample data\nComplete reference for every public function and constant in the zulipdata library:\nEach entry shows the docstring, a live example, and a test. For conceptual walkthroughs, see the per-namespace chapters in this book.\nA small four-channel pull, reused across every example below. Each layer of the pipeline is bound for direct reuse: sample-pull (raw pull result), sample-messages (flat seq of raw messages), sample-timeline (plain tablecloth view), sample-anon (anonymized), sample-with-time (anonymized + date columns).",
+    "crumbs": [
+      "Reference",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>API Reference</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.api_reference.html#sample-data",
+    "href": "zulipdata_book.api_reference.html#sample-data",
+    "title": "9  API Reference",
+    "section": "",
+    "text": "(def sample-channels\n  [\"kindly-dev\" \"tableplot-dev\" \"clay-dev\" \"noj-dev\"])\n\n\n(def sample-pull\n  (pull/pull-channels! sample-channels))\n\n\n(def sample-messages\n  (-&gt;&gt; sample-pull\n       (filter (fn [[k _]] (string? k)))\n       (mapcat (fn [[_ r]] (pull/all-messages r)))))\n\n\n(def sample-timeline\n  (views/messages-timeline sample-messages))\n\n\n(def sample-anon\n  (anon/anonymized-timeline sample-messages))\n\n\n(def sample-with-time\n  (nar/with-time-columns sample-anon))",
+    "crumbs": [
+      "Reference",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>API Reference</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.api_reference.html#scicloj.zulipdata.client",
+    "href": "zulipdata_book.api_reference.html#scicloj.zulipdata.client",
+    "title": "9  API Reference",
+    "section": "scicloj.zulipdata.client",
+    "text": "scicloj.zulipdata.client\n\nbase-url\nAPI root for the Clojurians Zulip instance. All api-get paths are resolved relative to this prefix.\n\nclient/base-url\n\n\n\"https://clojurians.zulipchat.com/api/v1\"\n\n\n\napi-get\n[path]\n[path query-params]\nAuthenticated GET against the Clojurians Zulip API. path is resolved relative to base-url; query-params is an optional map. Wraps the request in a small retry loop with exponential backoff and a 90-second per-request timeout. Returns the JSON body parsed with keyword keys.\n\n(-&gt; (client/api-get \"/server_settings\")\n    :realm_name)\n\n\n\"Clojurians\"\n\nWith query parameters:\n\n(-&gt; (client/api-get \"/messages\"\n                    {\"narrow\"     (charred.api/write-json-str\n                                   [{:operator \"channel\" :operand \"kindly-dev\"}])\n                     \"anchor\"     \"newest\"\n                     \"num_before\" 1\n                     \"num_after\"  0})\n    :messages count)\n\n\n1\n\n\n\nwhoami\n[]\nSmoke-test: hits /users/me and returns a short summary of the authenticated identity. Use this after configuring credentials to confirm everything works before running a pull.\n\n(client/whoami)\n\n\n{:email \"explore-bot@clojurians.zulipchat.com\",\n :full-name \"explore\",\n :user-id 820164,\n :is-bot? true,\n :is-admin? false,\n :role 400}\n\n\n\nget-me\n[]\nFull /users/me response for the authenticated account. Use whoami for a trimmed summary.\n\n(-&gt; (client/get-me) :user_id integer?)\n\n\ntrue\n\n\n\nget-streams\n[]\nFull /streams response — every stream the authenticated user can see. Returns the raw Zulip API map; the stream entries live under :streams.\n\n(-&gt; (client/get-streams) :streams count pos?)\n\n\ntrue\n\n\n\nget-messages\n[{:keys [narrow anchor num-before num-after apply-markdown], :or {anchor \"newest\", num-before 100, num-after 0, apply-markdown false}}]\nFetch messages matching a narrow. narrow is a vector of maps, e.g. [{:operator “channel” :operand “data-science”}]. anchor may be “newest”, “oldest”, “first_unread”, or a message id. Returns up to num-before + num-after + 1 messages around the anchor.\n\n(-&gt; (client/get-messages\n     {:narrow     [{:operator \"channel\" :operand \"kindly-dev\"}]\n      :anchor     \"newest\"\n      :num-before 3\n      :num-after  0})\n    :messages count)\n\n\n3",
+    "crumbs": [
+      "Reference",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>API Reference</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.api_reference.html#scicloj.zulipdata.pull",
+    "href": "zulipdata_book.api_reference.html#scicloj.zulipdata.pull",
+    "title": "9  API Reference",
+    "section": "scicloj.zulipdata.pull",
+    "text": "scicloj.zulipdata.pull\n\ndefault-batch-size\nMessages requested per window when pull-channel! is called without an explicit :batch-size. 5000 is also Zulip’s per-request cap.\n\npull/default-batch-size\n\n\n5000\n\n\n\nfetch-window\n[stream-name anchor-id batch-size]\nCached forward window. Returns the deref’d page map.\n\n(-&gt; (pull/fetch-window \"kindly-dev\" 0 100)\n    :messages count)\n\n\n100\n\n\n\npull-channel!\n[stream-name start-anchor-id & {:keys [batch-size refresh-tip?], :or {batch-size default-batch-size}}]\nWalk forward through stream-name in cached windows, starting at start-anchor-id. Returns {:pages [...], :message-count n}.\nOptions: :batch-size — messages per window (default 5000) :refresh-tip? — when true, any cached page with found_newest: true is invalidated and re-fetched once, then the walk continues if new full windows appeared. Use to catch up after messages were posted since the last pull.\nWith :refresh-tip? false (default), repeated calls are served entirely from cache.\nA complete walk from id zero to the channel’s tip. Result keys:\n\n(-&gt; (pull/pull-channel! \"kindly-dev\" 0)\n    (select-keys [:pages :message-count])\n    keys\n    set)\n\n\n#{:pages :message-count}\n\n\n\nall-messages\n[pull-result]\nFlatten the :pages result of pull-channel! into a single seq of messages, de-duplicating by :id (windows are non-overlapping by construction, but this is a cheap belt-and-braces safeguard).\n\n(let [walk     (pull/pull-channel! \"kindly-dev\" 0)\n      messages (pull/all-messages walk)]\n  (= (count messages) (:message-count walk)))\n\n\ntrue\n\n\n\npull-channels!\n[channel-names & {:keys [batch-size refresh-tip?], :as opts}]\nPull a collection of channels by name. Returns a map {channel-name {:pages ... :message-count ... :stream-id ... :first-message-id ...}}.\nFirst-message ids are resolved from /streams. Any unknown channel names are returned under key :not-found as a vector.\nSuccessful entries are keyed by name; unknown names land in :not-found.\n\n(-&gt; (pull/pull-channels! [\"kindly-dev\" \"no-such-channel\"])\n    :not-found)\n\n\n[\"no-such-channel\"]\n\n\n\npublic-channel-names\n[]\nNames of all channels visible to the bot that are either public or web-public.\n\n(-&gt; (pull/public-channel-names) count pos?)\n\n\ntrue\n\n\n\npull-public-channels!\n[& opts]\nConvenience: pull every public + web-public channel visible to the bot. Same options as pull-channels!.\nNot run here — a fresh full-corpus pull can take minutes. Pulls every name returned by pull/public-channel-names and accepts the same options as pull-channels!.",
+    "crumbs": [
+      "Reference",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>API Reference</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.api_reference.html#scicloj.zulipdata.views",
+    "href": "zulipdata_book.api_reference.html#scicloj.zulipdata.views",
+    "title": "9  API Reference",
+    "section": "scicloj.zulipdata.views",
+    "text": "scicloj.zulipdata.views\n\nmessages-timeline\n[messages]\nOne row per message — scalar fields only. Good for activity-over-time and sender/topic analyses.\n\n(-&gt; (views/messages-timeline sample-messages)\n    tc/row-count)\n\n\n6950\n\nThe columns:\n\n(-&gt; sample-timeline tc/column-names sort)\n\n\n(:channel\n :client\n :content\n :content-length\n :edited?\n :id\n :instant\n :last-edit-ts\n :sender\n :sender-id\n :stream-id\n :subject\n :timestamp)\n\n\n\nreactions-long\n[messages]\nOne row per (message, reaction). Fields: message-id, stream-id, channel, subject, emoji-name, emoji-code, reaction-type, user-id, message-ts.\n\n(-&gt; (views/reactions-long sample-messages)\n    tc/column-names sort)\n\n\n(:channel\n :emoji-code\n :emoji-name\n :message-id\n :message-ts\n :reaction-type\n :stream-id\n :subject\n :user-id)\n\n\n\nedits-long\n[messages]\nOne row per edit event in :edit_history. Note: some edits record only topic/stream moves (no :prev_content); we surface prev-content as-is.\n\n(-&gt; (views/edits-long sample-messages)\n    tc/column-names sort)\n\n\n(:channel\n :edit-ts\n :edit-user-id\n :message-id\n :prev-content\n :prev-stream\n :prev-subject\n :stream-id)\n\n\n\ntopic-links-long\n[messages]\nOne row per auto-linked URL inside a message.\n\n(-&gt; (views/topic-links-long sample-messages)\n    tc/column-names sort)\n\n\n(:channel :link-text :link-url :message-id :stream-id)",
+    "crumbs": [
+      "Reference",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>API Reference</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.api_reference.html#scicloj.zulipdata.anonymize",
+    "href": "zulipdata_book.api_reference.html#scicloj.zulipdata.anonymize",
+    "title": "9  API Reference",
+    "section": "scicloj.zulipdata.anonymize",
+    "text": "scicloj.zulipdata.anonymize\n\nuser-key\n[sender-id]\nStable, irreversible 12-hex-char identifier for a sender id.\n\n(anon/user-key 42)\n\n\n\"62b81b15a641\"\n\nStable across calls; nil passes through:\n\n[(= (anon/user-key 42) (anon/user-key 42))\n (anon/user-key nil)]\n\n\n[true nil]\n\n\n\nsubject-key\n[subject]\nStable 16-hex-char identifier for a topic/subject string. Wide enough that two distinct subjects almost never collide, so the key uniquely identifies a topic given the full corpus.\n\n(anon/subject-key \"channel introductions\")\n\n\n\"b61cd3d678d6f0da\"\n\n\n\nanonymized-timeline\n[messages]\nOne row per message, anonymized. Sender identity and subject are replaced by stable hash keys; message text is replaced by length only. Reaction count is kept; the per-emoji breakdown lives in anonymized-reactions.\n\n(-&gt; (anon/anonymized-timeline sample-messages)\n    tc/column-names sort)\n\n\n(:channel\n :client\n :content-length\n :edited?\n :id\n :last-edit-ts\n :reaction-count\n :stream-id\n :subject-key\n :timestamp\n :user-key)\n\n\n\nanonymized-reactions\n[messages]\nOne row per (message, reaction). Both the message author’s subject and the reactor’s identity are anonymized; the emoji name is preserved (it carries community-sentiment signal, not message content).\n\n(-&gt; (anon/anonymized-reactions sample-messages)\n    tc/column-names sort)\n\n\n(:channel\n :emoji-code\n :emoji-name\n :message-id\n :message-ts\n :reaction-type\n :reactor-user-key\n :stream-id\n :subject-key)\n\n\n\nanonymized-edits\n[messages]\nOne row per edit event. Editor and prior subject are anonymized; prior content is dropped. prev-stream is left as-is — it is a stream id, not PII.\n\n(-&gt; (anon/anonymized-edits sample-messages)\n    tc/column-names sort)\n\n\n(:channel\n :edit-ts\n :editor-user-key\n :message-id\n :prev-stream\n :prev-subject-key\n :stream-id)",
+    "crumbs": [
+      "Reference",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>API Reference</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.api_reference.html#scicloj.zulipdata.narrative",
+    "href": "zulipdata_book.api_reference.html#scicloj.zulipdata.narrative",
+    "title": "9  API Reference",
+    "section": "scicloj.zulipdata.narrative",
+    "text": "scicloj.zulipdata.narrative\n\nts-&gt;month-date\n[ts]\nEpoch-second -&gt; first-of-month LocalDate (UTC).\n\n(nar/ts-&gt;month-date 1725611765)\n\n\n#object[java.time.LocalDate 0x55909a7b \"2024-09-01\"]\n\n\n\nts-&gt;year-month\n[ts]\nEpoch-second -&gt; “YYYY-MM” string (UTC).\n\n(nar/ts-&gt;year-month 1725611765)\n\n\n\"2024-09\"\n\n\n\nts-&gt;year\n[ts]\nEpoch-second -&gt; integer year (UTC).\n\n(nar/ts-&gt;year 1725611765)\n\n\n2024\n\n\n\nwith-time-columns\n[timeline]\nAdd :month-date, :year-month, and :year columns to a timeline that has a :timestamp column (epoch seconds). Avoids reinventing the date wheel in every notebook.\n\n(-&gt; (nar/with-time-columns sample-anon)\n    tc/column-names\n    set\n    (clojure.set/intersection #{:month-date :year-month :year}))\n\n\n#{:month-date :year :year-month}\n\n\n\nchannel-lifecycle\n[timeline]\nOne row per channel: first-date, last-date, total messages, active months, distinct users. Sorted ascending by first-date by default.\n\n(-&gt; (nar/channel-lifecycle sample-with-time)\n    tc/column-names sort)\n\n\n(:active-months :channel :distinct-users :first-date :last-date :total)\n\n\n\nchannels-by-name-pattern\n[timeline regex]\nChannels whose name matches regex.\n\n(nar/channels-by-name-pattern sample-with-time #\"clay|tableplot\")\n\n\n[\"clay-dev\" \"tableplot-dev\"]\n\n\n\nchannels-by-shared-users\n[timeline seed-channel & {:keys [share min-msgs top-n], :or {share 0.4, min-msgs 30, top-n 30}}]\nChannels where the top-N posters of seed-channel account for at least share of messages, restricted to channels with at least min-msgs total. Returns a sorted vector of channel names.\nUse to grow a curated cluster around a seed channel by user-overlap rather than name patterns.\nThe seed channel itself appears in the result if it meets the threshold, since by definition its top posters account for 100% of its activity.\n\n(set\n (nar/channels-by-shared-users sample-with-time \"clay-dev\"\n                               :share 0.4 :min-msgs 30 :top-n 30))\n\n\n#{\"noj-dev\" \"tableplot-dev\" \"kindly-dev\" \"clay-dev\"}\n\n\n\nfirst-posters-of-channel\n[timeline channel n]\nFirst n distinct user-keys to post in channel, with their first-post date. Useful for telling a ‘who started this’ story.\n\n(-&gt; (nar/first-posters-of-channel sample-with-time \"kindly-dev\" 5)\n    tc/column-names sort)\n\n\n(:first-post-date :user-key)\n\n\n\nprior-channels-of-newcomers\n[timeline channel year-month]\nFor users whose first-ever post in channel falls in the given year-month (“YYYY-MM”), tally the channels they had posted in before that first post. Returns one row per (prior-channel) with counts of how many newcomers passed through it.\n\n(-&gt; (nar/prior-channels-of-newcomers sample-with-time \"kindly-dev\" \"2024-09\")\n    tc/column-names sort)\n\n\n(:newcomers-touched :prior-channel)\n\n\n\nchannel-monthly-activity\n[timeline]\n[timeline channels]\nLong-form: one row per (channel, month-date) with :msgs count. Restricted to channels if supplied, else all channels.\n\n(-&gt; (nar/channel-monthly-activity sample-with-time #{\"kindly-dev\"})\n    tc/column-names sort)\n\n\n(:channel :month-date :msgs)",
+    "crumbs": [
+      "Reference",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>API Reference</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.api_reference.html#scicloj.zulipdata.graph",
+    "href": "zulipdata_book.api_reference.html#scicloj.zulipdata.graph",
+    "title": "9  API Reference",
+    "section": "scicloj.zulipdata.graph",
+    "text": "scicloj.zulipdata.graph\n\nuser-channel-sets\n[timeline]\n[timeline min-channels]\nMap of user-key → set of channels they posted in. Drops users with fewer than min-channels channels (default 1).\nMap of user-key to the set of channels they posted in.\n\n(let [u-&gt;c (graph/user-channel-sets sample-with-time)\n      [_ chans] (first u-&gt;c)]\n  (set? chans))\n\n\ntrue\n\n\n\nchannel-comembership-graph\n[timeline & {:keys [min-shared], :or {min-shared 1}}]\nUndirected weighted graph: nodes are channels, edges weighted by shared user count. min-shared filters out edges with fewer than N shared users.\n\n(let [g (graph/channel-comembership-graph sample-with-time :min-shared 1)]\n  (= (set sample-channels) (.vertexSet g)))\n\n\ntrue\n\n\n\nuser-copresence-graph\n[timeline & {:keys [min-shared min-channels], :or {min-shared 3, min-channels 3}}]\nUndirected weighted graph: nodes are users, edges weighted by shared channel count. min-shared filters edges; min-channels filters users (active in ≥ N channels).\n\n(let [g (graph/user-copresence-graph sample-with-time\n                                     :min-shared 2 :min-channels 2)]\n  (pos? (count (.vertexSet g))))\n\n\ntrue\n\n\n\nmigration-graph\n[timeline from-set & {:keys [min-users], :or {min-users 3}}]\nDirected weighted graph: edge from from-channel to to-channel weighted by the number of users who posted in from-channel and later (after their last post in any from-set channel) posted in to-channel. Excludes self-loops and edges within from-set.\nOnly users with at least 5 posts in from-set are considered.\nEdges from each from-set source to channels users moved to next. With clay-dev as the seed, no self-loops:\n\n(let [g (graph/migration-graph sample-with-time #{\"clay-dev\"} :min-users 1)]\n  (every? (fn [e] (not= (.getEdgeSource g e) (.getEdgeTarget g e)))\n          (.edgeSet g)))\n\n\ntrue\n\n\n\nbetweenness\n[g]\nMap node → betweenness centrality score.\n\n(let [g      (graph/channel-comembership-graph sample-with-time)\n      scores (graph/betweenness g)]\n  (= (.vertexSet g) (set (keys scores))))\n\n\ntrue\n\n\n\ngirvan-newman\n[g k]\nVector of node-sets, one per cluster. k is the desired number of clusters.\n\n(let [g        (graph/channel-comembership-graph sample-with-time)\n      clusters (graph/girvan-newman g 2)]\n  (count clusters))\n\n\n2\n\n\n\nlabel-propagation\n[g]\nVector of node-sets — communities found by label propagation (number of clusters chosen by the algorithm).\n\n(let [g        (graph/channel-comembership-graph sample-with-time)\n      clusters (graph/label-propagation g)]\n  (every? set? clusters))\n\n\ntrue\n\n\n\n-&gt;cytoscape-elements\n[g & {:keys [node-attrs edge-attrs], :or {node-attrs (constantly {}), edge-attrs (constantly {})}}]\nConvert a JGraphT graph to a :elements map for kind/cytoscape. node-attrs and edge-attrs are optional fns of the node / [u v weight] returning a map of extra attributes (merged into :data).\n\n(let [g (graph/channel-comembership-graph sample-with-time)\n      e (graph/-&gt;cytoscape-elements g)]\n  (set (keys e)))\n\n\n#{:nodes :edges}\n\n\n\n-&gt;dot\n[g & {:keys [directed? node-label edge-label name], :or {directed? true, node-label str, edge-label (constantly nil), name \"G\"}}]\nRender a JGraphT graph as Graphviz DOT source. directed? chooses between digraph/graph. node-label and edge-label are optional fns producing label strings.\n\n(let [g   (graph/channel-comembership-graph sample-with-time)\n      dot (graph/-&gt;dot g :directed? false)]\n  (and (string? dot)\n       (clojure.string/starts-with? dot \"graph \")))\n\n\ntrue\n\n\nsource: notebooks/zulipdata_book/api_reference.clj",
+    "crumbs": [
+      "Reference",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>API Reference</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.repository.html",
+    "href": "zulipdata_book.repository.html",
+    "title": "10  Repository",
+    "section": "",
+    "text": "Layout\nThis chapter is for people who clone the repository — to read it, to edit a chapter, or to release a new version. Everything below is about the artifacts in this repo, not the library API itself. If you only want to use zulipdata as a dependency, the rest of the book is what you need.",
+    "crumbs": [
+      "Repository",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Repository</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.repository.html#layout",
+    "href": "zulipdata_book.repository.html#layout",
+    "title": "10  Repository",
+    "section": "",
+    "text": "src/scicloj/zulipdata/ — library source.\nnotebooks/zulipdata_book/ — the book chapters that you are reading right now.\nnotebooks/index.clj — book preface; slurps README.md to avoid duplication.\nnotebooks/chapters.edn — chapter ordering, used by both make-book! and make-gfm!.\nnotebooks/dev.clj — small helpers exposed in the dev REPL for rendering the book.\ntest/scicloj/zulipdata/ — hand-written tests.\ntest/zulipdata_book/ — tests generated from the notebooks.\ndocs/ — rendered HTML book, shipped via GitHub Pages.\ngfm/ — GitHub-flavoured Markdown renders, used as a verification artifact for the tutorial chapters.",
+    "crumbs": [
+      "Repository",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Repository</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.repository.html#repl-workflow",
+    "href": "zulipdata_book.repository.html#repl-workflow",
+    "title": "10  Repository",
+    "section": "REPL workflow",
+    "text": "REPL workflow\nStart a REPL with the :dev alias, then connect from your editor:\nclojure -M:dev -m nrepl.cmdline\nThe :dev alias adds the notebooks/ and test/ directories to the classpath, plus the rendering dependencies (Clay, plotje, and friends) that the notebooks need.",
+    "crumbs": [
+      "Repository",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Repository</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.repository.html#rendering-the-book",
+    "href": "zulipdata_book.repository.html#rendering-the-book",
+    "title": "10  Repository",
+    "section": "Rendering the book",
+    "text": "Rendering the book\nThe notebook helper dev/make-book! builds the full HTML book into docs/ via Clay + Quarto. That directory is what GitHub Pages publishes:\n(require '[dev :as dev])\n(dev/make-book!)\nTo render a single chapter for quick iteration, pass a path to dev/make-gfm! — same Clay pipeline, GitHub-flavoured Markdown output, into gfm/:\n(dev/make-gfm! \"zulipdata_book/quickstart.clj\")\nCalling dev/make-gfm! with no arguments renders every registered chapter.",
+    "crumbs": [
+      "Repository",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Repository</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.repository.html#gfm-is-a-verification-artifact",
+    "href": "zulipdata_book.repository.html#gfm-is-a-verification-artifact",
+    "title": "10  Repository",
+    "section": "GFM is a verification artifact",
+    "text": "GFM is a verification artifact\nThe published documentation site is the HTML build under docs/. The Markdown files under gfm/ are not the publishing target — they exist because Clay’s GFM render also writes a generated test file per notebook to test/zulipdata_book/&lt;name&gt;_generated_test.clj. Each kind/test-last form in a notebook becomes a clojure.test assertion in that file.\nThe standard test runner picks up both the hand-written tests under test/scicloj/zulipdata/ and the generated tests, so a full pass guarantees that every notebook example actually evaluates to what its prose claims.\nThe flow when you change a notebook:\n\nEdit the notebook under notebooks/zulipdata_book/.\n(dev/make-gfm! \"zulipdata_book/&lt;name&gt;.clj\") — re-renders the GFM and regenerates the test file.\n./run_tests.sh — confirms the assertions still hold.\n(dev/make-book!) — rebuilds the HTML book in docs/ for publication.",
+    "crumbs": [
+      "Repository",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Repository</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.repository.html#running-tests",
+    "href": "zulipdata_book.repository.html#running-tests",
+    "title": "10  Repository",
+    "section": "Running tests",
+    "text": "Running tests\n./run_tests.sh\nThe runner is the cognitect test-runner via the :test alias and covers both directories under test/. The notebook-derived tests pull live data from Zulip the first time (cache-served thereafter), so the suite needs valid credentials — see quickstart if you have not configured them yet.",
+    "crumbs": [
+      "Repository",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Repository</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.repository.html#releases",
+    "href": "zulipdata_book.repository.html#releases",
+    "title": "10  Repository",
+    "section": "Releases",
+    "text": "Releases\nTwo scripts wrap clojure -T:build:\n./snapshot.sh   # build + deploy a SNAPSHOT to Clojars\n./release.sh    # build + deploy a tagged release\nBoth run the test suite first via clojure -T:build ci. The library coordinates and version live in build.clj.",
+    "crumbs": [
+      "Repository",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Repository</span>"
+    ]
+  },
+  {
+    "objectID": "zulipdata_book.repository.html#where-to-send-things",
+    "href": "zulipdata_book.repository.html#where-to-send-things",
+    "title": "10  Repository",
+    "section": "Where to send things",
+    "text": "Where to send things\n\nChapter prose or example fixes — edit the notebook, regenerate, send a PR. The generated test file is checked in.\nLibrary bug or feature — open an issue or PR against the relevant namespace under src/scicloj/zulipdata/.\n\n\nsource: notebooks/zulipdata_book/repository.clj",
+    "crumbs": [
+      "Repository",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Repository</span>"
+    ]
+  }
+]

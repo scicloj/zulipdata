@@ -1,0 +1,21 @@
+format:
+  html:
+    toc: true
+    toc-depth: 4
+    theme: [cosmo, notebooks/custom.scss]
+    toc-expand: 3
+    number-depth: 1
+  revealjs: {theme: solarized, navigation-mode: vertical, transition: slide, background-transition: fade, incremental: true}
+project: {type: book}
+book:
+  chapters:
+  - index.qmd
+  - part: Getting Started
+    chapters: [zulipdata_book.quickstart.qmd]
+  - part: Tutorial
+    chapters: [zulipdata_book.client.qmd, zulipdata_book.pull.qmd, zulipdata_book.views.qmd, zulipdata_book.anonymize.qmd, zulipdata_book.narrative.qmd, zulipdata_book.graph.qmd]
+  - part: Reference
+    chapters: [zulipdata_book.api_reference.qmd]
+  - part: Repository
+    chapters: [zulipdata_book.repository.qmd]
+  title: Zulipdata
