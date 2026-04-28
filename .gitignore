@@ -1,4 +1,5 @@
 .clay-temp
+.clay-temp-docs
 .cpcache
 .nrepl-port
 .lsp
@@ -9,3 +10,4 @@ gfm
 docs/*.qmd
 CLAUDE.md
 dev-notes/
+drafts/

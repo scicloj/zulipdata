@@ -82,12 +82,21 @@ message-count
 
 ;; ## Next steps
 ;;
-;; - `views/reactions-long`, `views/edits-long`, and
-;;   `views/topic-links-long` — long-format projections of the
-;;   reaction, edit-history, and link sub-records.
-;; - `scicloj.zulipdata.anonymize` — anonymized projections
-;;   (HMAC-hashed user keys, dropped content) suitable for sharing
-;;   dataset views without leaking real names or message text.
-;; - `scicloj.zulipdata.narrative` and `scicloj.zulipdata.graph` —
-;;   higher-level analysis helpers (channel lifecycles, network
-;;   shapes, community detection).
+;; The rest of this book is one chapter per namespace:
+;;
+;; - **The REST client** — what `client/whoami` is doing under the
+;;   hood, plus the four endpoints the library wraps.
+;; - **Pulling and caching channels** — the cache model behind
+;;   `pull/pull-channels!`, plus options like `:refresh-tip?` for
+;;   keeping a corpus up to date.
+;; - **Tablecloth views** — `views/messages-timeline`,
+;;   `views/reactions-long`, `views/edits-long`, and
+;;   `views/topic-links-long`.
+;; - **Anonymized views** — `scicloj.zulipdata.anonymize` mirrors
+;;   the plain views with HMAC-hashed user keys and dropped content,
+;;   suitable for sharing dataset views without leaking real names
+;;   or message text.
+;; - **Narrative helpers** — `scicloj.zulipdata.narrative` for date
+;;   columns, channel lifecycles, and newcomer tracking.
+;; - **Graph views** — `scicloj.zulipdata.graph` for co-membership
+;;   and co-presence graphs, community detection, and rendering.

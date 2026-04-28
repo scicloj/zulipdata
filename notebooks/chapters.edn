@@ -1,1 +1,4 @@
-{"Getting Started" ["quickstart"]}
+{"Getting Started" ["quickstart"]
+ "Tutorial"        ["client" "pull" "views" "anonymize" "narrative" "graph"]
+ "Reference"       ["api_reference"]
+ "Repository"      ["repository"]}

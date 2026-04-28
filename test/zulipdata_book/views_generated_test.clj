@@ -1,0 +1,117 @@
+(ns
+ zulipdata-book.views-generated-test
+ (:require
+  [scicloj.zulipdata.pull :as pull]
+  [scicloj.zulipdata.views :as views]
+  [scicloj.kindly.v4.kind :as kind]
+  [tablecloth.api :as tc]
+  [clojure.test :refer [deftest is]]))
+
+
+(def
+ v3_l31
+ (def
+  fixture-channels
+  ["kindly-dev" "tableplot-dev" "clay-dev" "noj-dev"]))
+
+
+(def
+ v4_l34
+ (def
+  messages
+  (->>
+   (pull/pull-channels! fixture-channels)
+   (filter (fn [[k _]] (string? k)))
+   (mapcat (fn [[_ r]] (pull/all-messages r))))))
+
+
+(def v5_l39 (count messages))
+
+
+(def v7_l47 (def timeline (views/messages-timeline messages)))
+
+
+(def v8_l49 (tc/row-count timeline))
+
+
+(deftest t9_l51 (is (= v8_l49 (count messages))))
+
+
+(def v11_l56 (tc/column-names timeline))
+
+
+(def
+ v13_l60
+ (->
+  timeline
+  (tc/select-columns
+   [:id :instant :channel :sender :content-length :edited?])
+  (tc/head 3)))
+
+
+(def v15_l68 (-> timeline :instant first type))
+
+
+(def v17_l73 (-> timeline (tc/select-rows :edited?) tc/row-count))
+
+
+(def v19_l81 (def reactions (views/reactions-long messages)))
+
+
+(def v20_l83 (tc/row-count reactions))
+
+
+(def v21_l85 (tc/column-names reactions))
+
+
+(def
+ v23_l89
+ (->
+  reactions
+  (tc/group-by [:emoji-name])
+  (tc/aggregate {:n tc/row-count})
+  (tc/order-by [:n] [:desc])
+  (tc/head 5)))
+
+
+(def v25_l103 (def edits (views/edits-long messages)))
+
+
+(def v26_l105 (tc/row-count edits))
+
+
+(def v27_l107 (tc/column-names edits))
+
+
+(def
+ v29_l112
+ (->
+  edits
+  (tc/select-columns [:message-id :edit-ts :edit-user-id])
+  (tc/head 3)))
+
+
+(def v31_l122 (def links (views/topic-links-long messages)))
+
+
+(def v32_l124 (tc/row-count links))
+
+
+(def v33_l126 (tc/column-names links))
+
+
+(def
+ v35_l130
+ (->
+  links
+  (tc/add-column
+   :host
+   (fn
+    [ds]
+    (mapv
+     (fn* [p1__56118#] (some-> p1__56118# (java.net.URI.) .getHost))
+     (:link-url ds))))
+  (tc/group-by [:host])
+  (tc/aggregate {:n tc/row-count})
+  (tc/order-by [:n] [:desc])
+  (tc/head 5)))

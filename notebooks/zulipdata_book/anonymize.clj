@@ -1,0 +1,165 @@
+;; # Anonymized views
+;;
+;; The plain views in `scicloj.zulipdata.views` carry real names,
+;; topic strings, and message text. That is the right shape for
+;; analyses that stay on your machine — but the moment a chart, a
+;; markdown table, or an exported dataset leaves your laptop, real
+;; identities and quoted content travel with it.
+;;
+;; `scicloj.zulipdata.anonymize` produces parallel views with:
+;;
+;; - sender ids replaced by stable 12-hex-character `:user-key`s,
+;; - topic strings replaced by stable 16-hex-character `:subject-key`s,
+;; - message content dropped (only `:content-length` survives).
+;;
+;; Same shape, same join keys, no real names or message bodies.
+
+(ns zulipdata-book.anonymize
+  (:require
+   [scicloj.zulipdata.pull :as pull]
+   [scicloj.zulipdata.anonymize :as anon]
+   [scicloj.kindly.v4.kind :as kind]
+   [tablecloth.api :as tc]))
+
+;; ## How the keys are derived
+;;
+;; Both keys come from HMAC-SHA256 with a single committed salt — see
+;; `src/scicloj/zulipdata/anonymize.clj`. The salt is in source on
+;; purpose: re-running the analysis must produce the same keys, so
+;; that follow-up work links back to prior artifacts.
+;;
+;; This means the published artifacts are **pseudonymous, not
+;; anonymous**. Anyone with the salt and access to the original Zulip
+;; data can re-identify by re-hashing. The point is to keep real names
+;; and message text from appearing in checked-in markdown, slides, or
+;; dashboards — not to be unbreakable.
+;;
+;; The key sizes were chosen so collisions are not a practical concern
+;; at this corpus's scale: 48 bits for users (with low-thousands of
+;; users) and 64 bits for subjects (with low-thousands of subjects).
+
+;; ## Hashing one value
+;;
+;; The two key functions, `user-key` and `subject-key`, are exposed
+;; for ad-hoc use. They are pure functions, accept `nil`, and return
+;; deterministic hex strings.
+
+(anon/user-key 42)
+
+;; The output is stable: hashing the same input always returns the
+;; same key.
+
+(= (anon/user-key 42) (anon/user-key 42))
+
+(kind/test-last
+ (= true))
+
+;; Different inputs almost certainly hash to different keys:
+
+(not= (anon/user-key 42) (anon/user-key 43))
+
+(kind/test-last
+ (= true))
+
+;; A `nil` sender id (which can happen for system messages) maps to
+;; `nil` rather than to a hash:
+
+(anon/user-key nil)
+
+(kind/test-last
+ (= nil))
+
+(anon/subject-key "channel introductions")
+
+;; ## A small fixture
+;;
+;; A single channel, `kindly-dev`, is enough to illustrate the
+;; anonymization layer. The cross-channel patterns come back in the
+;; narrative and graph chapters.
+
+(def messages
+  (-> (pull/pull-channels! ["kindly-dev"])
+      (get "kindly-dev")
+      pull/all-messages))
+
+;; ## One row per message — anonymized
+;;
+;; `anonymized-timeline` mirrors `views/messages-timeline` but with
+;; sender ids, sender names, subject strings, and message content
+;; replaced or removed.
+
+(def anon-timeline (anon/anonymized-timeline messages))
+
+(tc/row-count anon-timeline)
+
+(kind/test-last
+ (= (count messages)))
+
+(tc/column-names anon-timeline)
+
+;; A few rows — note that `:user-key` and `:subject-key` are hex
+;; strings, and there is no `:content` column.
+
+(-> anon-timeline
+    (tc/select-columns [:id :timestamp :channel :user-key :subject-key
+                        :content-length :reaction-count])
+    (tc/head 3))
+
+;; The number of distinct user-keys in this channel:
+
+(-> anon-timeline :user-key distinct count)
+
+;; ## One row per reaction — anonymized
+;;
+;; `anonymized-reactions` keeps the emoji name (community-sentiment
+;; signal, not message content) but anonymizes both the reactor's
+;; identity and the message's subject.
+
+(def anon-reactions (anon/anonymized-reactions messages))
+
+(tc/row-count anon-reactions)
+
+(tc/column-names anon-reactions)
+
+;; ## One row per edit — anonymized
+;;
+;; `anonymized-edits` mirrors `views/edits-long` with the editor and
+;; prior subject anonymized and prior content dropped. `:prev-stream`
+;; (a numeric stream id, not PII) is left as-is.
+
+(def anon-edits (anon/anonymized-edits messages))
+
+(tc/row-count anon-edits)
+
+(tc/column-names anon-edits)
+
+;; ## What the anonymized data can — and cannot — answer
+;;
+;; The anonymized views are designed for *who-when-where, not what*
+;; analyses.
+;;
+;; **Can be answered:**
+;;
+;; - Activity patterns over time, per channel, per user.
+;; - Cohort tenure, retention, cross-channel migration.
+;; - Reaction culture (emoji names are preserved).
+;; - Edit rates and topic moves.
+;; - Subject *recurrence*: same subject-key in many messages means
+;;   the same topic thread, even though the topic text is hidden.
+;;
+;; **Cannot be answered without un-anonymizing:**
+;;
+;; - What was discussed (no content, no subject text).
+;; - Who specifically did what (no names).
+;; - Sentiment beyond what reactions carry.
+
+;; ## Where to go next
+;;
+;; - **Narrative helpers** — `scicloj.zulipdata.narrative` adds time
+;;   columns, channel-lifecycle summaries, and newcomer-tracking
+;;   helpers that operate on the anonymized timeline.
+;; - **Graph views** — `scicloj.zulipdata.graph` builds
+;;   co-membership and co-presence graphs from the same anonymized
+;;   timeline.
+;; - **API Reference** — every public function in one chapter, with
+;;   docstrings and a worked example each.
