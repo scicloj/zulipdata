@@ -303,7 +303,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" type="text/javascript"></script>
 <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js" type="text/javascript"></script>
-<p>Raw Zulip messages are nested maps with snake_case keys. Useful for some things, awkward for analysis. <code>scicloj.zulipdata.views</code> offers four projections that turn a sequence of raw messages into tablecloth datasets — flat, scalar-only, ready for grouping and plotting.</p>
+<p>Raw Zulip messages — pulled via <a href="./zulipdata_book.pull.html"><code>scicloj.zulipdata.pull</code></a> — are nested maps with snake_case keys. Useful for some things, awkward for analysis. <code>scicloj.zulipdata.views</code> offers four projections that turn a sequence of raw messages into tablecloth datasets — flat, scalar-only, ready for grouping and plotting.</p>
 <p>Two design choices worth knowing about:</p>
 <ul>
 <li><p><strong>Raw messages stay the source of truth.</strong> The views are computed on demand; nothing is cached at the dataset layer. Pulling once and re-projecting many times is cheap.</p></li>
@@ -340,7 +340,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="one-row-per-message" class="level2">
 <h2 class="anchored" data-anchor-id="one-row-per-message">One row per message</h2>
-<p><code>messages-timeline</code> is the primary view. One row per message, only scalar columns — no reactions list, no edit history, no nested topic-link records. Those live in their own views.</p>
+<p><code>messages-timeline</code> is the primary view. One row per message, only scalar columns — no reactions list, no edit history, no nested topic-link records. Those live in their own views. For an anonymized parallel that drops sender names and message content, see <a href="./zulipdata_book.anonymize.html#one-row-per-message-anonymized"><code>anonymized-timeline</code></a>.</p>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>(<span class="bu">def</span><span class="fu"> timeline </span>(views/messages-timeline messages))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -641,8 +641,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="where-to-go-next" class="level2">
 <h2 class="anchored" data-anchor-id="where-to-go-next">Where to go next</h2>
 <ul>
-<li><p><strong>Anonymized views</strong> — <code>scicloj.zulipdata.anonymize</code> mirrors <code>messages-timeline</code>, <code>reactions-long</code>, and <code>edits-long</code> with sender names and topic strings replaced by stable hash keys, and message content dropped. Use those for any artifact that leaves your machine.</p></li>
-<li><p><strong>API Reference</strong> — every public function in one chapter, with docstrings and a worked example each.</p></li>
+<li><p><a href="./zulipdata_book.anonymize.html"><strong>Anonymized views</strong></a> — <code>scicloj.zulipdata.anonymize</code> mirrors <code>messages-timeline</code>, <code>reactions-long</code>, and <code>edits-long</code> with sender names and topic strings replaced by stable hash keys, and message content dropped. Use those for any artifact that leaves your machine.</p></li>
+<li><p><a href="./zulipdata_book.narrative.html"><strong>Narrative helpers</strong></a> — adds time columns, channel-lifecycle summaries, and newcomer-tracking helpers built on top of the timeline.</p></li>
+<li><p><a href="./zulipdata_book.api_reference.html"><strong>API Reference</strong></a> — every public function in one chapter, with docstrings and a worked example each.</p></li>
 </ul>
 <div style="background-color:grey;height:2px;width:100%;"></div>
 <div><pre><small><small>source: <a href="https://github.com/scicloj/zulipdata/blob/main/notebooks/zulipdata_book/views.clj">notebooks/zulipdata_book/views.clj</a></small></small></pre></div>

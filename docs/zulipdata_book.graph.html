@@ -328,7 +328,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <section id="a-multi-channel-fixture" class="level2">
 <h2 class="anchored" data-anchor-id="a-multi-channel-fixture">A multi-channel fixture</h2>
-<p>The same four-channel anonymized timeline used in the previous chapter — small enough to render, large enough to have non-trivial structure.</p>
+<p>The same four-channel anonymized timeline used in <a href="./zulipdata_book.narrative.html"><strong>Narrative helpers</strong></a> — small enough to render, large enough to have non-trivial structure.</p>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>(<span class="bu">def</span><span class="fu"> fixture-channels</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  [<span class="st">"kindly-dev"</span> <span class="st">"tableplot-dev"</span> <span class="st">"clay-dev"</span> <span class="st">"noj-dev"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -539,7 +539,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>(graph/girvan-newman co-channel <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="printedClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>[#{<span class="st">"clay-dev"</span>} #{<span class="st">"noj-dev"</span> <span class="st">"tableplot-dev"</span> <span class="st">"kindly-dev"</span>}]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>[#{<span class="st">"noj-dev"</span> <span class="st">"tableplot-dev"</span> <span class="st">"clay-dev"</span>} #{<span class="st">"kindly-dev"</span>}]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Label propagation chooses <code>k</code> itself. On a small dense graph it will often collapse to one cluster — which is informative in its own right.</p>
 <div class="sourceClojure">
@@ -616,7 +616,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="where-to-go-next">Where to go next</h2>
 <p>You have now walked the full tutorial. From here:</p>
 <ul>
-<li><p><strong>API Reference</strong> — every public function in one chapter, with docstrings and a worked example each. The right place to look when you know which function you want.</p></li>
+<li><p><a href="./zulipdata_book.api_reference.html"><strong>API Reference</strong></a> — every public function in one chapter, with docstrings and a worked example each. The right place to look when you know which function you want.</p></li>
 <li><p>The source under <code>src/scicloj/zulipdata/</code> is small enough to read straight through whenever a docstring leaves you uncertain.</p></li>
 </ul>
 <div style="background-color:grey;height:2px;width:100%;"></div>

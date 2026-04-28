@@ -11,14 +11,14 @@
 
 
 (def
- v3_l36
+ v3_l37
  (def
   fixture-channels
   ["kindly-dev" "tableplot-dev" "clay-dev" "noj-dev"]))
 
 
 (def
- v4_l39
+ v4_l40
  (def
   timeline
   (->>
@@ -29,41 +29,41 @@
    nar/with-time-columns)))
 
 
-(def v5_l46 (tc/row-count timeline))
+(def v5_l47 (tc/row-count timeline))
 
 
-(def v7_l55 (def u->chans (graph/user-channel-sets timeline)))
+(def v7_l56 (def u->chans (graph/user-channel-sets timeline)))
 
 
-(def v8_l57 (count u->chans))
+(def v8_l58 (count u->chans))
 
 
-(def v10_l61 (->> u->chans (take 5) (into {})))
+(def v10_l62 (->> u->chans (take 5) (into {})))
 
 
 (def
- v12_l65
+ v12_l66
  (->> u->chans vals (map count) frequencies (into (sorted-map))))
 
 
 (def
- v14_l78
+ v14_l79
  (def
   co-channel
   (graph/channel-comembership-graph timeline :min-shared 1)))
 
 
-(def v15_l81 (.vertexSet co-channel))
+(def v15_l82 (.vertexSet co-channel))
 
 
-(deftest t16_l83 (is (= v15_l81 (set fixture-channels))))
+(deftest t16_l84 (is (= v15_l82 (set fixture-channels))))
 
 
-(def v17_l86 (count (.edgeSet co-channel)))
+(def v17_l87 (count (.edgeSet co-channel)))
 
 
 (def
- v19_l90
+ v19_l91
  (->>
   (.edgeSet co-channel)
   (map
@@ -77,27 +77,27 @@
 
 
 (def
- v21_l106
+ v21_l107
  (def
   co-user
   (graph/user-copresence-graph timeline :min-shared 2 :min-channels 2)))
 
 
 (def
- v23_l111
+ v23_l112
  {:nodes (count (.vertexSet co-user)),
   :edges (count (.edgeSet co-user))})
 
 
 (def
- v25_l126
+ v25_l127
  (def
   migration
   (graph/migration-graph timeline #{"clay-dev"} :min-users 1)))
 
 
 (def
- v26_l129
+ v26_l130
  (->>
   (.edgeSet migration)
   (map
@@ -110,17 +110,17 @@
   tc/dataset))
 
 
-(def v28_l142 (graph/betweenness co-channel))
+(def v28_l143 (graph/betweenness co-channel))
 
 
-(def v30_l158 (graph/girvan-newman co-channel 2))
+(def v30_l159 (graph/girvan-newman co-channel 2))
 
 
-(def v32_l164 (graph/label-propagation co-channel))
+(def v32_l165 (graph/label-propagation co-channel))
 
 
 (def
- v34_l174
+ v34_l175
  (kind/cytoscape
   {:elements (graph/->cytoscape-elements co-channel),
    :style
@@ -130,7 +130,7 @@
 
 
 (def
- v36_l189
+ v36_l190
  (def
   co-channel-dot
   (graph/->dot
@@ -141,4 +141,4 @@
    (fn [[_ _ w]] (str (long w))))))
 
 
-(def v37_l194 (kind/graphviz co-channel-dot))
+(def v37_l195 (kind/graphviz co-channel-dot))

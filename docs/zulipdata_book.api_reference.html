@@ -358,14 +358,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js" type="text/javascript"></script>
 <p>Complete reference for every public function and constant in the zulipdata library:</p>
 <ul>
-<li><p><code>scicloj.zulipdata.client</code> — REST client for the Clojurians Zulip instance.</p></li>
-<li><p><code>scicloj.zulipdata.pull</code> — paginated, cached pulls of channel history.</p></li>
-<li><p><code>scicloj.zulipdata.views</code> — tablecloth projections of raw messages.</p></li>
-<li><p><code>scicloj.zulipdata.anonymize</code> — anonymized projections suitable for sharing.</p></li>
-<li><p><code>scicloj.zulipdata.narrative</code> — date helpers, channel lifecycles, newcomer tracking.</p></li>
-<li><p><code>scicloj.zulipdata.graph</code> — co-membership and co-presence graphs, community detection, rendering.</p></li>
+<li><p><a href="./zulipdata_book.client.html"><code>scicloj.zulipdata.client</code></a> — REST client for the Clojurians Zulip instance.</p></li>
+<li><p><a href="./zulipdata_book.pull.html"><code>scicloj.zulipdata.pull</code></a> — paginated, cached pulls of channel history.</p></li>
+<li><p><a href="./zulipdata_book.views.html"><code>scicloj.zulipdata.views</code></a> — tablecloth projections of raw messages.</p></li>
+<li><p><a href="./zulipdata_book.anonymize.html"><code>scicloj.zulipdata.anonymize</code></a> — anonymized projections suitable for sharing.</p></li>
+<li><p><a href="./zulipdata_book.narrative.html"><code>scicloj.zulipdata.narrative</code></a> — date helpers, channel lifecycles, newcomer tracking.</p></li>
+<li><p><a href="./zulipdata_book.graph.html"><code>scicloj.zulipdata.graph</code></a> — co-membership and co-presence graphs, community detection, rendering.</p></li>
 </ul>
-<p>Each entry shows the docstring, a live example, and a test. For conceptual walkthroughs, see the per-namespace chapters in this book.</p>
+<p>Each entry shows the docstring, a live example, and a test. The namespace links above lead to the conceptual walkthrough for each — read those for <em>why</em> and <em>when</em>; come back here for <em>what and how</em>.</p>
 <section id="sample-data" class="level2">
 <h2 class="anchored" data-anchor-id="sample-data">Sample data</h2>
 <p>A small four-channel pull, reused across every example below. Each layer of the pipeline is bound for direct reuse: <code>sample-pull</code> (raw pull result), <code>sample-messages</code> (flat seq of raw messages), <code>sample-timeline</code> (plain tablecloth view), <code>sample-anon</code> (anonymized), <code>sample-with-time</code> (anonymized + date columns).</p>
@@ -763,7 +763,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb55"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>(nar/ts-&gt;month-date <span class="dv">1725611765</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="printedClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb56"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>#object[java.<span class="kw">time</span>.LocalDate <span class="bn">0x55909a7b</span> <span class="st">"2024-09-01"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb56"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>#object[java.<span class="kw">time</span>.LocalDate <span class="bn">0x4b6821e4</span> <span class="st">"2024-09-01"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="ts-year-month" class="level3">

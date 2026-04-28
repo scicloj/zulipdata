@@ -304,7 +304,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" type="text/javascript"></script>
 <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js" type="text/javascript"></script>
-<p>The plain views in <code>scicloj.zulipdata.views</code> carry real names, topic strings, and message text. That is the right shape for analyses that stay on your machine — but the moment a chart, a markdown table, or an exported dataset leaves your laptop, real identities and quoted content travel with it.</p>
+<p>The plain views in <a href="./zulipdata_book.views.html"><code>scicloj.zulipdata.views</code></a> carry real names, topic strings, and message text. That is the right shape for analyses that stay on your machine — but the moment a chart, a markdown table, or an exported dataset leaves your laptop, real identities and quoted content travel with it.</p>
 <p><code>scicloj.zulipdata.anonymize</code> produces parallel views with:</p>
 <ul>
 <li>sender ids replaced by stable 12-hex-character <code>:user-key</code>s,</li>
@@ -375,7 +375,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="one-row-per-message-anonymized" class="level2">
 <h2 class="anchored" data-anchor-id="one-row-per-message-anonymized">One row per message — anonymized</h2>
-<p><code>anonymized-timeline</code> mirrors <code>views/messages-timeline</code> but with sender ids, sender names, subject strings, and message content replaced or removed.</p>
+<p><code>anonymized-timeline</code> mirrors <a href="./zulipdata_book.views.html#one-row-per-message"><code>views/messages-timeline</code></a> but with sender ids, sender names, subject strings, and message content replaced or removed.</p>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>(<span class="bu">def</span><span class="fu"> anon-timeline </span>(anon/anonymized-timeline messages))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -472,7 +472,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="one-row-per-reaction-anonymized" class="level2">
 <h2 class="anchored" data-anchor-id="one-row-per-reaction-anonymized">One row per reaction — anonymized</h2>
-<p><code>anonymized-reactions</code> keeps the emoji name (community-sentiment signal, not message content) but anonymizes both the reactor’s identity and the message’s subject.</p>
+<p><code>anonymized-reactions</code> mirrors <a href="./zulipdata_book.views.html#one-row-per-reaction"><code>views/reactions-long</code></a>. The emoji name (a community-sentiment signal, not message content) is preserved; the reactor’s identity and the message’s subject are both anonymized.</p>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>(<span class="bu">def</span><span class="fu"> anon-reactions </span>(anon/anonymized-reactions messages))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -499,7 +499,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="one-row-per-edit-anonymized" class="level2">
 <h2 class="anchored" data-anchor-id="one-row-per-edit-anonymized">One row per edit — anonymized</h2>
-<p><code>anonymized-edits</code> mirrors <code>views/edits-long</code> with the editor and prior subject anonymized and prior content dropped. <code>:prev-stream</code> (a numeric stream id, not PII) is left as-is.</p>
+<p><code>anonymized-edits</code> mirrors <a href="./zulipdata_book.views.html#one-row-per-edit"><code>views/edits-long</code></a> with the editor and prior subject anonymized and prior content dropped. <code>:prev-stream</code> (a numeric stream id, not PII) is left as-is.</p>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>(<span class="bu">def</span><span class="fu"> anon-edits </span>(anon/anonymized-edits messages))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -543,9 +543,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="where-to-go-next" class="level2">
 <h2 class="anchored" data-anchor-id="where-to-go-next">Where to go next</h2>
 <ul>
-<li><p><strong>Narrative helpers</strong> — <code>scicloj.zulipdata.narrative</code> adds time columns, channel-lifecycle summaries, and newcomer-tracking helpers that operate on the anonymized timeline.</p></li>
-<li><p><strong>Graph views</strong> — <code>scicloj.zulipdata.graph</code> builds co-membership and co-presence graphs from the same anonymized timeline.</p></li>
-<li><p><strong>API Reference</strong> — every public function in one chapter, with docstrings and a worked example each.</p></li>
+<li><p><a href="./zulipdata_book.narrative.html"><strong>Narrative helpers</strong></a> — <code>scicloj.zulipdata.narrative</code> adds time columns, channel-lifecycle summaries, and newcomer-tracking helpers that operate on the anonymized timeline.</p></li>
+<li><p><a href="./zulipdata_book.graph.html"><strong>Graph views</strong></a> — <code>scicloj.zulipdata.graph</code> builds co-membership and co-presence graphs from the same anonymized timeline.</p></li>
+<li><p><a href="./zulipdata_book.api_reference.html"><strong>API Reference</strong></a> — every public function in one chapter, with docstrings and a worked example each.</p></li>
 </ul>
 <div style="background-color:grey;height:2px;width:100%;"></div>
 <div><pre><small><small>source: <a href="https://github.com/scicloj/zulipdata/blob/main/notebooks/zulipdata_book/anonymize.clj">notebooks/zulipdata_book/anonymize.clj</a></small></small></pre></div>

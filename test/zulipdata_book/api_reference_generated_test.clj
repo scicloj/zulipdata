@@ -13,17 +13,17 @@
 
 
 (def
- v3_l44
+ v3_l46
  (def
   sample-channels
   ["kindly-dev" "tableplot-dev" "clay-dev" "noj-dev"]))
 
 
-(def v4_l47 (def sample-pull (pull/pull-channels! sample-channels)))
+(def v4_l49 (def sample-pull (pull/pull-channels! sample-channels)))
 
 
 (def
- v5_l50
+ v5_l52
  (def
   sample-messages
   (->>
@@ -33,40 +33,40 @@
 
 
 (def
- v6_l55
+ v6_l57
  (def sample-timeline (views/messages-timeline sample-messages)))
 
 
 (def
- v7_l58
+ v7_l60
  (def sample-anon (anon/anonymized-timeline sample-messages)))
 
 
-(def v8_l61 (def sample-with-time (nar/with-time-columns sample-anon)))
+(def v8_l63 (def sample-with-time (nar/with-time-columns sample-anon)))
 
 
-(def v10_l66 (kind/doc #'client/base-url))
+(def v10_l68 (kind/doc #'client/base-url))
 
 
-(def v11_l68 client/base-url)
+(def v11_l70 client/base-url)
 
 
 (deftest
- t12_l70
- (is (= v11_l68 "https://clojurians.zulipchat.com/api/v1")))
+ t12_l72
+ (is (= v11_l70 "https://clojurians.zulipchat.com/api/v1")))
 
 
-(def v13_l72 (kind/doc #'client/api-get))
+(def v13_l74 (kind/doc #'client/api-get))
 
 
-(def v14_l74 (-> (client/api-get "/server_settings") :realm_name))
+(def v14_l76 (-> (client/api-get "/server_settings") :realm_name))
 
 
-(deftest t15_l77 (is (= v14_l74 "Clojurians")))
+(deftest t15_l79 (is (= v14_l76 "Clojurians")))
 
 
 (def
- v17_l81
+ v17_l83
  (->
   (client/api-get
    "/messages"
@@ -80,49 +80,49 @@
   count))
 
 
-(deftest t18_l89 (is (= v17_l81 1)))
+(deftest t18_l91 (is (= v17_l83 1)))
 
 
-(def v19_l91 (kind/doc #'client/whoami))
+(def v19_l93 (kind/doc #'client/whoami))
 
 
-(def v20_l93 (client/whoami))
+(def v20_l95 (client/whoami))
 
 
 (deftest
- t21_l95
+ t21_l97
  (is
   ((fn
     [m]
     (every?
      (set (keys m))
      [:email :full-name :user-id :is-bot? :is-admin? :role]))
-   v20_l93)))
+   v20_l95)))
 
 
-(def v22_l99 (kind/doc #'client/get-me))
+(def v22_l101 (kind/doc #'client/get-me))
 
 
-(def v23_l101 (-> (client/get-me) :user_id integer?))
+(def v23_l103 (-> (client/get-me) :user_id integer?))
 
 
-(deftest t24_l103 (is (true? v23_l101)))
+(deftest t24_l105 (is (true? v23_l103)))
 
 
-(def v25_l105 (kind/doc #'client/get-streams))
+(def v25_l107 (kind/doc #'client/get-streams))
 
 
-(def v26_l107 (-> (client/get-streams) :streams count pos?))
+(def v26_l109 (-> (client/get-streams) :streams count pos?))
 
 
-(deftest t27_l109 (is (true? v26_l107)))
+(deftest t27_l111 (is (true? v26_l109)))
 
 
-(def v28_l111 (kind/doc #'client/get-messages))
+(def v28_l113 (kind/doc #'client/get-messages))
 
 
 (def
- v29_l113
+ v29_l115
  (->
   (client/get-messages
    {:narrow [{:operator "channel", :operand "kindly-dev"}],
@@ -133,34 +133,34 @@
   count))
 
 
-(deftest t30_l120 (is (= v29_l113 3)))
+(deftest t30_l122 (is (= v29_l115 3)))
 
 
-(def v32_l124 (kind/doc #'pull/default-batch-size))
+(def v32_l126 (kind/doc #'pull/default-batch-size))
 
 
-(def v33_l126 pull/default-batch-size)
+(def v33_l128 pull/default-batch-size)
 
 
-(deftest t34_l128 (is (= v33_l126 5000)))
+(deftest t34_l130 (is (= v33_l128 5000)))
 
 
-(def v35_l130 (kind/doc #'pull/fetch-window))
+(def v35_l132 (kind/doc #'pull/fetch-window))
 
 
 (def
- v36_l132
+ v36_l134
  (-> (pull/fetch-window "kindly-dev" 0 100) :messages count))
 
 
-(deftest t37_l135 (is (= v36_l132 100)))
+(deftest t37_l137 (is (= v36_l134 100)))
 
 
-(def v38_l137 (kind/doc #'pull/pull-channel!))
+(def v38_l139 (kind/doc #'pull/pull-channel!))
 
 
 (def
- v40_l141
+ v40_l143
  (->
   (pull/pull-channel! "kindly-dev" 0)
   (select-keys [:pages :message-count])
@@ -168,14 +168,14 @@
   set))
 
 
-(deftest t41_l146 (is (= v40_l141 #{:pages :message-count})))
+(deftest t41_l148 (is (= v40_l143 #{:pages :message-count})))
 
 
-(def v42_l148 (kind/doc #'pull/all-messages))
+(def v42_l150 (kind/doc #'pull/all-messages))
 
 
 (def
- v43_l150
+ v43_l152
  (let
   [walk
    (pull/pull-channel! "kindly-dev" 0)
@@ -184,51 +184,51 @@
   (= (count messages) (:message-count walk))))
 
 
-(deftest t44_l154 (is (true? v43_l150)))
+(deftest t44_l156 (is (true? v43_l152)))
 
 
-(def v45_l156 (kind/doc #'pull/pull-channels!))
+(def v45_l158 (kind/doc #'pull/pull-channels!))
 
 
 (def
- v47_l161
+ v47_l163
  (-> (pull/pull-channels! ["kindly-dev" "no-such-channel"]) :not-found))
 
 
-(deftest t48_l164 (is (= v47_l161 ["no-such-channel"])))
+(deftest t48_l166 (is (= v47_l163 ["no-such-channel"])))
 
 
-(def v49_l166 (kind/doc #'pull/public-channel-names))
+(def v49_l168 (kind/doc #'pull/public-channel-names))
 
 
-(def v50_l168 (-> (pull/public-channel-names) count pos?))
+(def v50_l170 (-> (pull/public-channel-names) count pos?))
 
 
-(deftest t51_l170 (is (true? v50_l168)))
+(deftest t51_l172 (is (true? v50_l170)))
 
 
-(def v52_l172 (kind/doc #'pull/pull-public-channels!))
+(def v52_l174 (kind/doc #'pull/pull-public-channels!))
 
 
-(def v54_l180 (kind/doc #'views/messages-timeline))
+(def v54_l182 (kind/doc #'views/messages-timeline))
 
 
 (def
- v55_l182
+ v55_l184
  (-> (views/messages-timeline sample-messages) tc/row-count))
 
 
-(deftest t56_l185 (is (= v55_l182 (count sample-messages))))
+(deftest t56_l187 (is (= v55_l184 (count sample-messages))))
 
 
-(def v58_l189 (-> sample-timeline tc/column-names sort))
+(def v58_l191 (-> sample-timeline tc/column-names sort))
 
 
 (deftest
- t59_l191
+ t59_l193
  (is
   (=
-   v58_l189
+   v58_l191
    '(:channel
      :client
      :content
@@ -244,19 +244,19 @@
      :timestamp))))
 
 
-(def v60_l195 (kind/doc #'views/reactions-long))
+(def v60_l197 (kind/doc #'views/reactions-long))
 
 
 (def
- v61_l197
+ v61_l199
  (-> (views/reactions-long sample-messages) tc/column-names sort))
 
 
 (deftest
- t62_l200
+ t62_l202
  (is
   (=
-   v61_l197
+   v61_l199
    '(:channel
      :emoji-code
      :emoji-name
@@ -268,19 +268,19 @@
      :user-id))))
 
 
-(def v63_l204 (kind/doc #'views/edits-long))
+(def v63_l206 (kind/doc #'views/edits-long))
 
 
 (def
- v64_l206
+ v64_l208
  (-> (views/edits-long sample-messages) tc/column-names sort))
 
 
 (deftest
- t65_l209
+ t65_l211
  (is
   (=
-   v64_l206
+   v64_l208
    '(:channel
      :edit-ts
      :edit-user-id
@@ -291,63 +291,63 @@
      :stream-id))))
 
 
-(def v66_l213 (kind/doc #'views/topic-links-long))
+(def v66_l215 (kind/doc #'views/topic-links-long))
 
 
 (def
- v67_l215
+ v67_l217
  (-> (views/topic-links-long sample-messages) tc/column-names sort))
 
 
 (deftest
- t68_l218
+ t68_l220
  (is
-  (= v67_l215 '(:channel :link-text :link-url :message-id :stream-id))))
+  (= v67_l217 '(:channel :link-text :link-url :message-id :stream-id))))
 
 
-(def v70_l223 (kind/doc #'anon/user-key))
+(def v70_l225 (kind/doc #'anon/user-key))
 
 
-(def v71_l225 (anon/user-key 42))
+(def v71_l227 (anon/user-key 42))
 
 
 (deftest
- t72_l227
- (is ((fn [s] (and (string? s) (= 12 (count s)))) v71_l225)))
+ t72_l229
+ (is ((fn [s] (and (string? s) (= 12 (count s)))) v71_l227)))
 
 
 (def
- v74_l231
+ v74_l233
  [(= (anon/user-key 42) (anon/user-key 42)) (anon/user-key nil)])
 
 
-(deftest t75_l234 (is (= v74_l231 [true nil])))
+(deftest t75_l236 (is (= v74_l233 [true nil])))
 
 
-(def v76_l236 (kind/doc #'anon/subject-key))
+(def v76_l238 (kind/doc #'anon/subject-key))
 
 
-(def v77_l238 (anon/subject-key "channel introductions"))
+(def v77_l240 (anon/subject-key "channel introductions"))
 
 
 (deftest
- t78_l240
- (is ((fn [s] (and (string? s) (= 16 (count s)))) v77_l238)))
+ t78_l242
+ (is ((fn [s] (and (string? s) (= 16 (count s)))) v77_l240)))
 
 
-(def v79_l242 (kind/doc #'anon/anonymized-timeline))
+(def v79_l244 (kind/doc #'anon/anonymized-timeline))
 
 
 (def
- v80_l244
+ v80_l246
  (-> (anon/anonymized-timeline sample-messages) tc/column-names sort))
 
 
 (deftest
- t81_l247
+ t81_l249
  (is
   (=
-   v80_l244
+   v80_l246
    '(:channel
      :client
      :content-length
@@ -361,19 +361,19 @@
      :user-key))))
 
 
-(def v82_l251 (kind/doc #'anon/anonymized-reactions))
+(def v82_l253 (kind/doc #'anon/anonymized-reactions))
 
 
 (def
- v83_l253
+ v83_l255
  (-> (anon/anonymized-reactions sample-messages) tc/column-names sort))
 
 
 (deftest
- t84_l256
+ t84_l258
  (is
   (=
-   v83_l253
+   v83_l255
    '(:channel
      :emoji-code
      :emoji-name
@@ -385,19 +385,19 @@
      :subject-key))))
 
 
-(def v85_l260 (kind/doc #'anon/anonymized-edits))
+(def v85_l262 (kind/doc #'anon/anonymized-edits))
 
 
 (def
- v86_l262
+ v86_l264
  (-> (anon/anonymized-edits sample-messages) tc/column-names sort))
 
 
 (deftest
- t87_l265
+ t87_l267
  (is
   (=
-   v86_l262
+   v86_l264
    '(:channel
      :edit-ts
      :editor-user-key
@@ -407,38 +407,38 @@
      :stream-id))))
 
 
-(def v89_l270 (kind/doc #'nar/ts->month-date))
+(def v89_l272 (kind/doc #'nar/ts->month-date))
 
 
-(def v90_l272 (nar/ts->month-date 1725611765))
+(def v90_l274 (nar/ts->month-date 1725611765))
 
 
-(deftest t91_l274 (is (= v90_l272 (java.time.LocalDate/of 2024 9 1))))
+(deftest t91_l276 (is (= v90_l274 (java.time.LocalDate/of 2024 9 1))))
 
 
-(def v92_l276 (kind/doc #'nar/ts->year-month))
+(def v92_l278 (kind/doc #'nar/ts->year-month))
 
 
-(def v93_l278 (nar/ts->year-month 1725611765))
+(def v93_l280 (nar/ts->year-month 1725611765))
 
 
-(deftest t94_l280 (is (= v93_l278 "2024-09")))
+(deftest t94_l282 (is (= v93_l280 "2024-09")))
 
 
-(def v95_l282 (kind/doc #'nar/ts->year))
+(def v95_l284 (kind/doc #'nar/ts->year))
 
 
-(def v96_l284 (nar/ts->year 1725611765))
+(def v96_l286 (nar/ts->year 1725611765))
 
 
-(deftest t97_l286 (is (= v96_l284 2024)))
+(deftest t97_l288 (is (= v96_l286 2024)))
 
 
-(def v98_l288 (kind/doc #'nar/with-time-columns))
+(def v98_l290 (kind/doc #'nar/with-time-columns))
 
 
 (def
- v99_l290
+ v99_l292
  (->
   (nar/with-time-columns sample-anon)
   tc/column-names
@@ -446,22 +446,22 @@
   (clojure.set/intersection #{:month-date :year :year-month})))
 
 
-(deftest t100_l295 (is (= v99_l290 #{:month-date :year :year-month})))
+(deftest t100_l297 (is (= v99_l292 #{:month-date :year :year-month})))
 
 
-(def v101_l297 (kind/doc #'nar/channel-lifecycle))
+(def v101_l299 (kind/doc #'nar/channel-lifecycle))
 
 
 (def
- v102_l299
+ v102_l301
  (-> (nar/channel-lifecycle sample-with-time) tc/column-names sort))
 
 
 (deftest
- t103_l302
+ t103_l304
  (is
   (=
-   v102_l299
+   v102_l301
    '(:active-months
      :channel
      :distinct-users
@@ -470,22 +470,22 @@
      :total))))
 
 
-(def v104_l305 (kind/doc #'nar/channels-by-name-pattern))
+(def v104_l307 (kind/doc #'nar/channels-by-name-pattern))
 
 
 (def
- v105_l307
+ v105_l309
  (nar/channels-by-name-pattern sample-with-time #"clay|tableplot"))
 
 
-(deftest t106_l309 (is (= v105_l307 ["clay-dev" "tableplot-dev"])))
+(deftest t106_l311 (is (= v105_l309 ["clay-dev" "tableplot-dev"])))
 
 
-(def v107_l311 (kind/doc #'nar/channels-by-shared-users))
+(def v107_l313 (kind/doc #'nar/channels-by-shared-users))
 
 
 (def
- v109_l317
+ v109_l319
  (set
   (nar/channels-by-shared-users
    sample-with-time
@@ -498,28 +498,28 @@
    30)))
 
 
-(deftest t110_l321 (is (contains? v109_l317 "clay-dev")))
+(deftest t110_l323 (is (contains? v109_l319 "clay-dev")))
 
 
-(def v111_l323 (kind/doc #'nar/first-posters-of-channel))
+(def v111_l325 (kind/doc #'nar/first-posters-of-channel))
 
 
 (def
- v112_l325
+ v112_l327
  (->
   (nar/first-posters-of-channel sample-with-time "kindly-dev" 5)
   tc/column-names
   sort))
 
 
-(deftest t113_l328 (is (= v112_l325 '(:first-post-date :user-key))))
+(deftest t113_l330 (is (= v112_l327 '(:first-post-date :user-key))))
 
 
-(def v114_l330 (kind/doc #'nar/prior-channels-of-newcomers))
+(def v114_l332 (kind/doc #'nar/prior-channels-of-newcomers))
 
 
 (def
- v115_l332
+ v115_l334
  (->
   (nar/prior-channels-of-newcomers
    sample-with-time
@@ -530,29 +530,29 @@
 
 
 (deftest
- t116_l335
- (is (= v115_l332 '(:newcomers-touched :prior-channel))))
+ t116_l337
+ (is (= v115_l334 '(:newcomers-touched :prior-channel))))
 
 
-(def v117_l337 (kind/doc #'nar/channel-monthly-activity))
+(def v117_l339 (kind/doc #'nar/channel-monthly-activity))
 
 
 (def
- v118_l339
+ v118_l341
  (->
   (nar/channel-monthly-activity sample-with-time #{"kindly-dev"})
   tc/column-names
   sort))
 
 
-(deftest t119_l342 (is (= v118_l339 '(:channel :month-date :msgs))))
+(deftest t119_l344 (is (= v118_l341 '(:channel :month-date :msgs))))
 
 
-(def v121_l346 (kind/doc #'graph/user-channel-sets))
+(def v121_l348 (kind/doc #'graph/user-channel-sets))
 
 
 (def
- v123_l350
+ v123_l352
  (let
   [u->c
    (graph/user-channel-sets sample-with-time)
@@ -561,27 +561,27 @@
   (set? chans)))
 
 
-(deftest t124_l354 (is (true? v123_l350)))
+(deftest t124_l356 (is (true? v123_l352)))
 
 
-(def v125_l356 (kind/doc #'graph/channel-comembership-graph))
+(def v125_l358 (kind/doc #'graph/channel-comembership-graph))
 
 
 (def
- v126_l358
+ v126_l360
  (let
   [g (graph/channel-comembership-graph sample-with-time :min-shared 1)]
   (= (set sample-channels) (.vertexSet g))))
 
 
-(deftest t127_l361 (is (true? v126_l358)))
+(deftest t127_l363 (is (true? v126_l360)))
 
 
-(def v128_l363 (kind/doc #'graph/user-copresence-graph))
+(def v128_l365 (kind/doc #'graph/user-copresence-graph))
 
 
 (def
- v129_l365
+ v129_l367
  (let
   [g
    (graph/user-copresence-graph
@@ -593,14 +593,14 @@
   (pos? (count (.vertexSet g)))))
 
 
-(deftest t130_l369 (is (true? v129_l365)))
+(deftest t130_l371 (is (true? v129_l367)))
 
 
-(def v131_l371 (kind/doc #'graph/migration-graph))
+(def v131_l373 (kind/doc #'graph/migration-graph))
 
 
 (def
- v133_l376
+ v133_l378
  (let
   [g
    (graph/migration-graph sample-with-time #{"clay-dev"} :min-users 1)]
@@ -609,14 +609,14 @@
    (.edgeSet g))))
 
 
-(deftest t134_l380 (is (true? v133_l376)))
+(deftest t134_l382 (is (true? v133_l378)))
 
 
-(def v135_l382 (kind/doc #'graph/betweenness))
+(def v135_l384 (kind/doc #'graph/betweenness))
 
 
 (def
- v136_l384
+ v136_l386
  (let
   [g
    (graph/channel-comembership-graph sample-with-time)
@@ -625,14 +625,14 @@
   (= (.vertexSet g) (set (keys scores)))))
 
 
-(deftest t137_l388 (is (true? v136_l384)))
+(deftest t137_l390 (is (true? v136_l386)))
 
 
-(def v138_l390 (kind/doc #'graph/girvan-newman))
+(def v138_l392 (kind/doc #'graph/girvan-newman))
 
 
 (def
- v139_l392
+ v139_l394
  (let
   [g
    (graph/channel-comembership-graph sample-with-time)
@@ -641,14 +641,14 @@
   (count clusters)))
 
 
-(deftest t140_l396 (is (= v139_l392 2)))
+(deftest t140_l398 (is (= v139_l394 2)))
 
 
-(def v141_l398 (kind/doc #'graph/label-propagation))
+(def v141_l400 (kind/doc #'graph/label-propagation))
 
 
 (def
- v142_l400
+ v142_l402
  (let
   [g
    (graph/channel-comembership-graph sample-with-time)
@@ -657,14 +657,14 @@
   (every? set? clusters)))
 
 
-(deftest t143_l404 (is (true? v142_l400)))
+(deftest t143_l406 (is (true? v142_l402)))
 
 
-(def v144_l406 (kind/doc #'graph/->cytoscape-elements))
+(def v144_l408 (kind/doc #'graph/->cytoscape-elements))
 
 
 (def
- v145_l408
+ v145_l410
  (let
   [g
    (graph/channel-comembership-graph sample-with-time)
@@ -673,14 +673,14 @@
   (set (keys e))))
 
 
-(deftest t146_l412 (is (= v145_l408 #{:nodes :edges})))
+(deftest t146_l414 (is (= v145_l410 #{:nodes :edges})))
 
 
-(def v147_l414 (kind/doc #'graph/->dot))
+(def v147_l416 (kind/doc #'graph/->dot))
 
 
 (def
- v148_l416
+ v148_l418
  (let
   [g
    (graph/channel-comembership-graph sample-with-time)
@@ -689,4 +689,4 @@
   (and (string? dot) (clojure.string/starts-with? dot "graph "))))
 
 
-(deftest t149_l421 (is (true? v148_l416)))
+(deftest t149_l423 (is (true? v148_l418)))

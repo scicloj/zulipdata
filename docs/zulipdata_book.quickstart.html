@@ -416,12 +416,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="next-steps">Next steps</h2>
 <p>The rest of this book is one chapter per namespace:</p>
 <ul>
-<li><p><strong>The REST client</strong> — what <code>client/whoami</code> is doing under the hood, plus the four endpoints the library wraps.</p></li>
-<li><p><strong>Pulling and caching channels</strong> — the cache model behind <code>pull/pull-channels!</code>, plus options like <code>:refresh-tip?</code> for keeping a corpus up to date.</p></li>
-<li><p><strong>Tablecloth views</strong> — <code>views/messages-timeline</code>, <code>views/reactions-long</code>, <code>views/edits-long</code>, and <code>views/topic-links-long</code>.</p></li>
-<li><p><strong>Anonymized views</strong> — <code>scicloj.zulipdata.anonymize</code> mirrors the plain views with HMAC-hashed user keys and dropped content, suitable for sharing dataset views without leaking real names or message text.</p></li>
-<li><p><strong>Narrative helpers</strong> — <code>scicloj.zulipdata.narrative</code> for date columns, channel lifecycles, and newcomer tracking.</p></li>
-<li><p><strong>Graph views</strong> — <code>scicloj.zulipdata.graph</code> for co-membership and co-presence graphs, community detection, and rendering.</p></li>
+<li><p><a href="./zulipdata_book.client.html"><strong>The REST client</strong></a> — what <code>client/whoami</code> is doing under the hood, plus the four endpoints the library wraps.</p></li>
+<li><p><a href="./zulipdata_book.pull.html"><strong>Pulling and caching channels</strong></a> — the cache model behind <code>pull/pull-channels!</code>, plus options like <code>:refresh-tip?</code> for keeping a corpus up to date.</p></li>
+<li><p><a href="./zulipdata_book.views.html"><strong>Tablecloth views</strong></a> — <code>views/messages-timeline</code>, <code>views/reactions-long</code>, <code>views/edits-long</code>, and <code>views/topic-links-long</code>.</p></li>
+<li><p><a href="./zulipdata_book.anonymize.html"><strong>Anonymized views</strong></a> — parallel views with sender names and topic strings replaced by stable hash keys, message content dropped — for sharing datasets without leaking identities or text.</p></li>
+<li><p><a href="./zulipdata_book.narrative.html"><strong>Narrative helpers</strong></a> — date columns, channel lifecycles, and newcomer tracking.</p></li>
+<li><p><a href="./zulipdata_book.graph.html"><strong>Graph views</strong></a> — co-membership and co-presence graphs, community detection, and rendering.</p></li>
+<li><p><a href="./zulipdata_book.api_reference.html"><strong>API Reference</strong></a> — every public function in one chapter.</p></li>
 </ul>
 <div style="background-color:grey;height:2px;width:100%;"></div>
 <div><pre><small><small>source: <a href="https://github.com/scicloj/zulipdata/blob/main/notebooks/zulipdata_book/quickstart.clj">notebooks/zulipdata_book/quickstart.clj</a></small></small></pre></div>

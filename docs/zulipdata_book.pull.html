@@ -306,7 +306,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" type="text/javascript"></script>
 <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js" type="text/javascript"></script>
-<p><code>scicloj.zulipdata.pull</code> sits above the REST client. It walks a channel’s full message history in <em>windows</em>, caches each window on disk, and stitches the windows back together. This chapter explains the cache model, then tours every public function.</p>
+<p><code>scicloj.zulipdata.pull</code> sits above the <a href="./zulipdata_book.client.html">REST client</a>. It walks a channel’s full message history in <em>windows</em>, caches each window on disk, and stitches the windows back together. This chapter explains the cache model, then tours every public function.</p>
 <p>The big idea: each window is identified by <code>(channel-name, anchor-id, batch-size)</code>. Once a window has been fetched, it is cached, and any future call with the same triple is served from disk. That makes pulls <strong>resumable</strong> (a crashed pull picks up where it left off), <strong>idempotent</strong> (re-running is free), and <strong>incremental</strong> (only new tail windows need to be re-fetched).</p>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">ns</span> zulipdata-book.pull</span>
@@ -493,9 +493,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="where-to-go-next">Where to go next</h2>
 <p>You now have raw messages — vectors of maps with Zulip’s snake_case field names. The next step is shaping them into datasets:</p>
 <ul>
-<li><p><strong>Tablecloth views</strong> — <code>scicloj.zulipdata.views</code> projects raw messages into one-row-per-thing datasets (timeline, reactions, edits, links).</p></li>
-<li><p><strong>Anonymized views</strong> — <code>scicloj.zulipdata.anonymize</code> produces parallel datasets with sender identities and topic strings replaced by stable hash keys.</p></li>
-<li><p><strong>API Reference</strong> — every public function in one chapter, with docstrings and a worked example each.</p></li>
+<li><p><a href="./zulipdata_book.views.html"><strong>Tablecloth views</strong></a> — <code>scicloj.zulipdata.views</code> projects raw messages into one-row-per-thing datasets (timeline, reactions, edits, links).</p></li>
+<li><p><a href="./zulipdata_book.anonymize.html"><strong>Anonymized views</strong></a> — <code>scicloj.zulipdata.anonymize</code> produces parallel datasets with sender identities and topic strings replaced by stable hash keys.</p></li>
+<li><p><a href="./zulipdata_book.api_reference.html"><strong>API Reference</strong></a> — every public function in one chapter, with docstrings and a worked example each.</p></li>
 </ul>
 <div style="background-color:grey;height:2px;width:100%;"></div>
 <div><pre><small><small>source: <a href="https://github.com/scicloj/zulipdata/blob/main/notebooks/zulipdata_book/pull.clj">notebooks/zulipdata_book/pull.clj</a></small></small></pre></div>
