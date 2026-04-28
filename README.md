@@ -26,8 +26,8 @@ history on the
 - [hato](https://github.com/gnarroway/hato) — HTTP client
 - [pocket](https://github.com/scicloj/pocket) — disk cache
 - [JGraphT](https://jgrapht.org/) — graph algorithms
-- [charred](https://github.com/cnuernber/charred) — JSON parsing (via tablecloth)
-- [ham-fisted](https://github.com/cnuernber/ham-fisted) — bounded parallelism for `pull-channels!` (via tablecloth)
+- [charred](https://github.com/cnuernber/charred) — JSON parsing
+- [ham-fisted](https://github.com/cnuernber/ham-fisted) — bounded parallelism
 
 ## License
 
