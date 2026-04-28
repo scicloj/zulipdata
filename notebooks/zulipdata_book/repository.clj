@@ -3,8 +3,9 @@
 ;; This chapter is for people who clone the repository — to read it,
 ;; to edit a chapter, or to release a new version. Everything below
 ;; is about the artifacts in this repo, not the library API itself.
-;; If you only want to *use* zulipdata as a dependency, the rest of
-;; the book is what you need.
+;; If you only want to *use* zulipdata as a dependency, start at the
+;; [**Quickstart**](./zulipdata_book.quickstart.html) and follow the
+;; tutorial chapters.
 
 (ns zulipdata-book.repository
   (:require

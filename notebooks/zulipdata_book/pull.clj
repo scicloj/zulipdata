@@ -1,10 +1,10 @@
 ;; # Pulling and caching channels
 ;;
-;; `scicloj.zulipdata.pull` sits above the REST client. It walks a
-;; channel's full message history in *windows*, caches each window
-;; on disk, and stitches the windows back together.
-;; This chapter explains the cache model, then tours every public
-;; function.
+;; `scicloj.zulipdata.pull` sits above the
+;; [REST client](./zulipdata_book.client.html). It walks a channel's
+;; full message history in *windows*, caches each window on disk,
+;; and stitches the windows back together. This chapter explains
+;; the cache model, then tours every public function.
 ;;
 ;; The big idea: each window is identified by
 ;; `(channel-name, anchor-id, batch-size)`. Once a window has been
@@ -183,11 +183,12 @@ pull/default-batch-size
 ;; You now have raw messages — vectors of maps with Zulip's snake_case
 ;; field names. The next step is shaping them into datasets:
 ;;
-;; - **Tablecloth views** — `scicloj.zulipdata.views` projects raw
-;;   messages into one-row-per-thing datasets (timeline, reactions,
-;;   edits, links).
-;; - **Anonymized views** — `scicloj.zulipdata.anonymize` produces
-;;   parallel datasets with sender identities and topic strings
-;;   replaced by stable hash keys.
-;; - **API Reference** — every public function in one chapter, with
-;;   docstrings and a worked example each.
+;; - [**Tablecloth views**](./zulipdata_book.views.html) —
+;;   `scicloj.zulipdata.views` projects raw messages into
+;;   one-row-per-thing datasets (timeline, reactions, edits, links).
+;; - [**Anonymized views**](./zulipdata_book.anonymize.html) —
+;;   `scicloj.zulipdata.anonymize` produces parallel datasets with
+;;   sender identities and topic strings replaced by stable hash keys.
+;; - [**API Reference**](./zulipdata_book.api_reference.html) —
+;;   every public function in one chapter, with docstrings and a
+;;   worked example each.

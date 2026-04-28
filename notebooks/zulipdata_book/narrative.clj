@@ -8,11 +8,14 @@
 ;;
 ;; Everything in this chapter operates on an *anonymized timeline* —
 ;; a tablecloth dataset with `:channel`, `:user-key`, and `:timestamp`
-;; columns produced by `scicloj.zulipdata.anonymize/anonymized-timeline`.
-;; The helpers do not care that it is anonymized; they just want those
-;; columns. We work on the anonymized form throughout because that is
-;; what the next step (graph views) expects, and because there is no
-;; reason to handle real names for these aggregates.
+;; columns produced by `anonymized-timeline` (see
+;; [**Anonymized views**](./zulipdata_book.anonymize.html)).
+;; The helpers do not care that it is anonymized; they just want
+;; those columns. We work on the anonymized form throughout because
+;; that is what the next step
+;; ([**Graph views**](./zulipdata_book.graph.html))
+;; expects, and because there is no reason to handle real names for
+;; these aggregates.
 
 (ns zulipdata-book.narrative
   (:require
@@ -170,8 +173,10 @@ lifecycles
 
 ;; ## Where to go next
 ;;
-;; - **Graph views** — `scicloj.zulipdata.graph` builds
-;;   co-membership and co-presence graphs from the same anonymized
-;;   timeline, plus utilities for community detection and rendering.
-;; - **API Reference** — every public function in one chapter, with
-;;   docstrings and a worked example each.
+;; - [**Graph views**](./zulipdata_book.graph.html) —
+;;   `scicloj.zulipdata.graph` builds co-membership and
+;;   co-presence graphs from the same anonymized timeline, plus
+;;   utilities for community detection and rendering.
+;; - [**API Reference**](./zulipdata_book.api_reference.html) —
+;;   every public function in one chapter, with docstrings and a
+;;   worked example each.

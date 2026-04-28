@@ -1,10 +1,11 @@
 ;; # Anonymized views
 ;;
-;; The plain views in `scicloj.zulipdata.views` carry real names,
-;; topic strings, and message text. That is the right shape for
-;; analyses that stay on your machine — but the moment a chart, a
-;; markdown table, or an exported dataset leaves your laptop, real
-;; identities and quoted content travel with it.
+;; The plain views in
+;; [`scicloj.zulipdata.views`](./zulipdata_book.views.html)
+;; carry real names, topic strings, and message text. That is the
+;; right shape for analyses that stay on your machine — but the
+;; moment a chart, a markdown table, or an exported dataset leaves
+;; your laptop, real identities and quoted content travel with it.
 ;;
 ;; `scicloj.zulipdata.anonymize` produces parallel views with:
 ;;
@@ -84,9 +85,10 @@
 
 ;; ## One row per message — anonymized
 ;;
-;; `anonymized-timeline` mirrors `views/messages-timeline` but with
-;; sender ids, sender names, subject strings, and message content
-;; replaced or removed.
+;; `anonymized-timeline` mirrors
+;; [`views/messages-timeline`](./zulipdata_book.views.html#one-row-per-message)
+;; but with sender ids, sender names, subject strings, and message
+;; content replaced or removed.
 
 (def anon-timeline (anon/anonymized-timeline messages))
 
@@ -111,9 +113,11 @@
 
 ;; ## One row per reaction — anonymized
 ;;
-;; `anonymized-reactions` keeps the emoji name (community-sentiment
-;; signal, not message content) but anonymizes both the reactor's
-;; identity and the message's subject.
+;; `anonymized-reactions` mirrors
+;; [`views/reactions-long`](./zulipdata_book.views.html#one-row-per-reaction).
+;; The emoji name (a community-sentiment signal, not message
+;; content) is preserved; the reactor's identity and the message's
+;; subject are both anonymized.
 
 (def anon-reactions (anon/anonymized-reactions messages))
 
@@ -123,9 +127,11 @@
 
 ;; ## One row per edit — anonymized
 ;;
-;; `anonymized-edits` mirrors `views/edits-long` with the editor and
-;; prior subject anonymized and prior content dropped. `:prev-stream`
-;; (a numeric stream id, not PII) is left as-is.
+;; `anonymized-edits` mirrors
+;; [`views/edits-long`](./zulipdata_book.views.html#one-row-per-edit)
+;; with the editor and prior subject anonymized and prior content
+;; dropped. `:prev-stream` (a numeric stream id, not PII) is left
+;; as-is.
 
 (def anon-edits (anon/anonymized-edits messages))
 
@@ -155,11 +161,13 @@
 
 ;; ## Where to go next
 ;;
-;; - **Narrative helpers** — `scicloj.zulipdata.narrative` adds time
-;;   columns, channel-lifecycle summaries, and newcomer-tracking
-;;   helpers that operate on the anonymized timeline.
-;; - **Graph views** — `scicloj.zulipdata.graph` builds
-;;   co-membership and co-presence graphs from the same anonymized
-;;   timeline.
-;; - **API Reference** — every public function in one chapter, with
-;;   docstrings and a worked example each.
+;; - [**Narrative helpers**](./zulipdata_book.narrative.html) —
+;;   `scicloj.zulipdata.narrative` adds time columns,
+;;   channel-lifecycle summaries, and newcomer-tracking helpers
+;;   that operate on the anonymized timeline.
+;; - [**Graph views**](./zulipdata_book.graph.html) —
+;;   `scicloj.zulipdata.graph` builds co-membership and
+;;   co-presence graphs from the same anonymized timeline.
+;; - [**API Reference**](./zulipdata_book.api_reference.html) —
+;;   every public function in one chapter, with docstrings and a
+;;   worked example each.

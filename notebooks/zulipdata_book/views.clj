@@ -1,10 +1,11 @@
 ;; # Tablecloth views
 ;;
-;; Raw Zulip messages are nested maps with snake_case keys. Useful for
-;; some things, awkward for analysis. `scicloj.zulipdata.views`
-;; offers four projections that turn a sequence of raw messages into
-;; tablecloth datasets — flat, scalar-only, ready for grouping and
-;; plotting.
+;; Raw Zulip messages — pulled via
+;; [`scicloj.zulipdata.pull`](./zulipdata_book.pull.html) — are
+;; nested maps with snake_case keys. Useful for some things,
+;; awkward for analysis. `scicloj.zulipdata.views` offers four
+;; projections that turn a sequence of raw messages into tablecloth
+;; datasets — flat, scalar-only, ready for grouping and plotting.
 ;;
 ;; Two design choices worth knowing about:
 ;;
@@ -48,7 +49,10 @@
 ;;
 ;; `messages-timeline` is the primary view. One row per message,
 ;; only scalar columns — no reactions list, no edit history, no
-;; nested topic-link records. Those live in their own views.
+;; nested topic-link records. Those live in their own views. For
+;; an anonymized parallel that drops sender names and message
+;; content, see
+;; [`anonymized-timeline`](./zulipdata_book.anonymize.html#one-row-per-message-anonymized).
 
 (def timeline (views/messages-timeline messages))
 
@@ -155,10 +159,14 @@
 
 ;; ## Where to go next
 ;;
-;; - **Anonymized views** — `scicloj.zulipdata.anonymize` mirrors
-;;   `messages-timeline`, `reactions-long`, and `edits-long` with
-;;   sender names and topic strings replaced by stable hash keys, and
-;;   message content dropped. Use those for any artifact that leaves
-;;   your machine.
-;; - **API Reference** — every public function in one chapter, with
-;;   docstrings and a worked example each.
+;; - [**Anonymized views**](./zulipdata_book.anonymize.html) —
+;;   `scicloj.zulipdata.anonymize` mirrors `messages-timeline`,
+;;   `reactions-long`, and `edits-long` with sender names and topic
+;;   strings replaced by stable hash keys, and message content
+;;   dropped. Use those for any artifact that leaves your machine.
+;; - [**Narrative helpers**](./zulipdata_book.narrative.html) —
+;;   adds time columns, channel-lifecycle summaries, and
+;;   newcomer-tracking helpers built on top of the timeline.
+;; - [**API Reference**](./zulipdata_book.api_reference.html) —
+;;   every public function in one chapter, with docstrings and a
+;;   worked example each.

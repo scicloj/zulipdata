@@ -29,8 +29,9 @@
 
 ;; ## A multi-channel fixture
 ;;
-;; The same four-channel anonymized timeline used in the previous
-;; chapter — small enough to render, large enough to have non-trivial
+;; The same four-channel anonymized timeline used in
+;; [**Narrative helpers**](./zulipdata_book.narrative.html) —
+;; small enough to render, large enough to have non-trivial
 ;; structure.
 
 (def fixture-channels
@@ -205,8 +206,9 @@
 ;;
 ;; You have now walked the full tutorial. From here:
 ;;
-;; - **API Reference** — every public function in one chapter, with
-;;   docstrings and a worked example each. The right place to look
-;;   when you know which function you want.
+;; - [**API Reference**](./zulipdata_book.api_reference.html) —
+;;   every public function in one chapter, with docstrings and a
+;;   worked example each. The right place to look when you know
+;;   which function you want.
 ;; - The source under `src/scicloj/zulipdata/` is small enough to
 ;;   read straight through whenever a docstring leaves you uncertain.

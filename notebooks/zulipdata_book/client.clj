@@ -140,10 +140,12 @@ client/base-url
 
 ;; ## Where to go next
 ;;
-;; - **Pulling and caching channels** — `scicloj.zulipdata.pull`
-;;   builds on this client to walk a channel's full history in
-;;   resumable, cached windows.
-;; - **Tablecloth views** — `scicloj.zulipdata.views` projects raw
-;;   messages into purpose-built datasets.
-;; - **API Reference** — every public function in one chapter, with
-;;   docstrings and a worked example each.
+;; - [**Pulling and caching channels**](./zulipdata_book.pull.html) —
+;;   `scicloj.zulipdata.pull` builds on this client to walk a
+;;   channel's full history in resumable, cached windows.
+;; - [**Tablecloth views**](./zulipdata_book.views.html) —
+;;   `scicloj.zulipdata.views` projects raw messages into
+;;   purpose-built datasets.
+;; - [**API Reference**](./zulipdata_book.api_reference.html) —
+;;   every public function in one chapter, with docstrings and a
+;;   worked example each.

@@ -84,19 +84,22 @@ message-count
 ;;
 ;; The rest of this book is one chapter per namespace:
 ;;
-;; - **The REST client** — what `client/whoami` is doing under the
-;;   hood, plus the four endpoints the library wraps.
-;; - **Pulling and caching channels** — the cache model behind
-;;   `pull/pull-channels!`, plus options like `:refresh-tip?` for
-;;   keeping a corpus up to date.
-;; - **Tablecloth views** — `views/messages-timeline`,
-;;   `views/reactions-long`, `views/edits-long`, and
-;;   `views/topic-links-long`.
-;; - **Anonymized views** — `scicloj.zulipdata.anonymize` mirrors
-;;   the plain views with HMAC-hashed user keys and dropped content,
-;;   suitable for sharing dataset views without leaking real names
-;;   or message text.
-;; - **Narrative helpers** — `scicloj.zulipdata.narrative` for date
-;;   columns, channel lifecycles, and newcomer tracking.
-;; - **Graph views** — `scicloj.zulipdata.graph` for co-membership
+;; - [**The REST client**](./zulipdata_book.client.html) — what
+;;   `client/whoami` is doing under the hood, plus the four
+;;   endpoints the library wraps.
+;; - [**Pulling and caching channels**](./zulipdata_book.pull.html) —
+;;   the cache model behind `pull/pull-channels!`, plus options
+;;   like `:refresh-tip?` for keeping a corpus up to date.
+;; - [**Tablecloth views**](./zulipdata_book.views.html) —
+;;   `views/messages-timeline`, `views/reactions-long`,
+;;   `views/edits-long`, and `views/topic-links-long`.
+;; - [**Anonymized views**](./zulipdata_book.anonymize.html) —
+;;   parallel views with sender names and topic strings replaced
+;;   by stable hash keys, message content dropped — for sharing
+;;   datasets without leaking identities or text.
+;; - [**Narrative helpers**](./zulipdata_book.narrative.html) —
+;;   date columns, channel lifecycles, and newcomer tracking.
+;; - [**Graph views**](./zulipdata_book.graph.html) — co-membership
 ;;   and co-presence graphs, community detection, and rendering.
+;; - [**API Reference**](./zulipdata_book.api_reference.html) —
+;;   every public function in one chapter.

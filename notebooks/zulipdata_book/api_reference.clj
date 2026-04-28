@@ -3,22 +3,24 @@
 ;; Complete reference for every public function and constant in
 ;; the zulipdata library:
 ;;
-;; - `scicloj.zulipdata.client` — REST client for the Clojurians
-;;   Zulip instance.
-;; - `scicloj.zulipdata.pull` — paginated, cached pulls of channel
-;;   history.
-;; - `scicloj.zulipdata.views` — tablecloth projections of raw
-;;   messages.
-;; - `scicloj.zulipdata.anonymize` — anonymized projections suitable
-;;   for sharing.
-;; - `scicloj.zulipdata.narrative` — date helpers, channel
-;;   lifecycles, newcomer tracking.
-;; - `scicloj.zulipdata.graph` — co-membership and co-presence graphs,
-;;   community detection, rendering.
+;; - [`scicloj.zulipdata.client`](./zulipdata_book.client.html) —
+;;   REST client for the Clojurians Zulip instance.
+;; - [`scicloj.zulipdata.pull`](./zulipdata_book.pull.html) —
+;;   paginated, cached pulls of channel history.
+;; - [`scicloj.zulipdata.views`](./zulipdata_book.views.html) —
+;;   tablecloth projections of raw messages.
+;; - [`scicloj.zulipdata.anonymize`](./zulipdata_book.anonymize.html) —
+;;   anonymized projections suitable for sharing.
+;; - [`scicloj.zulipdata.narrative`](./zulipdata_book.narrative.html) —
+;;   date helpers, channel lifecycles, newcomer tracking.
+;; - [`scicloj.zulipdata.graph`](./zulipdata_book.graph.html) —
+;;   co-membership and co-presence graphs, community detection,
+;;   rendering.
 ;;
-;; Each entry shows the docstring, a live example, and a test. For
-;; conceptual walkthroughs, see the per-namespace chapters in this
-;; book.
+;; Each entry shows the docstring, a live example, and a test. The
+;; namespace links above lead to the conceptual walkthrough for
+;; each — read those for *why* and *when*; come back here for *what
+;; and how*.
 
 ^{:kindly/hide-code true
   :kindly/options  {:kinds-that-hide-code #{:kind/doc}}}
