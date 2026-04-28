@@ -55,7 +55,7 @@ me
 (keys me)
 
 (kind/test-last
- (= [:email :full-name :user-id :is-bot? :is-admin? :role]))
+ (= [:email :full-name :user-id :is-bot :is-admin :role]))
 
 ;; If you need the full `/users/me` response — including fields
 ;; `whoami` does not surface, like timezone or avatar URL — use

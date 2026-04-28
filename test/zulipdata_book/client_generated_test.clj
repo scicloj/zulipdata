@@ -17,7 +17,7 @@
 
 (deftest
  t7_l57
- (is (= v6_l55 [:email :full-name :user-id :is-bot? :is-admin? :role])))
+ (is (= v6_l55 [:email :full-name :user-id :is-bot :is-admin :role])))
 
 
 (def v9_l64 (-> (client/get-me) keys count))

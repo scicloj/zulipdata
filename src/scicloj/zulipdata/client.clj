@@ -118,8 +118,8 @@
     {:email     (:email u)
      :full-name (:full_name u)
      :user-id   (:user_id u)
-     :is-bot?   (:is_bot u)
-     :is-admin? (:is_admin u)
+     :is-bot    (:is_bot u)
+     :is-admin  (:is_admin u)
      :role      (:role u)}))
 
 (defn get-me

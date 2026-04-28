@@ -96,7 +96,7 @@ client/base-url
 
 (kind/test-last [(fn [m] (every? (set (keys m))
                                  [:email :full-name :user-id
-                                  :is-bot? :is-admin? :role]))])
+                                  :is-bot :is-admin :role]))])
 
 (kind/doc #'client/get-me)
 
@@ -190,7 +190,7 @@ pull/default-batch-size
 
 (-> sample-timeline tc/column-names sort)
 
-(kind/test-last [= '(:channel :client :content :content-length :edited?
+(kind/test-last [= '(:channel :client :content :content-length :edited
                               :id :instant :last-edit-ts :sender
                               :sender-id :stream-id :subject :timestamp)])
 
@@ -246,7 +246,7 @@ pull/default-batch-size
 (-> (anon/anonymized-timeline sample-messages)
     tc/column-names sort)
 
-(kind/test-last [= '(:channel :client :content-length :edited? :id
+(kind/test-last [= '(:channel :client :content-length :edited :id
                               :last-edit-ts :reaction-count :stream-id
                               :subject-key :timestamp :user-key)])
 
@@ -416,7 +416,7 @@ pull/default-batch-size
 (kind/doc #'graph/->dot)
 
 (let [g   (graph/channel-comembership-graph sample-with-time)
-      dot (graph/->dot g :directed? false)]
+      dot (graph/->dot g :directed false)]
   (and (string? dot)
        (clojure.string/starts-with? dot "graph ")))
 

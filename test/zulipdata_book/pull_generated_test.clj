@@ -94,7 +94,7 @@
  v36_l168
  (def
   kindly-dev-pull-fresh
-  (pull/pull-channel! "kindly-dev" 0 :refresh-tip? true)))
+  (pull/pull-channel! "kindly-dev" 0 :refresh-tip true)))
 
 
 (def v37_l171 (:message-count kindly-dev-pull-fresh))
@@ -108,3 +108,17 @@
 
 
 (deftest t40_l178 (is (= v39_l176 true)))
+
+
+(def
+ v42_l200
+ (def
+  kindly-and-noj
+  (pull/pull-channels! ["kindly-dev" "noj-dev"] :parallelism 2)))
+
+
+(def
+ v43_l203
+ (map
+  (fn [[k v]] [k (:message-count v)])
+  (dissoc kindly-and-noj :not-found)))

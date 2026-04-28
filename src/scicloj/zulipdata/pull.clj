@@ -7,7 +7,9 @@
    `~/.cache/zulipdata-clojurians/` by default."
   (:require [scicloj.zulipdata.client :as client]
             [scicloj.pocket :as pocket]
-            [clojure.java.io :as io]))
+            [ham-fisted.api :as hf]
+            [clojure.java.io :as io])
+  (:import [java.util.concurrent ForkJoinPool]))
 
 (defn- resolve-cache-dir []
   (let [dir (or (System/getenv "ZULIP_CACHE_DIR")
@@ -52,27 +54,27 @@
    `start-anchor-id`. Returns `{:pages [...], :message-count n}`.
 
    Options:
-     :batch-size   — messages per window (default 5000)
-     :refresh-tip? — when true, any cached page with `found_newest: true`
-                     is invalidated and re-fetched once, then the walk
-                     continues if new full windows appeared. Use to catch
-                     up after messages were posted since the last pull.
+     :batch-size  — messages per window (default 5000)
+     :refresh-tip — when true, any cached page with `found_newest: true`
+                    is invalidated and re-fetched once, then the walk
+                    continues if new full windows appeared. Use to catch
+                    up after messages were posted since the last pull.
 
-   With `:refresh-tip? false` (default), repeated calls are served
+   With `:refresh-tip false` (default), repeated calls are served
    entirely from cache."
   [stream-name start-anchor-id
-   & {:keys [batch-size refresh-tip?]
+   & {:keys [batch-size refresh-tip]
       :or   {batch-size default-batch-size}}]
-  (loop [anchor          start-anchor-id
-         pages           []
-         total           0
-         refreshed-here? false]
+  (loop [anchor         start-anchor-id
+         pages          []
+         total          0
+         refreshed-here false]
     (let [page (fetch-window stream-name anchor batch-size)
           msgs (:messages page)
           n    (count msgs)]
       (cond
         ;; stale tip — invalidate once, loop at the same anchor
-        (and refresh-tip? (:found_newest page) (not refreshed-here?))
+        (and refresh-tip (:found_newest page) (not refreshed-here))
         (do (invalidate-window! stream-name anchor batch-size)
             (recur anchor pages total true))
 
@@ -102,22 +104,45 @@
        (map (juxt :name identity))
        (into {})))
 
+(def default-parallelism
+  "Default number of channels pulled concurrently by `pull-channels!`.
+   Channels are independent (separate cache keys, separate Zulip
+   endpoints), so per-channel work parallelises cleanly. The cap is
+   small to stay polite to the Zulip API."
+  8)
+
 (defn pull-channels!
   "Pull a collection of channels by name. Returns a map
    `{channel-name {:pages ... :message-count ... :stream-id ... :first-message-id ...}}`.
 
    First-message ids are resolved from `/streams`. Any unknown channel
-   names are returned under key `:not-found` as a vector."
-  [channel-names & {:keys [batch-size refresh-tip?] :as opts}]
+   names are returned under key `:not-found` as a vector.
+
+   Options:
+     :batch-size  — passed through to `pull-channel!` (default 5000)
+     :refresh-tip — passed through to `pull-channel!`
+     :parallelism — number of channels to pull concurrently
+                    (default `default-parallelism`, currently 8).
+                    Pass 1 for fully sequential pulls."
+  [channel-names & {:keys [batch-size refresh-tip parallelism] :as opts
+                    :or   {parallelism default-parallelism}}]
   (let [by-name   (streams-by-name)
-        {known true unknown false} (group-by #(contains? by-name %) channel-names)]
-    (into {:not-found (vec unknown)}
-          (for [name known
-                :let [{:keys [stream_id first_message_id]} (by-name name)
-                      pulled (pull-channel! name first_message_id opts)]]
-            [name (assoc pulled
-                         :stream-id stream_id
-                         :first-message-id first_message_id)]))))
+        {known true unknown false} (group-by #(contains? by-name %) channel-names)
+        per-channel-opts (dissoc opts :parallelism)
+        pull-one (fn [name]
+                   (let [{:keys [stream_id first_message_id]} (by-name name)
+                         pulled (pull-channel! name first_message_id per-channel-opts)]
+                     [name (assoc pulled
+                                  :stream-id stream_id
+                                  :first-message-id first_message_id)]))
+        pairs    (if (<= parallelism 1)
+                   (mapv pull-one known)
+                   (let [pool (ForkJoinPool. (int parallelism))]
+                     (try
+                       (vec (hf/pmap-opts {:pool pool :n-lookahead parallelism}
+                                          pull-one known))
+                       (finally (.shutdown pool)))))]
+    (into {:not-found (vec unknown)} pairs)))
 
 (defn public-channel-names
   "Names of all channels visible to the bot that are either public or web-public."

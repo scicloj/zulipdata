@@ -135,7 +135,7 @@
   co-channel-dot
   (graph/->dot
    co-channel
-   :directed?
+   :directed
    false
    :edge-label
    (fn [[_ _ w]] (str (long w))))))

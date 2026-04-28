@@ -189,7 +189,7 @@
 
 (def co-channel-dot
   (graph/->dot co-channel
-               :directed? false
+               :directed false
                :edge-label (fn [[_ _ w]] (str (long w)))))
 
 (kind/graphviz co-channel-dot)

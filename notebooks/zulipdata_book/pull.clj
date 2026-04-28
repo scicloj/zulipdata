@@ -153,20 +153,20 @@ pull/default-batch-size
 ;; run it here — a full pull on a fresh cache can take minutes — but
 ;; this is the call to reach for when building a corpus-wide dataset.
 
-;; ## Catching up: the `:refresh-tip?` option
+;; ## Catching up: the `:refresh-tip` option
 ;;
 ;; By default, repeated calls are entirely cache-served. That is
 ;; usually what you want — but it means a re-run misses any messages
 ;; posted since the last pull, because the final cached window will
 ;; have been stored with `:found_newest true`.
 ;;
-;; Pass `:refresh-tip? true` to invalidate any cached page with
+;; Pass `:refresh-tip true` to invalidate any cached page with
 ;; `:found_newest true`, re-fetch it, and continue walking if new full
 ;; windows now appear. This is the right option for keeping a corpus
 ;; up to date without rebuilding it from scratch.
 
 (def kindly-dev-pull-fresh
-  (pull/pull-channel! "kindly-dev" 0 :refresh-tip? true))
+  (pull/pull-channel! "kindly-dev" 0 :refresh-tip true))
 
 (:message-count kindly-dev-pull-fresh)
 
@@ -177,6 +177,31 @@ pull/default-batch-size
 
 (kind/test-last
  (= true))
+
+;; ## Pulling many channels in parallel
+;;
+;; `pull-channels!` accepts a `:parallelism` option (default
+;; `pull/default-parallelism`, currently 8). Channels are
+;; independent — separate cache keys, separate Zulip endpoints — so
+;; per-channel work parallelises cleanly.
+;;
+;; The cap is small to stay polite to the Zulip API. Pass
+;; `:parallelism 1` for fully sequential pulls. Empirically, on the
+;; warm-cache refresh path:
+;;
+;; - sequential (`:parallelism 1`) is ~24 s for 15 channels
+;; - parallel (`:parallelism 8`, default) is ~3 s — about 8× faster
+;;
+;; Bandwidth is not the bottleneck for refresh; per-call latency is,
+;; and parallelism overlaps it. For initial bulk pulls of large
+;; channels (`slack-archive`-sized), bandwidth matters more and the
+;; speedup is smaller.
+
+(def kindly-and-noj
+  (pull/pull-channels! ["kindly-dev" "noj-dev"] :parallelism 2))
+
+(map (fn [[k v]] [k (:message-count v)])
+     (dissoc kindly-and-noj :not-found))
 
 ;; ## Where to go next
 ;;

@@ -45,14 +45,14 @@
  (->
   timeline
   (tc/select-columns
-   [:id :instant :channel :sender :content-length :edited?])
+   [:id :instant :channel :sender :content-length :edited])
   (tc/head 3)))
 
 
 (def v15_l78 (-> timeline :instant first type))
 
 
-(def v17_l83 (-> timeline (tc/select-rows :edited?) tc/row-count))
+(def v17_l83 (-> timeline (tc/select-rows :edited) tc/row-count))
 
 
 (def v19_l91 (def reactions (views/reactions-long messages)))
@@ -109,7 +109,7 @@
    (fn
     [ds]
     (mapv
-     (fn* [p1__51540#] (some-> p1__51540# (java.net.URI.) .getHost))
+     (fn* [p1__55156#] (some-> p1__55156# (java.net.URI.) .getHost))
      (:link-url ds))))
   (tc/group-by [:host])
   (tc/aggregate {:n tc/row-count})

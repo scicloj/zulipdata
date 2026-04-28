@@ -96,7 +96,7 @@
     [m]
     (every?
      (set (keys m))
-     [:email :full-name :user-id :is-bot? :is-admin? :role]))
+     [:email :full-name :user-id :is-bot :is-admin :role]))
    v20_l95)))
 
 
@@ -233,7 +233,7 @@
      :client
      :content
      :content-length
-     :edited?
+     :edited
      :id
      :instant
      :last-edit-ts
@@ -351,7 +351,7 @@
    '(:channel
      :client
      :content-length
-     :edited?
+     :edited
      :id
      :last-edit-ts
      :reaction-count
@@ -685,7 +685,7 @@
   [g
    (graph/channel-comembership-graph sample-with-time)
    dot
-   (graph/->dot g :directed? false)]
+   (graph/->dot g :directed false)]
   (and (string? dot) (clojure.string/starts-with? dot "graph "))))
 
 

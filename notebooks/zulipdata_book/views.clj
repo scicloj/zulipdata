@@ -68,7 +68,7 @@
 ;; A peek at the first three rows, with a few interesting columns:
 
 (-> timeline
-    (tc/select-columns [:id :instant :channel :sender :content-length :edited?])
+    (tc/select-columns [:id :instant :channel :sender :content-length :edited])
     (tc/head 3))
 
 ;; The `:instant` column is a Java `Instant` derived from
@@ -77,10 +77,10 @@
 
 (-> timeline :instant first type)
 
-;; The `:edited?` column is a structural derivation from the raw
+;; The `:edited` column is a structural derivation from the raw
 ;; message — true iff `:last_edit_timestamp` is present.
 
-(-> timeline (tc/select-rows :edited?) tc/row-count)
+(-> timeline (tc/select-rows :edited) tc/row-count)
 
 ;; ## One row per reaction
 ;;
@@ -189,7 +189,7 @@
     (tc/head 4))
 
 ;; The same view shape applies — `:reaction-count`, `:content-length`,
-;; `:edited?`, `:timestamp`, etc. — but here you see the columns the
+;; `:edited`, `:timestamp`, etc. — but here you see the columns the
 ;; rest of the book deliberately keeps hidden.
 
 ;; ## Where to go next

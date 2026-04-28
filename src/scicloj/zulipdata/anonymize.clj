@@ -56,7 +56,7 @@
            :subject-key    (subject-key (:subject m))
            :user-key       (user-key (:sender_id m))
            :client         (:client m)
-           :edited?        (contains? m :last_edit_timestamp)
+           :edited         (contains? m :last_edit_timestamp)
            :last-edit-ts   (:last_edit_timestamp m)
            :content-length (count (:content m))
            :reaction-count (count (:reactions m))})

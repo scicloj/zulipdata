@@ -21,7 +21,7 @@
            :sender-id      (:sender_id m)
            :sender         (:sender_full_name m)
            :client         (:client m)
-           :edited?        (contains? m :last_edit_timestamp)
+           :edited         (contains? m :last_edit_timestamp)
            :last-edit-ts   (:last_edit_timestamp m)
            :content        (:content m)
            :content-length (count (:content m))})

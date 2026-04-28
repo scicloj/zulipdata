@@ -165,17 +165,17 @@
                 (.edgeSet g))})
 
 (defn ->dot
-  "Render a JGraphT graph as Graphviz DOT source. `directed?` chooses
+  "Render a JGraphT graph as Graphviz DOT source. `directed` chooses
    between `digraph`/`graph`. `node-label` and `edge-label` are
    optional fns producing label strings."
   [^org.jgrapht.Graph g
-   & {:keys [directed? node-label edge-label name]
-      :or   {directed?   true
+   & {:keys [directed node-label edge-label name]
+      :or   {directed   true
              node-label  str
              edge-label  (constantly nil)
              name        "G"}}]
-  (let [arrow (if directed? "->" "--")
-        kind  (if directed? "digraph" "graph")
+  (let [arrow (if directed "->" "--")
+        kind  (if directed "digraph" "graph")
         sb    (StringBuilder.)]
     (.append sb (str kind " " name " {\n"))
     (.append sb "  rankdir=LR;\n  node [shape=box, style=rounded];\n")
