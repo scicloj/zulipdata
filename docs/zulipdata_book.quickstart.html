@@ -402,8 +402,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a> <span class="at">:last-edit-ts</span></span>
 <span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a> <span class="at">:client</span></span>
 <span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a> <span class="at">:channel</span></span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a> <span class="at">:edited</span>?</span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a> <span class="at">:stream-id</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a> <span class="at">:stream-id</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a> <span class="at">:edited</span></span>
 <span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a> <span class="at">:content-length</span></span>
 <span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a> <span class="at">:id</span></span>
 <span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a> <span class="at">:sender</span></span>
@@ -417,7 +417,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The rest of this book is one chapter per namespace:</p>
 <ul>
 <li><p><a href="./zulipdata_book.client.html"><strong>The REST client</strong></a> — what <code>client/whoami</code> is doing under the hood, plus the four endpoints the library wraps.</p></li>
-<li><p><a href="./zulipdata_book.pull.html"><strong>Pulling and caching channels</strong></a> — the cache model behind <code>pull/pull-channels!</code>, plus options like <code>:refresh-tip?</code> for keeping a corpus up to date.</p></li>
+<li><p><a href="./zulipdata_book.pull.html"><strong>Pulling and caching channels</strong></a> — the cache model behind <code>pull/pull-channels!</code>, plus options like <code>:refresh-tip</code> for keeping a corpus up to date.</p></li>
 <li><p><a href="./zulipdata_book.views.html"><strong>Tablecloth views</strong></a> — <code>views/messages-timeline</code>, <code>views/reactions-long</code>, <code>views/edits-long</code>, and <code>views/topic-links-long</code>.</p></li>
 <li><p><a href="./zulipdata_book.anonymize.html"><strong>Anonymized views</strong></a> — parallel views with sender names and topic strings replaced by stable hash keys, message content dropped — for sharing datasets without leaking identities or text.</p></li>
 <li><p><a href="./zulipdata_book.narrative.html"><strong>Narrative helpers</strong></a> — date columns, channel lifecycles, and newcomer tracking.</p></li>

@@ -343,8 +343,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>{<span class="at">:email</span> <span class="st">"explore-bot@clojurians.zulipchat.com"</span>,</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a> <span class="at">:full-name</span> <span class="st">"explore"</span>,</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a> <span class="at">:user-id</span> <span class="dv">820164</span>,</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a> <span class="at">:is-bot</span>? <span class="va">true</span>,</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a> <span class="at">:is-admin</span>? <span class="va">false</span>,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a> <span class="at">:is-bot</span> <span class="va">true</span>,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a> <span class="at">:is-admin</span> <span class="va">false</span>,</span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a> <span class="at">:role</span> <span class="dv">400</span>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The shape:</p>
@@ -352,7 +352,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">keys</span> me)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="printedClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>(<span class="at">:email</span> <span class="at">:full-name</span> <span class="at">:user-id</span> <span class="at">:is-bot</span>? <span class="at">:is-admin</span>? <span class="at">:role</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>(<span class="at">:email</span> <span class="at">:full-name</span> <span class="at">:user-id</span> <span class="at">:is-bot</span> <span class="at">:is-admin</span> <span class="at">:role</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>If you need the full <code>/users/me</code> response — including fields <code>whoami</code> does not surface, like timezone or avatar URL — use <code>get-me</code>. We just print the count of fields here:</p>
 <div class="sourceClojure">
@@ -533,7 +533,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="printedClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>{<span class="at">:realm</span>_name <span class="st">"Clojurians"</span>,</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a> <span class="at">:realm</span>_uri <span class="st">"https://clojurians.zulipchat.com"</span>,</span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a> <span class="at">:zulip</span>_version <span class="st">"12.0-beta2-5-gacde61d6b0"</span>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a> <span class="at">:zulip</span>_version <span class="st">"12.0"</span>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="reliability-timeouts-and-retries" class="level2">

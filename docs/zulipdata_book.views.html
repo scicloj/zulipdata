@@ -361,8 +361,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a> <span class="at">:last-edit-ts</span></span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a> <span class="at">:client</span></span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a> <span class="at">:channel</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a> <span class="at">:edited</span>?</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a> <span class="at">:stream-id</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a> <span class="at">:stream-id</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a> <span class="at">:edited</span></span>
 <span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a> <span class="at">:content-length</span></span>
 <span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a> <span class="at">:id</span></span>
 <span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a> <span class="at">:sender</span></span>
@@ -373,7 +373,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>A peek at the first three rows, with a few interesting columns:</p>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">-&gt;</span> timeline</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    (tc/select-columns [<span class="at">:id</span> <span class="at">:instant</span> <span class="at">:channel</span> <span class="at">:sender</span> <span class="at">:content-length</span> <span class="at">:edited</span>?])</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    (tc/select-columns [<span class="at">:id</span> <span class="at">:instant</span> <span class="at">:channel</span> <span class="at">:sender</span> <span class="at">:content-length</span> <span class="at">:edited</span>])</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    (tc/head <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="clay-dataset">
@@ -384,8 +384,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <col style="width: 24%">
 <col style="width: 13%">
 <col style="width: 20%">
-<col style="width: 18%">
-<col style="width: 11%">
+<col style="width: 19%">
+<col style="width: 10%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -394,7 +394,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <th>:channel</th>
 <th>:sender</th>
 <th style="text-align: right;">:content-length</th>
-<th>:edited?</th>
+<th>:edited</th>
 </tr>
 </thead>
 <tbody>
@@ -432,9 +432,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="printedClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>java.<span class="kw">time</span>.Instant</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>The <code>:edited?</code> column is a structural derivation from the raw message — true iff <code>:last_edit_timestamp</code> is present.</p>
+<p>The <code>:edited</code> column is a structural derivation from the raw message — true iff <code>:last_edit_timestamp</code> is present.</p>
 <div class="sourceClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">-&gt;</span> timeline (tc/select-rows <span class="at">:edited</span>?) tc/row-count)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">-&gt;</span> timeline (tc/select-rows <span class="at">:edited</span>) tc/row-count)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="printedClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1244</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -703,7 +703,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 </div>
-<p>The same view shape applies — <code>:reaction-count</code>, <code>:content-length</code>, <code>:edited?</code>, <code>:timestamp</code>, etc. — but here you see the columns the rest of the book deliberately keeps hidden.</p>
+<p>The same view shape applies — <code>:reaction-count</code>, <code>:content-length</code>, <code>:edited</code>, <code>:timestamp</code>, etc. — but here you see the columns the rest of the book deliberately keeps hidden.</p>
 </section>
 <section id="where-to-go-next" class="level2">
 <h2 class="anchored" data-anchor-id="where-to-go-next">Where to go next</h2>

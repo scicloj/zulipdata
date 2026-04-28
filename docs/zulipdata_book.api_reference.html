@@ -445,8 +445,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>{<span class="at">:email</span> <span class="st">"explore-bot@clojurians.zulipchat.com"</span>,</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a> <span class="at">:full-name</span> <span class="st">"explore"</span>,</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a> <span class="at">:user-id</span> <span class="dv">820164</span>,</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a> <span class="at">:is-bot</span>? <span class="va">true</span>,</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a> <span class="at">:is-admin</span>? <span class="va">false</span>,</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a> <span class="at">:is-bot</span> <span class="va">true</span>,</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a> <span class="at">:is-admin</span> <span class="va">false</span>,</span>
 <span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a> <span class="at">:role</span> <span class="dv">400</span>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
@@ -515,10 +515,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="pull-channel" class="level3">
 <h3 class="anchored" data-anchor-id="pull-channel"><code>pull-channel!</code></h3>
-<p><code>[stream-name start-anchor-id &amp; {:keys [batch-size refresh-tip?], :or {batch-size default-batch-size}}]</code></p>
+<p><code>[stream-name start-anchor-id &amp; {:keys [batch-size refresh-tip], :or {batch-size default-batch-size}}]</code></p>
 <p>Walk forward through <code>stream-name</code> in cached windows, starting at <code>start-anchor-id</code>. Returns <code>{:pages [...], :message-count n}</code>.</p>
-<p>Options: :batch-size — messages per window (default 5000) :refresh-tip? — when true, any cached page with <code>found_newest: true</code> is invalidated and re-fetched once, then the walk continues if new full windows appeared. Use to catch up after messages were posted since the last pull.</p>
-<p>With <code>:refresh-tip? false</code> (default), repeated calls are served entirely from cache.</p>
+<p>Options: :batch-size — messages per window (default 5000) :refresh-tip — when true, any cached page with <code>found_newest: true</code> is invalidated and re-fetched once, then the walk continues if new full windows appeared. Use to catch up after messages were posted since the last pull.</p>
+<p>With <code>:refresh-tip false</code> (default), repeated calls are served entirely from cache.</p>
 <p>A complete walk from id zero to the channel’s tip. Result keys:</p>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">-&gt;</span> (pull/pull-channel! <span class="st">"kindly-dev"</span> <span class="dv">0</span>)</span>
@@ -545,9 +545,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="pull-channels" class="level3">
 <h3 class="anchored" data-anchor-id="pull-channels"><code>pull-channels!</code></h3>
-<p><code>[channel-names &amp; {:keys [batch-size refresh-tip?], :as opts}]</code></p>
+<p><code>[channel-names &amp; {:keys [batch-size refresh-tip parallelism], :as opts, :or {parallelism default-parallelism}}]</code></p>
 <p>Pull a collection of channels by name. Returns a map <code>{channel-name {:pages ... :message-count ... :stream-id ... :first-message-id ...}}</code>.</p>
 <p>First-message ids are resolved from <code>/streams</code>. Any unknown channel names are returned under key <code>:not-found</code> as a vector.</p>
+<p>Options: :batch-size — passed through to <code>pull-channel!</code> (default 5000) :refresh-tip — passed through to <code>pull-channel!</code> :parallelism — number of channels to pull concurrently (default <code>default-parallelism</code>, currently 8). Pass 1 for fully sequential pulls.</p>
 <p>Successful entries are keyed by name; unknown names land in <code>:not-found</code>.</p>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">-&gt;</span> (pull/pull-channels! [<span class="st">"kindly-dev"</span> <span class="st">"no-such-channel"</span>])</span>
@@ -597,7 +598,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a> <span class="at">:client</span></span>
 <span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a> <span class="at">:content</span></span>
 <span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a> <span class="at">:content-length</span></span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a> <span class="at">:edited</span>?</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a> <span class="at">:edited</span></span>
 <span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a> <span class="at">:id</span></span>
 <span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a> <span class="at">:instant</span></span>
 <span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a> <span class="at">:last-edit-ts</span></span>
@@ -704,7 +705,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb50"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>(<span class="at">:channel</span></span>
 <span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a> <span class="at">:client</span></span>
 <span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a> <span class="at">:content-length</span></span>
-<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a> <span class="at">:edited</span>?</span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a> <span class="at">:edited</span></span>
 <span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a> <span class="at">:id</span></span>
 <span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a> <span class="at">:last-edit-ts</span></span>
 <span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a> <span class="at">:reaction-count</span></span>
@@ -763,7 +764,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb55"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>(nar/ts-&gt;month-date <span class="dv">1725611765</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="printedClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb56"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>#object[java.<span class="kw">time</span>.LocalDate <span class="bn">0xa906c0a</span> <span class="st">"2024-09-01"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb56"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>#object[java.<span class="kw">time</span>.LocalDate <span class="bn">0x60b0871</span> <span class="st">"2024-09-01"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="ts-year-month" class="level3">
@@ -989,11 +990,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="dot" class="level3">
 <h3 class="anchored" data-anchor-id="dot"><code>-&gt;dot</code></h3>
-<p><code>[g &amp; {:keys [directed? node-label edge-label name], :or {directed? true, node-label str, edge-label (constantly nil), name "G"}}]</code></p>
-<p>Render a JGraphT graph as Graphviz DOT source. <code>directed?</code> chooses between <code>digraph</code>/<code>graph</code>. <code>node-label</code> and <code>edge-label</code> are optional fns producing label strings.</p>
+<p><code>[g &amp; {:keys [directed node-label edge-label name], :or {directed true, node-label str, edge-label (constantly nil), name "G"}}]</code></p>
+<p>Render a JGraphT graph as Graphviz DOT source. <code>directed</code> chooses between <code>digraph</code>/<code>graph</code>. <code>node-label</code> and <code>edge-label</code> are optional fns producing label strings.</p>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb91"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">let</span> [g   (graph/channel-comembership-graph sample-with-time)</span>
-<span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a>      dot (graph/-&gt;dot g <span class="at">:directed</span>? <span class="va">false</span>)]</span>
+<span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a>      dot (graph/-&gt;dot g <span class="at">:directed</span> <span class="va">false</span>)]</span>
 <span id="cb91-3"><a href="#cb91-3" aria-hidden="true" tabindex="-1"></a>  (<span class="kw">and</span> (<span class="kw">string?</span> dot)</span>
 <span id="cb91-4"><a href="#cb91-4" aria-hidden="true" tabindex="-1"></a>       (clojure.string/starts-with? dot <span class="st">"graph "</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>

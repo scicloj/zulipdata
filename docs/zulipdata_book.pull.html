@@ -267,7 +267,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#flattening-pages-into-messages" id="toc-flattening-pages-into-messages" class="nav-link" data-scroll-target="#flattening-pages-into-messages">Flattening pages into messages</a></li>
   <li><a href="#pulling-several-channels-at-once" id="toc-pulling-several-channels-at-once" class="nav-link" data-scroll-target="#pulling-several-channels-at-once">Pulling several channels at once</a></li>
   <li><a href="#pulling-everything-public" id="toc-pulling-everything-public" class="nav-link" data-scroll-target="#pulling-everything-public">Pulling everything public</a></li>
-  <li><a href="#catching-up-the-refresh-tip-option" id="toc-catching-up-the-refresh-tip-option" class="nav-link" data-scroll-target="#catching-up-the-refresh-tip-option">Catching up: the <code>:refresh-tip?</code> option</a></li>
+  <li><a href="#catching-up-the-refresh-tip-option" id="toc-catching-up-the-refresh-tip-option" class="nav-link" data-scroll-target="#catching-up-the-refresh-tip-option">Catching up: the <code>:refresh-tip</code> option</a></li>
+  <li><a href="#pulling-many-channels-in-parallel" id="toc-pulling-many-channels-in-parallel" class="nav-link" data-scroll-target="#pulling-many-channels-in-parallel">Pulling many channels in parallel</a></li>
   <li><a href="#where-to-go-next" id="toc-where-to-go-next" class="nav-link" data-scroll-target="#where-to-go-next">Where to go next</a></li>
   </ul>
 </nav>
@@ -453,12 +454,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><code>pull-public-channels!</code> is the convenience wrapper used by the full-corpus analyses: it pulls every channel in <code>public-channel-names</code> with whatever options you pass. We do <strong>not</strong> run it here — a full pull on a fresh cache can take minutes — but this is the call to reach for when building a corpus-wide dataset.</p>
 </section>
 <section id="catching-up-the-refresh-tip-option" class="level2">
-<h2 class="anchored" data-anchor-id="catching-up-the-refresh-tip-option">Catching up: the <code>:refresh-tip?</code> option</h2>
+<h2 class="anchored" data-anchor-id="catching-up-the-refresh-tip-option">Catching up: the <code>:refresh-tip</code> option</h2>
 <p>By default, repeated calls are entirely cache-served. That is usually what you want — but it means a re-run misses any messages posted since the last pull, because the final cached window will have been stored with <code>:found_newest true</code>.</p>
-<p>Pass <code>:refresh-tip? true</code> to invalidate any cached page with <code>:found_newest true</code>, re-fetch it, and continue walking if new full windows now appear. This is the right option for keeping a corpus up to date without rebuilding it from scratch.</p>
+<p>Pass <code>:refresh-tip true</code> to invalidate any cached page with <code>:found_newest true</code>, re-fetch it, and continue walking if new full windows now appear. This is the right option for keeping a corpus up to date without rebuilding it from scratch.</p>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>(<span class="bu">def</span><span class="fu"> kindly-dev-pull-fresh</span></span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  (pull/pull-channel! <span class="st">"kindly-dev"</span> <span class="dv">0</span> <span class="at">:refresh-tip</span>? <span class="va">true</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  (pull/pull-channel! <span class="st">"kindly-dev"</span> <span class="dv">0</span> <span class="at">:refresh-tip</span> <span class="va">true</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>(<span class="at">:message-count</span> kindly-dev-pull-fresh)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -472,6 +473,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="printedClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="va">true</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="pulling-many-channels-in-parallel" class="level2">
+<h2 class="anchored" data-anchor-id="pulling-many-channels-in-parallel">Pulling many channels in parallel</h2>
+<p><code>pull-channels!</code> accepts a <code>:parallelism</code> option (default <code>pull/default-parallelism</code>, currently 8). Channels are independent — separate cache keys, separate Zulip endpoints — so per-channel work parallelises cleanly.</p>
+<p>The cap is small to stay polite to the Zulip API. Pass <code>:parallelism 1</code> for fully sequential pulls. Empirically, on the warm-cache refresh path:</p>
+<ul>
+<li>sequential (<code>:parallelism 1</code>) is ~24 s for 15 channels</li>
+<li>parallel (<code>:parallelism 8</code>, default) is ~3 s — about 8× faster</li>
+</ul>
+<p>Bandwidth is not the bottleneck for refresh; per-call latency is, and parallelism overlaps it. For initial bulk pulls of large channels (<code>slack-archive</code>-sized), bandwidth matters more and the speedup is smaller.</p>
+<div class="sourceClojure">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb38"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>(<span class="bu">def</span><span class="fu"> kindly-and-noj</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  (pull/pull-channels! [<span class="st">"kindly-dev"</span> <span class="st">"noj-dev"</span>] <span class="at">:parallelism</span> <span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="sourceClojure">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">map</span> (<span class="kw">fn</span> [[k v]] [k (<span class="at">:message-count</span> v)])</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>     (<span class="kw">dissoc</span> kindly-and-noj <span class="at">:not-found</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="printedClojure">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb40"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>([<span class="st">"kindly-dev"</span> <span class="dv">1134</span>] [<span class="st">"noj-dev"</span> <span class="dv">2278</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="where-to-go-next" class="level2">
