@@ -208,6 +208,5 @@
 ;; - **API Reference** — every public function in one chapter, with
 ;;   docstrings and a worked example each. The right place to look
 ;;   when you know which function you want.
-;; - **Quickstart** — a good end-to-end recap.
 ;; - The source under `src/scicloj/zulipdata/` is small enough to
 ;;   read straight through whenever a docstring leaves you uncertain.

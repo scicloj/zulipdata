@@ -8,7 +8,10 @@
             [clojure.string :as str]
             [clojure.java.io :as io]))
 
-(def base-url "https://clojurians.zulipchat.com/api/v1")
+(def base-url
+  "API root for the Clojurians Zulip instance. All `api-get` paths are
+   resolved relative to this prefix."
+  "https://clojurians.zulipchat.com/api/v1")
 
 (def ^:private clojurians-site "https://clojurians.zulipchat.com")
 
@@ -90,6 +93,11 @@
         result))))
 
 (defn api-get
+  "Authenticated GET against the Clojurians Zulip API. `path` is
+   resolved relative to `base-url`; `query-params` is an optional map.
+   Wraps the request in a small retry loop with exponential backoff
+   and a 90-second per-request timeout. Returns the JSON body parsed
+   with keyword keys."
   ([path] (api-get path nil))
   ([path query-params]
    (-> (http-get-with-retry
@@ -114,9 +122,18 @@
      :is-admin? (:is_admin u)
      :role      (:role u)}))
 
-(defn get-me [] (api-get "/users/me"))
+(defn get-me
+  "Full `/users/me` response for the authenticated account. Use
+   `whoami` for a trimmed summary."
+  []
+  (api-get "/users/me"))
 
-(defn get-streams [] (api-get "/streams"))
+(defn get-streams
+  "Full `/streams` response — every stream the authenticated user can
+   see. Returns the raw Zulip API map; the stream entries live under
+   `:streams`."
+  []
+  (api-get "/streams"))
 
 (defn get-messages
   "Fetch messages matching a narrow. `narrow` is a vector of maps, e.g.

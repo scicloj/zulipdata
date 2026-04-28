@@ -9,14 +9,14 @@
 
 
 (def
- v3_l31
+ v3_l37
  (def
   fixture-channels
   ["kindly-dev" "tableplot-dev" "clay-dev" "noj-dev"]))
 
 
 (def
- v4_l34
+ v4_l40
  (def
   messages
   (->>
@@ -25,23 +25,23 @@
    (mapcat (fn [[_ r]] (pull/all-messages r))))))
 
 
-(def v5_l39 (count messages))
+(def v5_l45 (count messages))
 
 
-(def v7_l47 (def timeline (views/messages-timeline messages)))
+(def v7_l53 (def timeline (views/messages-timeline messages)))
 
 
-(def v8_l49 (tc/row-count timeline))
+(def v8_l55 (tc/row-count timeline))
 
 
-(deftest t9_l51 (is (= v8_l49 (count messages))))
+(deftest t9_l57 (is (= v8_l55 (count messages))))
 
 
-(def v11_l56 (tc/column-names timeline))
+(def v11_l62 (tc/column-names timeline))
 
 
 (def
- v13_l60
+ v13_l66
  (->
   timeline
   (tc/select-columns
@@ -49,23 +49,23 @@
   (tc/head 3)))
 
 
-(def v15_l68 (-> timeline :instant first type))
+(def v15_l74 (-> timeline :instant first type))
 
 
-(def v17_l73 (-> timeline (tc/select-rows :edited?) tc/row-count))
+(def v17_l79 (-> timeline (tc/select-rows :edited?) tc/row-count))
 
 
-(def v19_l81 (def reactions (views/reactions-long messages)))
+(def v19_l87 (def reactions (views/reactions-long messages)))
 
 
-(def v20_l83 (tc/row-count reactions))
+(def v20_l89 (tc/row-count reactions))
 
 
-(def v21_l85 (tc/column-names reactions))
+(def v21_l91 (tc/column-names reactions))
 
 
 (def
- v23_l89
+ v23_l95
  (->
   reactions
   (tc/group-by [:emoji-name])
@@ -74,34 +74,34 @@
   (tc/head 5)))
 
 
-(def v25_l103 (def edits (views/edits-long messages)))
+(def v25_l109 (def edits (views/edits-long messages)))
 
 
-(def v26_l105 (tc/row-count edits))
+(def v26_l111 (tc/row-count edits))
 
 
-(def v27_l107 (tc/column-names edits))
+(def v27_l113 (tc/column-names edits))
 
 
 (def
- v29_l112
+ v29_l118
  (->
   edits
   (tc/select-columns [:message-id :edit-ts :edit-user-id])
   (tc/head 3)))
 
 
-(def v31_l122 (def links (views/topic-links-long messages)))
+(def v31_l128 (def links (views/topic-links-long messages)))
 
 
-(def v32_l124 (tc/row-count links))
+(def v32_l130 (tc/row-count links))
 
 
-(def v33_l126 (tc/column-names links))
+(def v33_l132 (tc/column-names links))
 
 
 (def
- v35_l130
+ v35_l136
  (->
   links
   (tc/add-column
@@ -109,7 +109,7 @@
    (fn
     [ds]
     (mapv
-     (fn* [p1__56118#] (some-> p1__56118# (java.net.URI.) .getHost))
+     (fn* [p1__108500#] (some-> p1__108500# (java.net.URI.) .getHost))
      (:link-url ds))))
   (tc/group-by [:host])
   (tc/aggregate {:n tc/row-count})

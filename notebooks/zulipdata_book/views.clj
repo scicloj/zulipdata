@@ -27,6 +27,12 @@
 ;; We use the same four-channel sample as the later chapters: small
 ;; enough to render quickly, varied enough that every view has
 ;; non-empty rows. Subsequent runs are cache-served.
+;;
+;; `pull/pull-channels!` returns a map keyed by channel name plus a
+;; `:not-found` entry for any unknown names. The `(filter (string? k))`
+;; step keeps only the channel-keyed entries before flattening their
+;; pages into a single seq of raw messages. This same idiom recurs in
+;; the later chapters.
 
 (def fixture-channels
   ["kindly-dev" "tableplot-dev" "clay-dev" "noj-dev"])

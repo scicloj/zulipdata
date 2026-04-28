@@ -19,7 +19,10 @@
 
 (pocket/set-base-cache-dir! (resolve-cache-dir))
 
-(def default-batch-size 5000)
+(def default-batch-size
+  "Messages requested per window when `pull-channel!` is called without
+   an explicit `:batch-size`. 5000 is also Zulip's per-request cap."
+  5000)
 
 (defn- fetch-window-impl
   "Fetch a forward window of messages in the given channel, starting at

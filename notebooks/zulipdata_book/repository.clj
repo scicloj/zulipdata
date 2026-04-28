@@ -23,7 +23,6 @@
 ;;   for rendering the book.
 ;; - `test/scicloj/zulipdata/` — hand-written tests.
 ;; - `test/zulipdata_book/` — tests *generated* from the notebooks.
-;; - `dev-notes/` — long-form internal notes (history, methodology).
 ;; - `docs/` — rendered HTML book, shipped via GitHub Pages.
 ;; - `gfm/` — GitHub-flavoured Markdown renders, used as a
 ;;   verification artifact for the tutorial chapters.
@@ -115,6 +114,3 @@
 ;;   regenerate, send a PR. The generated test file is checked in.
 ;; - **Library bug or feature** — open an issue or PR against the
 ;;   relevant namespace under `src/scicloj/zulipdata/`.
-;; - **Methodology questions** — `dev-notes/research-methods.md`
-;;   captures the decisions behind anonymization, sub-community
-;;   selection, time bucketing, and viz gotchas.

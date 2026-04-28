@@ -93,7 +93,9 @@
   "Directed weighted graph: edge from `from-channel` to `to-channel`
    weighted by the number of users who posted in `from-channel` and
    *later* (after their last post in any `from-set` channel) posted
-   in `to-channel`. Excludes self-loops and edges within `from-set`."
+   in `to-channel`. Excludes self-loops and edges within `from-set`.
+
+   Only users with at least 5 posts in `from-set` are considered."
   [timeline from-set & {:keys [min-users] :or {min-users 3}}]
   (let [rows  (tc/rows timeline :as-maps)
         per-u (group-by :user-key rows)
