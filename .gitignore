@@ -11,3 +11,4 @@ docs/*.qmd
 CLAUDE.md
 dev-notes/
 drafts/
+.dir-locals.el
