@@ -25,7 +25,7 @@
   (clay/make! (merge {:format [:quarto :html]
                       :base-source-path "notebooks"
                       :source-path (into ["index.clj"] (chapters->parts (read-chapters)))
-                      :book {:title "Plotje"}
+                      :book {:title "Zulipdata"}
                       :clean-up-target-dir true
                       :base-target-path (if docs
                                           "docs"
