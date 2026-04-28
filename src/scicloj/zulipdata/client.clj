@@ -110,9 +110,9 @@
        (json/read-json :key-fn keyword))))
 
 (defn whoami
-  "Smoke-test: hits `/users/me` and returns a short summary of the
-   authenticated identity. Use this after configuring credentials to
-   confirm everything works before running a pull."
+  "Hits `/users/me` and returns a short summary of the authenticated
+   identity. Use this after configuring credentials to confirm
+   everything works before running a pull."
   []
   (let [u (api-get "/users/me")]
     {:email     (:email u)

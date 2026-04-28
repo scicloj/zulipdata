@@ -40,7 +40,7 @@
 ;; Credentials are resolved lazily and memoized — the file is read at
 ;; most once per JVM.
 
-;; ## A smoke-test request
+;; ## A first request
 ;;
 ;; `whoami` is the simplest possible round-trip: it hits `/users/me`
 ;; and returns a small summary of the authenticated identity. It is

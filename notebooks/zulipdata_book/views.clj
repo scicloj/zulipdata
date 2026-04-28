@@ -46,7 +46,7 @@
 
 ;; ## One row per message
 ;;
-;; `messages-timeline` is the workhorse view. One row per message,
+;; `messages-timeline` is the primary view. One row per message,
 ;; only scalar columns — no reactions list, no edit history, no
 ;; nested topic-link records. Those live in their own views.
 

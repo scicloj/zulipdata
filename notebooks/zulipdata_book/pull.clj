@@ -1,8 +1,8 @@
 ;; # Pulling and caching channels
 ;;
-;; `scicloj.zulipdata.pull` is the workhorse layer above the REST
-;; client. It walks a channel's full message history in *windows*,
-;; caches each window on disk, and stitches the windows back together.
+;; `scicloj.zulipdata.pull` sits above the REST client. It walks a
+;; channel's full message history in *windows*, caches each window
+;; on disk, and stitches the windows back together.
 ;; This chapter explains the cache model, then tours every public
 ;; function.
 ;;
