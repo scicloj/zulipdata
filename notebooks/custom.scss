@@ -12,11 +12,20 @@ code {font-family: 'Fira Code Medium', monospace;}
 }
 
 .clay-dataset {
-  max-height:400px;
+  max-height: 400px;
   overflow-y: auto;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.clay-table {
+  max-height: 400px;
+  overflow-y: auto;
+  max-width: 100%;
+  overflow-x: auto;
 }
 
 .printedClojure {
-  max-height:400px;
+  max-height: 400px;
   overflow-y: auto;
 }
