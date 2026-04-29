@@ -155,6 +155,6 @@
    (->
     lifecycles
     (tc/select-rows
-     (fn* [p1__45017#] (= "clojurecivitas" (:channel p1__45017#))))
+     (fn* [p1__49050#] (= "clojurecivitas" (:channel p1__49050#))))
     :total
     first))))

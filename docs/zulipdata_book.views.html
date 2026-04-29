@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-13a4be051d73a9612a977567fe3c17bb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-d93cf1df1d846d9a6957868a5a9aa8ac.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -259,13 +259,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#setting-up-a-small-fixture" id="toc-setting-up-a-small-fixture" class="nav-link active" data-scroll-target="#setting-up-a-small-fixture">Setting up a small fixture</a></li>
+  <li><a href="#setting-up-a-fixture" id="toc-setting-up-a-fixture" class="nav-link active" data-scroll-target="#setting-up-a-fixture">Setting up a fixture</a></li>
   <li><a href="#one-row-per-message" id="toc-one-row-per-message" class="nav-link" data-scroll-target="#one-row-per-message">One row per message</a></li>
   <li><a href="#one-row-per-reaction" id="toc-one-row-per-reaction" class="nav-link" data-scroll-target="#one-row-per-reaction">One row per reaction</a></li>
   <li><a href="#one-row-per-edit" id="toc-one-row-per-edit" class="nav-link" data-scroll-target="#one-row-per-edit">One row per edit</a></li>
   <li><a href="#one-row-per-linked-url" id="toc-one-row-per-linked-url" class="nav-link" data-scroll-target="#one-row-per-linked-url">One row per linked URL</a></li>
   <li><a href="#a-note-on-join-keys" id="toc-a-note-on-join-keys" class="nav-link" data-scroll-target="#a-note-on-join-keys">A note on join keys</a></li>
-  <li><a href="#showing-real-content-from-web-public-channels" id="toc-showing-real-content-from-web-public-channels" class="nav-link" data-scroll-target="#showing-real-content-from-web-public-channels">Showing real content (from web-public channels)</a></li>
   <li><a href="#where-to-go-next" id="toc-where-to-go-next" class="nav-link" data-scroll-target="#where-to-go-next">Where to go next</a></li>
   </ul>
 </nav>
@@ -318,13 +317,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>   [scicloj.kindly.v4.kind <span class="at">:as</span> kind]</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>   [tablecloth.api <span class="at">:as</span> tc]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<section id="setting-up-a-small-fixture" class="level2">
-<h2 class="anchored" data-anchor-id="setting-up-a-small-fixture">Setting up a small fixture</h2>
-<p>We use the same four-channel sample as the later chapters: small enough to render quickly, varied enough that every view has non-empty rows. Subsequent runs are cache-served.</p>
-<p><code>pull/pull-channels!</code> returns a map keyed by channel name plus a <code>:not-found</code> entry for any unknown names. The <code>(filter (string? k))</code> step keeps only the channel-keyed entries before flattening their pages into a single seq of raw messages. This same idiom recurs in the later chapters.</p>
+<section id="setting-up-a-fixture" class="level2">
+<h2 class="anchored" data-anchor-id="setting-up-a-fixture">Setting up a fixture</h2>
+<p>We use a four-channel <strong>web-public</strong> fixture throughout this chapter so the view contents — sender names, topic strings, message bodies — can be shown without leaking anything login-gated. Web-public means the channel is readable on <code>clojurians.zulipchat.com</code> without a Zulip account; see <a href="./zulipdata_book.client.html#web-public-channels"><strong>Web-public channels</strong></a> in the client chapter.</p>
+<p>The four channels are small enough to render quickly, varied enough that every view has non-empty rows, and have overlapping contributors so the cross-channel analyses in <a href="./zulipdata_book.narrative.html">Narrative helpers</a> and <a href="./zulipdata_book.graph.html">Graph views</a> are non-trivial. Subsequent runs are cache-served.</p>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>(<span class="bu">def</span><span class="fu"> fixture-channels</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  [<span class="st">"kindly-dev"</span> <span class="st">"tableplot-dev"</span> <span class="st">"clay-dev"</span> <span class="st">"noj-dev"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  [<span class="st">"clojurecivitas"</span> <span class="st">"scicloj-webpublic"</span> <span class="st">"gratitude"</span> <span class="st">"events"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>(<span class="bu">def</span><span class="fu"> messages</span></span>
@@ -336,7 +335,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">count</span> messages)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="printedClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="dv">6950</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1059</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="one-row-per-message" class="level2">
@@ -349,78 +348,1642 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>(tc/row-count timeline)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="printedClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="dv">6950</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1059</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>The columns:</p>
+<p>The columns (sorted alphabetically):</p>
 <div class="sourceClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>(tc/column-names timeline)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">-&gt;</span> timeline tc/column-names <span class="kw">sort</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="printedClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>(<span class="at">:instant</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a> <span class="at">:content</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a> <span class="at">:last-edit-ts</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a> <span class="at">:client</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a> <span class="at">:channel</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a> <span class="at">:stream-id</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a> <span class="at">:edited</span></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a> <span class="at">:content-length</span></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a> <span class="at">:id</span></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a> <span class="at">:sender</span></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a> <span class="at">:sender-id</span></span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a> <span class="at">:timestamp</span></span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a> <span class="at">:subject</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>(<span class="at">:channel</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a> <span class="at">:client</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a> <span class="at">:content</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a> <span class="at">:content-length</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a> <span class="at">:edited</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a> <span class="at">:id</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a> <span class="at">:instant</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a> <span class="at">:last-edit-ts</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a> <span class="at">:sender</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a> <span class="at">:sender-id</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a> <span class="at">:stream-id</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a> <span class="at">:subject</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a> <span class="at">:timestamp</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>A peek at the first three rows, with a few interesting columns:</p>
+<p>The whole dataset, freshest first. Inline emoji codes (<code>:gratitude:</code>, <code>:pray:</code>) and <code>@**Real Name**</code> mentions are how Zulip tags content; they pass through verbatim.</p>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">-&gt;</span> timeline</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    (tc/select-columns [<span class="at">:id</span> <span class="at">:instant</span> <span class="at">:channel</span> <span class="at">:sender</span> <span class="at">:content-length</span> <span class="at">:edited</span>])</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    (tc/head <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    (tc/order-by <span class="at">:instant</span> <span class="at">:desc</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="clay-dataset">
-<p>_unnamed [3 6]:</p>
+<p>_unnamed [1059 13]:</p>
 <table class="caption-top table">
-<colgroup>
-<col style="width: 12%">
-<col style="width: 24%">
-<col style="width: 13%">
-<col style="width: 20%">
-<col style="width: 19%">
-<col style="width: 10%">
-</colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: right;">:id</th>
 <th>:instant</th>
+<th>:content</th>
+<th style="text-align: right;">:last-edit-ts</th>
+<th>:client</th>
 <th>:channel</th>
-<th>:sender</th>
-<th style="text-align: right;">:content-length</th>
+<th style="text-align: right;">:stream-id</th>
 <th>:edited</th>
+<th style="text-align: right;">:content-length</th>
+<th style="text-align: right;">:id</th>
+<th>:sender</th>
+<th style="text-align: right;">:sender-id</th>
+<th style="text-align: right;">:timestamp</th>
+<th>:subject</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">468115793</td>
-<td>2024-09-06T08:36:05Z</td>
-<td>kindly-dev</td>
-<td>Notification Bot</td>
-<td style="text-align: right;">109</td>
+<td>2026-04-26T05:07:15Z</td>
+<td>we’re starting: Zoom link:&nbsp;https://us02web.zoom.us/j/86038773965?pwd=N1paYmJpQ3B5eHpTOTlycUN2VXFDdz09</td>
+<td style="text-align: right;"></td>
+<td>website</td>
+<td>scicloj-webpublic</td>
+<td style="text-align: right;">488851</td>
 <td>false</td>
+<td style="text-align: right;">101</td>
+<td style="text-align: right;">590940290</td>
+<td>Daniel Slutsky</td>
+<td style="text-align: right;">138175</td>
+<td style="text-align: right;">1777180035</td>
+<td>clojure community check-in</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">468115883</td>
-<td>2024-09-06T08:36:32Z</td>
-<td>kindly-dev</td>
+<td>2026-04-26T04:08:50Z</td>
+<td>See you at the second Community Check-In session, a little less than 1 hour away.</td>
+<td style="text-align: right;"></td>
+<td>website</td>
+<td>scicloj-webpublic</td>
+<td style="text-align: right;">488851</td>
+<td>false</td>
+<td style="text-align: right;">179</td>
+<td style="text-align: right;">590936842</td>
 <td>Daniel Slutsky</td>
-<td style="text-align: right;">124</td>
-<td>true</td>
+<td style="text-align: right;">138175</td>
+<td style="text-align: right;">1777176530</td>
+<td>clojure community check-in</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">468617117</td>
-<td>2024-09-08T19:34:42Z</td>
-<td>kindly-dev</td>
+<td></td>
+<td>https://clojureverse.org/t/clojure-community-check-in/</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td>#<strong>community-check-in&gt;2025-04-26 5am UTC</strong></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>2026-04-26T04:08:38Z</td>
+<td>We had a good session yesteday: #<strong>community-check-in&gt;2025-04-25 5pm UTC</strong>.</td>
+<td style="text-align: right;"></td>
+<td>website</td>
+<td>scicloj-webpublic</td>
+<td style="text-align: right;">488851</td>
+<td>false</td>
+<td style="text-align: right;">75</td>
+<td style="text-align: right;">590936831</td>
 <td>Daniel Slutsky</td>
-<td style="text-align: right;">124</td>
+<td style="text-align: right;">138175</td>
+<td style="text-align: right;">1777176518</td>
+<td>clojure community check-in</td>
+</tr>
+<tr class="even">
+<td>2026-04-25T16:50:12Z</td>
+<td>The first Community Check-In session is starting in ~10 minutes.</td>
+<td style="text-align: right;"></td>
+<td>website</td>
+<td>scicloj-webpublic</td>
+<td style="text-align: right;">488851</td>
+<td>false</td>
+<td style="text-align: right;">119</td>
+<td style="text-align: right;">590888797</td>
+<td>Daniel Slutsky</td>
+<td style="text-align: right;">138175</td>
+<td style="text-align: right;">1777135812</td>
+<td>clojure community check-in</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>https://clojureverse.org/t/clojure-community-check-in/</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>2026-04-25T14:27:58Z</td>
+<td>A thoughtful post by <span class="citation" data-cites="*">@*</span>*siyoungb** preparing for the Clojure Community Check-In sessions this weekend:</td>
+<td style="text-align: right;"></td>
+<td>website</td>
+<td>scicloj-webpublic</td>
+<td style="text-align: right;">488851</td>
+<td>false</td>
+<td style="text-align: right;">162</td>
+<td style="text-align: right;">590877514</td>
+<td>Daniel Slutsky</td>
+<td style="text-align: right;">138175</td>
+<td style="text-align: right;">1777127278</td>
+<td>clojure community check-in</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>#<strong>clojurecivitas&gt;Clojure community check-in self preview</strong></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>2026-04-21T12:35:56Z</td>
+<td>Based on the feedback on the form, we converted to two time slots:</td>
+<td style="text-align: right;"></td>
+<td>website</td>
+<td>scicloj-webpublic</td>
+<td style="text-align: right;">488851</td>
+<td>false</td>
+<td style="text-align: right;">186</td>
+<td style="text-align: right;">588611939</td>
+<td>Daniel Slutsky</td>
+<td style="text-align: right;">138175</td>
+<td style="text-align: right;">1776774956</td>
+<td>clojure community check-in</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>&lt;time:2026-04-25T17:00:00+00:00&gt;</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td>&lt;time:2026-04-26T5:00:00+00:00&gt;</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td>We’ll keep discussing it at #<strong>community-check-in</strong>.</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>2026-04-18T12:15:17Z</td>
+<td><span class="citation" data-cites="*">@*</span>*Timothy Pratley** <span class="citation" data-cites="*">@*</span>*siyoungb** and I had a good meeting this week to discuss some current community-building challenges and, mostly, the Clojure Community Check-In event we’ll have next weekend.</td>
+<td style="text-align: right;"></td>
+<td>website</td>
+<td>scicloj-webpublic</td>
+<td style="text-align: right;">488851</td>
+<td>false</td>
+<td style="text-align: right;">423</td>
+<td style="text-align: right;">586272661</td>
+<td>Daniel Slutsky</td>
+<td style="text-align: right;">138175</td>
+<td style="text-align: right;">1776514517</td>
+<td>clojure community check-in</td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>We recorded a brief video about it: https://www.youtube.com/watch?v=dkxwZ9VGLCo</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>Event page: https://clojureverse.org/t/clojure-community-check-in/</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>Scicloj contact details: https://scicloj.github.io/docs/community/contact/</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>2026-04-17T17:46:57Z</td>
+<td>Meeting thread: #<strong>real-world-data&gt;meeting 56</strong></td>
+<td style="text-align: right;">1776448026</td>
+<td>website</td>
+<td>events</td>
+<td style="text-align: right;">262224</td>
 <td>true</td>
+<td style="text-align: right;">47</td>
+<td style="text-align: right;">586186641</td>
+<td>Daniel Slutsky</td>
+<td style="text-align: right;">138175</td>
+<td style="text-align: right;">1776448017</td>
+<td>2026-04-17 Clojure real-world-data 56</td>
+</tr>
+<tr class="odd">
+<td>2026-04-17T16:05:36Z</td>
+<td>Hi, I will join too</td>
+<td style="text-align: right;"></td>
+<td>website</td>
+<td>events</td>
+<td style="text-align: right;">262224</td>
+<td>false</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: right;">586168194</td>
+<td>Sasha</td>
+<td style="text-align: right;">521106</td>
+<td style="text-align: right;">1776441936</td>
+<td>2026-04-17 Clojure real-world-data 56</td>
+</tr>
+<tr class="even">
+<td>2026-04-17T11:39:56Z</td>
+<td>I am attending.</td>
+<td style="text-align: right;"></td>
+<td>ZulipElectron</td>
+<td>events</td>
+<td style="text-align: right;">262224</td>
+<td>false</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">586110306</td>
+<td>Henning Jansen</td>
+<td style="text-align: right;">746628</td>
+<td style="text-align: right;">1776425996</td>
+<td>2026-04-17 Clojure real-world-data 56</td>
+</tr>
+<tr class="odd">
+<td>…</td>
+<td>…</td>
+<td style="text-align: right;">…</td>
+<td>…</td>
+<td>…</td>
+<td style="text-align: right;">…</td>
+<td>…</td>
+<td style="text-align: right;">…</td>
+<td style="text-align: right;">…</td>
+<td>…</td>
+<td style="text-align: right;">…</td>
+<td style="text-align: right;">…</td>
+<td>…</td>
+</tr>
+<tr class="even">
+<td>2020-10-30T14:02:27Z</td>
+<td><strong>Title</strong>: Scicloj meeting: Clojure and Data Science in Healthcare</td>
+<td style="text-align: right;"></td>
+<td>website</td>
+<td>events</td>
+<td style="text-align: right;">262224</td>
+<td>false</td>
+<td style="text-align: right;">584</td>
+<td style="text-align: right;">215098041</td>
+<td>Daniel Slutsky</td>
+<td style="text-align: right;">138175</td>
+<td style="text-align: right;">1604066547</td>
+<td>2020-11-01 Clojure and Data Science in Health Care</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><strong>Time</strong>: 2020-11-01T18:00 (<a href="https://time.is/1800_1_Nov_2020_in_UTC/">local time</a>)</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td><strong>Description</strong>: This is our first in a series of public meetings about healthcare.</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td>In this meeting, the main theme will be knowledge management.</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td>Agenda:</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>* <span class="citation" data-cites="*">@*</span>*Sivaram Arabandi** : “Biomedical Ontologies - Design Patterns and Applications”</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td>* Pier Federico Gherardini: “CANDEL: A platform for biological data science using Clojure, R, and Datomic”</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>* Discussion</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>Moderator: <span class="citation" data-cites="*">@*</span>*Joao Santiago**</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><strong>RSVP</strong>: https://tinyurl.com/yxl3xh7o</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>2020-10-29T19:48:44Z</td>
+<td><strong>Title</strong>: Practicallli Live: Solving Exercism.io code challenges with regular expressions</td>
+<td style="text-align: right;">1604226031</td>
+<td>ZulipElectron</td>
+<td>events</td>
+<td style="text-align: right;">262224</td>
+<td>true</td>
+<td style="text-align: right;">419</td>
+<td style="text-align: right;">215018579</td>
+<td>John Practicalli</td>
+<td style="text-align: right;">138822</td>
+<td style="text-align: right;">1604000924</td>
+<td>2020-10-31 Practicalli Live Coding broadcast</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><strong>Time</strong>: 2020-10-31T09:00–10:00 (<a href="https://time.is/0900_31_Oct_2020_in_UTC/">local time</a>)</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td><strong>Description</strong>: Live coding broadcast covering the “Bob” challenge from Exercise.io. Walking through several approaches to solve the chalky and using a lot of different regular expression patterns.</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><strong>RSVP</strong>: https://youtu.be/QKBZYSITkRc</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>2020-10-27T16:34:49Z</td>
+<td>Let’s use this topic for IRC-style, pile on discussion</td>
+<td style="text-align: right;"></td>
+<td>ZulipElectron</td>
+<td>events</td>
+<td style="text-align: right;">262224</td>
+<td>false</td>
+<td style="text-align: right;">54</td>
+<td style="text-align: right;">214726580</td>
+<td>Gert Goet</td>
+<td style="text-align: right;">137562</td>
+<td style="text-align: right;">1603816489</td>
+<td>untopic</td>
+</tr>
+<tr class="odd">
+<td>2020-10-27T16:27:46Z</td>
+<td><em>This topic serves as a stream-description. Please use another topic to discuss this README, e.g.&nbsp;#<strong>events&gt;</strong> or DM me.</em></td>
+<td style="text-align: right;">1769702859</td>
+<td>ZulipElectron</td>
+<td>events</td>
+<td style="text-align: right;">262224</td>
+<td>true</td>
+<td style="text-align: right;">990</td>
+<td style="text-align: right;">214725391</td>
+<td>Gert Goet</td>
+<td style="text-align: right;">137562</td>
+<td style="text-align: right;">1603816066</td>
+<td>README</td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>## usage</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>- users are encouraged to announce events that are <em>interesting and (remotely) accessible to the wider Clojure community</em></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td>- in order for an event to show up in the ‘Clojurians Events’ <a href="https://www.clojurians-zulip.org/feeds/events.ics">ical-feed</a>, use the <a href="https://gitlab.com/clojurians-zulip/feeds/-/blob/master/README.md#announce-an-event">events-cli</a></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>- it can take up to 2 hours to show up in the calendar-feed, if nothing appears or things look off: DM me</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td>- the ical-feed powers the <a href="https://clojure.org/community/events">community events-page on clojure.org</a>, there’s a <a href="https://invertisment.gitlab.io/cljcalendar/">webview</a> and events show up in the sidebar on https://www.reddit.com/r/Clojure/</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>- users are invited to join the discussion in the event’s topic</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td>- any generic event-related discussion can go in other topics, or in #<strong>events&gt;</strong></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td>Enjoy!</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>2020-10-27T12:04:08Z</td>
+<td><strong>Title</strong>: Scicloj meeting: Clojure in Geography II – a meeting with Joanne Cheng</td>
+<td style="text-align: right;">1603800419</td>
+<td>ZulipElectron</td>
+<td>events</td>
+<td style="text-align: right;">262224</td>
+<td>true</td>
+<td style="text-align: right;">411</td>
+<td style="text-align: right;">214689967</td>
+<td>Gert Goet</td>
+<td style="text-align: right;">137562</td>
+<td style="text-align: right;">1603800248</td>
+<td>2020-11-21 Clojure in Geography (Joanne Cheng)</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><strong>Time</strong>: 2020-11-21T16:00 (<a href="https://time.is/1600_21_Nov_2020_in_UTC/">local time</a>)</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><strong>Description</strong>: On our next public meeting in the short series about Clojure in Geography, we will hear a talk by Joanne Cheng.</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td>After the talk, we will have a discussion.</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>The meeting will be 2 hours long.</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td><strong>RSVP</strong>: https://tinyurl.com/yxoqj2mb</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>2020-10-27T11:59:36Z</td>
+<td><strong>Title</strong>: Scicloj meeting: Reveal – Read Eval Visualize Loop</td>
+<td style="text-align: right;">1603800432</td>
+<td>ZulipElectron</td>
+<td>events</td>
+<td style="text-align: right;">262224</td>
+<td>true</td>
+<td style="text-align: right;">306</td>
+<td style="text-align: right;">214689506</td>
+<td>Gert Goet</td>
+<td style="text-align: right;">137562</td>
+<td style="text-align: right;">1603799976</td>
+<td>2020-11-07 Reveal – Read Eval Visualize Loop</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><strong>Time</strong>: 2020-11-07T20:00 (<a href="https://time.is/2000_07_Nov_2020_in_UTC/">local time</a>)</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><strong>Description</strong>: A meeting with Vlad Protsenko about Reveal – Read Eval Visualize Loop</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td>https://vlaaad.github.io/reveal/</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><strong>RSVP</strong>: https://tinyurl.com/y2qj7m8k</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>2020-10-27T11:48:49Z</td>
+<td><strong>Title</strong>: Dark CIDER (by Bozhidar Batsov)</td>
+<td style="text-align: right;">1604325748</td>
+<td>ZulipElectron</td>
+<td>events</td>
+<td style="text-align: right;">262224</td>
+<td>true</td>
+<td style="text-align: right;">832</td>
+<td style="text-align: right;">214688628</td>
+<td>Gert Goet</td>
+<td style="text-align: right;">137562</td>
+<td style="text-align: right;">1603799329</td>
+<td>2020-11-17 Dark CIDER (Bozhidar Batsov)</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><strong>Time</strong>: 2020-11-17T18:30 (<a href="https://countle.com/KA0_4OIiO">local time</a>)</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td><strong>Description</strong>: Bozhidar Batsov (https://github.com/bbatsov) will show some of the lesser-known CIDER</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>features.</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>Bozhidar is the maintainer of CIDER, nREPL, and many Clojure libraries</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td>related to Clojure tooling. He’s also the editor of the community</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>Clojure style guide. He is also very known in the Emacs world as the</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td>author Prelude Emacs, Projectile and many other Emacs packages. He</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>loves the Lisp family of languages and the functional programming in</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td>general and Clojure in particular. He is a frequent conference speaker</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>and he practices and promotes “Conference Driven Development” (the art</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td>of developing stuff to show off at conferences).</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td><strong>RSVP</strong>: https://www.meetup.com/London-Clojurians/events/274159509/</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>2020-10-27T11:43:49Z</td>
+<td><strong>Title</strong>: Discoverable Hypermedia-Driven RESTful Web Services in Clojure (HATEOAS)</td>
+<td style="text-align: right;">1603800481</td>
+<td>ZulipElectron</td>
+<td>events</td>
+<td style="text-align: right;">262224</td>
+<td>true</td>
+<td style="text-align: right;">869</td>
+<td style="text-align: right;">214688158</td>
+<td>Gert Goet</td>
+<td style="text-align: right;">137562</td>
+<td style="text-align: right;">1603799029</td>
+<td>2020-11-10 HATEOAS in Clojure</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><strong>Time</strong>: 2020-11-10T18:30 (<a href="https://countle.com/VMtb556lr">local time</a>)</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><strong>Description</strong>: Daniel Zurawski (https://www.linkedin.com/in/daniel-zurawski-8b107a32) will be presenting</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td>Hypermedia as the Engine of Application State for microservice</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>architectures, including a demonstration of how you can build a</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td>discoverable Hypermedia-Driven RESTful Web Service in Clojure using</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>bidi, liberator, halboy, hype and OpenTelemetry.</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>Daniel is a Senior Software Developer at Kroo, helping to build a new</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td>digital bank where money meets friends using Clojure. Previously</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>Technical Lead at SuperAwesome (now part of Epic Games). Passionate</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td>about products &amp; startups, functional programming, cloud</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>infrastructure, and messy data.</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td><strong>RSVP</strong>: https://www.meetup.com/London-Clojurians/events/274159868/</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>2020-10-23T14:18:41Z</td>
+<td><span class="citation" data-cites="_">@_</span><strong>Gert Goet|137562</strong> renamed stream <strong>meetups</strong> to <strong>events</strong>.</td>
+<td style="text-align: right;"></td>
+<td>Internal</td>
+<td>events</td>
+<td style="text-align: right;">262224</td>
+<td>false</td>
+<td style="text-align: right;">64</td>
+<td style="text-align: right;">214319002</td>
+<td>Notification Bot</td>
+<td style="text-align: right;">100006</td>
+<td style="text-align: right;">1603462721</td>
+<td>stream events</td>
+</tr>
+<tr class="even">
+<td>2020-10-21T17:59:54Z</td>
+<td><strong>Title</strong>: babashka and sci internals (by Michiel Borkent)</td>
+<td style="text-align: right;">1603800491</td>
+<td>ZulipElectron</td>
+<td>events</td>
+<td style="text-align: right;">262224</td>
+<td>true</td>
+<td style="text-align: right;">673</td>
+<td style="text-align: right;">214090081</td>
+<td>Gert Goet</td>
+<td style="text-align: right;">137562</td>
+<td style="text-align: right;">1603303194</td>
+<td>2020-12-01 babashka and sci internals (Michiel Borkent)</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><strong>Time</strong>: 2020-12-01T18:30 (<a href="https://countle.com/82hnGlF1t">local time</a>)</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td><strong>Description</strong>: Michiel Borkent (https://github.com/borkdude) doesn’t really need introductions in our community. He is the main author of clj-kondo, babashka, jet and so many other Clojure tools. He can be found as <span class="citation" data-cites="borkdude">@borkdude</span> in various places on the web.</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td>In this talk, Michiel will tell us more about the internals of babashka and sci (Small Clojure Interpreter). A really good opportunity to gain a better understanding of how this increasingly popular tool is built.</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><strong>RSVP</strong>: https://www.meetup.com/London-Clojurians/events/274014078/</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>2020-10-21T17:54:51Z</td>
+<td>Stream created by <span class="citation" data-cites="_">@_</span><strong>Gert Goet|137562</strong>.</td>
+<td style="text-align: right;"></td>
+<td>Internal</td>
+<td>events</td>
+<td style="text-align: right;">262224</td>
+<td>false</td>
+<td style="text-align: right;">41</td>
+<td style="text-align: right;">214089389</td>
+<td>Notification Bot</td>
+<td style="text-align: right;">100006</td>
+<td style="text-align: right;">1603302891</td>
+<td>stream events</td>
 </tr>
 </tbody>
 </table>
@@ -432,12 +1995,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="printedClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>java.<span class="kw">time</span>.Instant</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>The <code>:edited</code> column is a structural derivation from the raw message — true iff <code>:last_edit_timestamp</code> is present.</p>
+<p>The <code>:edited</code> column is a structural derivation from the raw message — true iff <code>:last_edit_timestamp</code> is present:</p>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">-&gt;</span> timeline (tc/select-rows <span class="at">:edited</span>) tc/row-count)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="printedClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1244</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="dv">186</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="one-row-per-reaction" class="level2">
@@ -450,21 +2013,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>(tc/row-count reactions)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="printedClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1123</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="dv">447</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="sourceClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>(tc/column-names reactions)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">-&gt;</span> reactions tc/column-names <span class="kw">sort</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="printedClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>(<span class="at">:message-id</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a> <span class="at">:channel</span></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a> <span class="at">:user-id</span></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a> <span class="at">:stream-id</span></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a> <span class="at">:emoji-name</span></span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a> <span class="at">:message-ts</span></span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a> <span class="at">:emoji-code</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>(<span class="at">:channel</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a> <span class="at">:emoji-code</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a> <span class="at">:emoji-name</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a> <span class="at">:message-id</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a> <span class="at">:message-ts</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a> <span class="at">:reaction-type</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a> <span class="at">:stream-id</span></span>
 <span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a> <span class="at">:subject</span></span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a> <span class="at">:reaction-type</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a> <span class="at">:user-id</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Top emoji across the fixture, by reaction count:</p>
 <div class="sourceClojure">
@@ -486,23 +2049,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tbody>
 <tr class="odd">
 <td>+1</td>
-<td style="text-align: right;">550</td>
-</tr>
-<tr class="even">
-<td>tada</td>
-<td style="text-align: right;">81</td>
-</tr>
-<tr class="odd">
-<td>thank_you</td>
-<td style="text-align: right;">53</td>
+<td style="text-align: right;">123</td>
 </tr>
 <tr class="even">
 <td>heart</td>
-<td style="text-align: right;">49</td>
+<td style="text-align: right;">75</td>
 </tr>
 <tr class="odd">
-<td>eyes</td>
-<td style="text-align: right;">34</td>
+<td>tada</td>
+<td style="text-align: right;">68</td>
+</tr>
+<tr class="even">
+<td>gratitude</td>
+<td style="text-align: right;">39</td>
+</tr>
+<tr class="odd">
+<td>thank_you</td>
+<td style="text-align: right;">20</td>
 </tr>
 </tbody>
 </table>
@@ -518,52 +2081,83 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>(tc/row-count edits)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="printedClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2360</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="dv">335</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="sourceClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>(tc/column-names edits)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">-&gt;</span> edits tc/column-names <span class="kw">sort</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="printedClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>(<span class="at">:message-id</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a> <span class="at">:stream-id</span></span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a> <span class="at">:channel</span></span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a> <span class="at">:edit-ts</span></span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a> <span class="at">:edit-user-id</span></span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a> <span class="at">:prev-content</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>(<span class="at">:channel</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a> <span class="at">:edit-ts</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a> <span class="at">:edit-user-id</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a> <span class="at">:message-id</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a> <span class="at">:prev-content</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a> <span class="at">:prev-stream</span></span>
 <span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a> <span class="at">:prev-subject</span></span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a> <span class="at">:prev-stream</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a> <span class="at">:stream-id</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>A few rows. We project the columns to keep the table narrow and avoid showing prior message text.</p>
+<p>A few rows. We project the columns to keep the table narrow:</p>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">-&gt;</span> edits</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>    (tc/select-columns [<span class="at">:message-id</span> <span class="at">:edit-ts</span> <span class="at">:edit-user-id</span>])</span>
-<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    (tc/head <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>    (tc/select-columns [<span class="at">:message-id</span> <span class="at">:edit-ts</span> <span class="at">:edit-user-id</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>                        <span class="at">:prev-subject</span> <span class="at">:prev-stream</span>])</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>    (tc/order-by <span class="at">:edit-ts</span> <span class="at">:desc</span>)</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>    (tc/head <span class="dv">5</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="clay-dataset">
-<p>_unnamed [3 3]:</p>
+<p>_unnamed [5 5]:</p>
 <table class="caption-top table">
+<colgroup>
+<col style="width: 18%">
+<col style="width: 17%">
+<col style="width: 21%">
+<col style="width: 21%">
+<col style="width: 20%">
+</colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: right;">:message-id</th>
 <th style="text-align: right;">:edit-ts</th>
 <th style="text-align: right;">:edit-user-id</th>
+<th>:prev-subject</th>
+<th style="text-align: right;">:prev-stream</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">468115883</td>
-<td style="text-align: right;">1725824532</td>
+<td style="text-align: right;">586186641</td>
+<td style="text-align: right;">1776448026</td>
 <td style="text-align: right;">138175</td>
+<td></td>
+<td style="text-align: right;"></td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">468617117</td>
-<td style="text-align: right;">1725828308</td>
-<td style="text-align: right;">138175</td>
+<td style="text-align: right;">582024774</td>
+<td style="text-align: right;">1774554234</td>
+<td style="text-align: right;">137753</td>
+<td></td>
+<td style="text-align: right;"></td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">468617117</td>
-<td style="text-align: right;">1725828272</td>
+<td style="text-align: right;">580837393</td>
+<td style="text-align: right;">1774116844</td>
+<td style="text-align: right;">1014034</td>
+<td>general chat</td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">580740569</td>
+<td style="text-align: right;">1774046366</td>
 <td style="text-align: right;">138175</td>
+<td></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">578231294</td>
+<td style="text-align: right;">1773081965</td>
+<td style="text-align: right;">201408</td>
+<td></td>
+<td style="text-align: right;"></td>
 </tr>
 </tbody>
 </table>
@@ -579,7 +2173,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>(tc/row-count links)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="printedClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="dv">102</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="dv">11</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>(tc/column-names links)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -602,7 +2196,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>    (tc/head <span class="dv">5</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="clay-dataset">
-<p>_unnamed [5 2]:</p>
+<p>_unnamed [3 2]:</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -612,23 +2206,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td>metamorph.ml</td>
-<td style="text-align: right;">54</td>
+<td>Clojure.org</td>
+<td style="text-align: right;">5</td>
 </tr>
 <tr class="even">
-<td>scicloj.ml</td>
-<td style="text-align: right;">27</td>
+<td>Exercism.io</td>
+<td style="text-align: right;">4</td>
 </tr>
 <tr class="odd">
-<td>scicloj.ml.smile</td>
-<td style="text-align: right;">16</td>
-</tr>
-<tr class="even">
-<td>github.io</td>
-<td style="text-align: right;">3</td>
-</tr>
-<tr class="odd">
-<td>github.com</td>
+<td>ClojureCivitas.org</td>
 <td style="text-align: right;">2</td>
 </tr>
 </tbody>
@@ -639,76 +2225,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="a-note-on-join-keys">A note on join keys</h2>
 <p>All four views carry <code>:message-id</code> (or <code>:id</code> in the timeline) and <code>:stream-id</code> so you can join them back together when you need both a message’s content and its reactions, or both its content and its links. Each view is independently complete — joins are <em>additional</em> structure, not required structure.</p>
 </section>
-<section id="showing-real-content-from-web-public-channels" class="level2">
-<h2 class="anchored" data-anchor-id="showing-real-content-from-web-public-channels">Showing real content (from web-public channels)</h2>
-<p>The four-channel fixture above is from non-web-public channels, so the <code>:content</code> and <code>:sender_full_name</code> columns are present in the views but not safe to display in the rendered book. For demonstration purposes, this section pulls <a href="https://clojurians.zulipchat.com/#narrow/channel/474994-gratitude"><code>gratitude</code></a> — a small (~20-message) <strong>web-public</strong> channel where members thank one another. Web-public means anyone can read the content without a Clojurians account, so showing real names and message bodies in the docs is fine. See <a href="./zulipdata_book.client.html#web-public-channels"><strong>Web-public channels</strong></a> in the client chapter for how to identify them.</p>
-<div class="sourceClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>(<span class="bu">def</span><span class="fu"> gratitude-messages</span></span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  (<span class="kw">-&gt;&gt;</span> (pull/pull-channels! [<span class="st">"gratitude"</span>])</span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>       (<span class="kw">filter</span> (<span class="kw">fn</span> [[k _]] (<span class="kw">string?</span> k)))</span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>       (<span class="kw">mapcat</span> (<span class="kw">fn</span> [[_ r]] (pull/all-messages r)))))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div class="sourceClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>(<span class="bu">def</span><span class="fu"> gratitude-timeline </span>(views/messages-timeline gratitude-messages))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>A few rows showing real senders, topics, and content (truncated). Notice the inline emoji codes (<code>:gratitude:</code>, <code>:pray:</code>) and <code>@**Real Name**</code> mentions Zulip uses for tagging.</p>
-<div class="sourceClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">-&gt;</span> gratitude-timeline</span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>    (tc/select-columns [<span class="at">:sender</span> <span class="at">:subject</span> <span class="at">:content</span>])</span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>    (tc/map-columns <span class="at">:content</span> [<span class="at">:content</span>]</span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>                    (<span class="kw">fn</span> [c] (<span class="kw">subs</span> c <span class="dv">0</span> (<span class="kw">min</span> <span class="dv">160</span> (<span class="kw">count</span> c)))))</span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>    (tc/head <span class="dv">4</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div class="clay-dataset">
-<p>_unnamed [4 3]:</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 9%">
-<col style="width: 8%">
-<col style="width: 82%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>:sender</th>
-<th>:subject</th>
-<th>:content</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Notification Bot</td>
-<td>channel events</td>
-<td><strong>Public</strong> channel created by <span class="citation" data-cites="_">@_</span><strong>Gert Goet|137562</strong>. <strong>Description:</strong></td>
-</tr>
-<tr class="even">
-<td></td>
-<td></td>
-<td><code>quote                                                                                                                                                       | |                  |                | Thank someone for what they do, spread the gratitude 💜🌸                                                                                                        | |                  |                |</code></td>
-</tr>
-<tr class="odd">
-<td>pez</td>
-<td>Gert Goet</td>
-<td>My warm and fuzzy feelings of gratitude :gratitude: towards <span class="citation" data-cites="*">@*</span>*Gert Goet** right now. Thanks for keeping this home for Clojurians welcoming and open for so long</td>
-</tr>
-<tr class="even">
-<td>Kira Howe</td>
-<td>new members</td>
-<td>Just discovered this channel! I’m grateful for <span class="citation" data-cites="*">@*</span>*Gert Goet** administering this zulip and super excited that community heavyweights <span class="citation" data-cites="*">@*</span>*Sean Corfield** and <span class="citation" data-cites="*">@*</span>*p</td>
-</tr>
-<tr class="odd">
-<td>Gert Goet</td>
-<td>Gert Goet</td>
-<td>Thanks for the kind words Peter! :blush: and thank <em>you</em> for help shaping the community here and taking the leap :jump: :pray:</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>The same view shape applies — <code>:reaction-count</code>, <code>:content-length</code>, <code>:edited</code>, <code>:timestamp</code>, etc. — but here you see the columns the rest of the book deliberately keeps hidden.</p>
-</section>
 <section id="where-to-go-next" class="level2">
 <h2 class="anchored" data-anchor-id="where-to-go-next">Where to go next</h2>
 <ul>
-<li><p><a href="./zulipdata_book.anonymize.html"><strong>Anonymized views</strong></a> — <code>scicloj.zulipdata.anonymize</code> mirrors <code>messages-timeline</code>, <code>reactions-long</code>, and <code>edits-long</code> with sender names and topic strings replaced by stable hash keys, and message content dropped. Use those for any artifact that leaves your machine.</p></li>
+<li><p><a href="./zulipdata_book.anonymize.html"><strong>Anonymized views</strong></a> — <code>scicloj.zulipdata.anonymize</code> mirrors <code>messages-timeline</code>, <code>reactions-long</code>, and <code>edits-long</code> with sender names and topic strings replaced by stable hash keys, and message content dropped. Use those for any artifact derived from non-web-public channels.</p></li>
 <li><p><a href="./zulipdata_book.narrative.html"><strong>Narrative helpers</strong></a> — adds time columns, channel-lifecycle summaries, and newcomer-tracking helpers built on top of the timeline.</p></li>
 <li><p><a href="./zulipdata_book.api_reference.html"><strong>API Reference</strong></a> — every public function in one chapter, with docstrings and a worked example each.</p></li>
 </ul>

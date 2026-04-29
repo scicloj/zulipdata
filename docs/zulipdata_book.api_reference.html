@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-13a4be051d73a9612a977567fe3c17bb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-d93cf1df1d846d9a6957868a5a9aa8ac.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -371,7 +371,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>A small four-channel pull, reused across every example below. Each layer of the pipeline is bound for direct reuse: <code>sample-pull</code> (raw pull result), <code>sample-messages</code> (flat seq of raw messages), <code>sample-timeline</code> (plain tablecloth view), <code>sample-anon</code> (anonymized), <code>sample-with-time</code> (anonymized + date columns).</p>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>(<span class="bu">def</span><span class="fu"> sample-channels</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  [<span class="st">"kindly-dev"</span> <span class="st">"tableplot-dev"</span> <span class="st">"clay-dev"</span> <span class="st">"noj-dev"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  [<span class="st">"clojurecivitas"</span> <span class="st">"scicloj-webpublic"</span> <span class="st">"gratitude"</span> <span class="st">"events"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>(<span class="bu">def</span><span class="fu"> sample-pull</span></span>
@@ -424,7 +424,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">-&gt;</span> (client/api-get <span class="st">"/messages"</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>                    {<span class="st">"narrow"</span>     (charred.api/write-json-str</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>                                   [{<span class="at">:operator</span> <span class="st">"channel"</span> <span class="at">:operand</span> <span class="st">"kindly-dev"</span>}])</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>                                   [{<span class="at">:operator</span> <span class="st">"channel"</span> <span class="at">:operand</span> <span class="st">"clojurecivitas"</span>}])</span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>                     <span class="st">"anchor"</span>     <span class="st">"newest"</span></span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>                     <span class="st">"num_before"</span> <span class="dv">1</span></span>
 <span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>                     <span class="st">"num_after"</span>  <span class="dv">0</span>})</span>
@@ -478,7 +478,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Fetch messages matching a narrow. <code>narrow</code> is a vector of maps, e.g. [{:operator “channel” :operand “data-science”}]. <code>anchor</code> may be “newest”, “oldest”, “first_unread”, or a message id. Returns up to <code>num-before + num-after + 1</code> messages around the anchor.</p>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">-&gt;</span> (client/get-messages</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>     {<span class="at">:narrow</span>     [{<span class="at">:operator</span> <span class="st">"channel"</span> <span class="at">:operand</span> <span class="st">"kindly-dev"</span>}]</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>     {<span class="at">:narrow</span>     [{<span class="at">:operator</span> <span class="st">"channel"</span> <span class="at">:operand</span> <span class="st">"clojurecivitas"</span>}]</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>      <span class="at">:anchor</span>     <span class="st">"newest"</span></span>
 <span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">:num-before</span> <span class="dv">3</span></span>
 <span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">:num-after</span>  <span class="dv">0</span>})</span>
@@ -506,7 +506,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><code>[stream-name anchor-id batch-size]</code></p>
 <p>Cached forward window. Returns the deref’d page map.</p>
 <div class="sourceClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">-&gt;</span> (pull/fetch-window <span class="st">"kindly-dev"</span> <span class="dv">0</span> <span class="dv">100</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">-&gt;</span> (pull/fetch-window <span class="st">"clojurecivitas"</span> <span class="dv">0</span> <span class="dv">100</span>)</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">:messages</span> <span class="kw">count</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="printedClojure">
@@ -521,7 +521,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>With <code>:refresh-tip false</code> (default), repeated calls are served entirely from cache.</p>
 <p>A complete walk from id zero to the channel’s tip. Result keys:</p>
 <div class="sourceClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">-&gt;</span> (pull/pull-channel! <span class="st">"kindly-dev"</span> <span class="dv">0</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">-&gt;</span> (pull/pull-channel! <span class="st">"clojurecivitas"</span> <span class="dv">0</span>)</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    (<span class="kw">select-keys</span> [<span class="at">:pages</span> <span class="at">:message-count</span>])</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">keys</span></span>
 <span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">set</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -535,7 +535,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><code>[pull-result]</code></p>
 <p>Flatten the :pages result of pull-channel! into a single seq of messages, de-duplicating by :id (windows are non-overlapping by construction, but this is a cheap belt-and-braces safeguard).</p>
 <div class="sourceClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">let</span> [<span class="kw">walk</span>     (pull/pull-channel! <span class="st">"kindly-dev"</span> <span class="dv">0</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">let</span> [<span class="kw">walk</span>     (pull/pull-channel! <span class="st">"clojurecivitas"</span> <span class="dv">0</span>)</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>      messages (pull/all-messages <span class="kw">walk</span>)]</span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  (<span class="kw">=</span> (<span class="kw">count</span> messages) (<span class="at">:message-count</span> <span class="kw">walk</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -551,7 +551,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Options: :batch-size — passed through to <code>pull-channel!</code> (default 5000) :refresh-tip — passed through to <code>pull-channel!</code> :parallelism — number of channels to pull concurrently (default <code>default-parallelism</code>, currently 8). Pass 1 for fully sequential pulls.</p>
 <p>Successful entries are keyed by name; unknown names land in <code>:not-found</code>.</p>
 <div class="sourceClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">-&gt;</span> (pull/pull-channels! [<span class="st">"kindly-dev"</span> <span class="st">"no-such-channel"</span>])</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">-&gt;</span> (pull/pull-channels! [<span class="st">"clojurecivitas"</span> <span class="st">"no-such-channel"</span>])</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">:not-found</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="printedClojure">
@@ -587,7 +587,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>    tc/row-count)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="printedClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="dv">6950</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1059</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The columns:</p>
 <div class="sourceClojure">
@@ -764,7 +764,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb55"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>(nar/ts-&gt;month-date <span class="dv">1725611765</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="printedClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb56"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>#object[java.<span class="kw">time</span>.LocalDate <span class="bn">0x199a40d6</span> <span class="st">"2024-09-01"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb56"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>#object[java.<span class="kw">time</span>.LocalDate <span class="bn">0x6fdd0633</span> <span class="st">"2024-09-01"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="ts-year-month" class="level3">
@@ -820,10 +820,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><code>[timeline regex]</code></p>
 <p>Channels whose name matches <code>regex</code>.</p>
 <div class="sourceClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb65"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>(nar/channels-by-name-pattern sample-with-time <span class="ss">#"clay|tableplot"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb65"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>(nar/channels-by-name-pattern sample-with-time <span class="ss">#"civitas|gratitude"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="printedClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb66"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>[<span class="st">"clay-dev"</span> <span class="st">"tableplot-dev"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb66"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>[<span class="st">"clojurecivitas"</span> <span class="st">"gratitude"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="channels-by-shared-users" class="level3">
@@ -834,11 +834,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The seed channel itself appears in the result if it meets the threshold, since by definition its top posters account for 100% of its activity.</p>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb67"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">set</span></span>
-<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a> (nar/channels-by-shared-users sample-with-time <span class="st">"clay-dev"</span></span>
-<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a>                               <span class="at">:share</span> <span class="fl">0.4</span> <span class="at">:min-msgs</span> <span class="dv">30</span> <span class="at">:top-n</span> <span class="dv">30</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a> (nar/channels-by-shared-users sample-with-time <span class="st">"clojurecivitas"</span></span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a>                               <span class="at">:share</span> <span class="fl">0.5</span> <span class="at">:min-msgs</span> <span class="dv">5</span> <span class="at">:top-n</span> <span class="dv">5</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="printedClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb68"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>#{<span class="st">"noj-dev"</span> <span class="st">"tableplot-dev"</span> <span class="st">"kindly-dev"</span> <span class="st">"clay-dev"</span>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb68"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>#{<span class="st">"scicloj-webpublic"</span> <span class="st">"clojurecivitas"</span> <span class="st">"events"</span>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="first-posters-of-channel" class="level3">
@@ -846,7 +846,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><code>[timeline channel n]</code></p>
 <p>First <code>n</code> distinct user-keys to post in <code>channel</code>, with their first-post date. Useful for telling a ‘who started this’ story.</p>
 <div class="sourceClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb69"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">-&gt;</span> (nar/first-posters-of-channel sample-with-time <span class="st">"kindly-dev"</span> <span class="dv">5</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb69"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">-&gt;</span> (nar/first-posters-of-channel sample-with-time <span class="st">"clojurecivitas"</span> <span class="dv">5</span>)</span>
 <span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>    tc/column-names <span class="kw">sort</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="printedClojure">
@@ -858,7 +858,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><code>[timeline channel year-month]</code></p>
 <p>For users whose first-ever post in <code>channel</code> falls in the given <code>year-month</code> (“YYYY-MM”), tally the channels they had posted in before that first post. Returns one row per (prior-channel) with counts of how many newcomers passed through it.</p>
 <div class="sourceClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb71"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">-&gt;</span> (nar/prior-channels-of-newcomers sample-with-time <span class="st">"kindly-dev"</span> <span class="st">"2024-09"</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb71"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">-&gt;</span> (nar/prior-channels-of-newcomers sample-with-time <span class="st">"clojurecivitas"</span> <span class="st">"2025-10"</span>)</span>
 <span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>    tc/column-names <span class="kw">sort</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="printedClojure">
@@ -871,7 +871,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><code>[timeline channels]</code></p>
 <p>Long-form: one row per (channel, month-date) with <code>:msgs</code> count. Restricted to <code>channels</code> if supplied, else all channels.</p>
 <div class="sourceClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb73"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">-&gt;</span> (nar/channel-monthly-activity sample-with-time #{<span class="st">"kindly-dev"</span>})</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb73"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">-&gt;</span> (nar/channel-monthly-activity sample-with-time #{<span class="st">"clojurecivitas"</span>})</span>
 <span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a>    tc/column-names <span class="kw">sort</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="printedClojure">
@@ -926,9 +926,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><code>[timeline from-set &amp; {:keys [min-users], :or {min-users 3}}]</code></p>
 <p>Directed weighted graph: edge from <code>from-channel</code> to <code>to-channel</code> weighted by the number of users who posted in <code>from-channel</code> and <em>later</em> (after their last post in any <code>from-set</code> channel) posted in <code>to-channel</code>. Excludes self-loops and edges within <code>from-set</code>.</p>
 <p>Only users with at least 5 posts in <code>from-set</code> are considered.</p>
-<p>Edges from each <code>from-set</code> source to channels users moved to next. With <code>clay-dev</code> as the seed, no self-loops:</p>
+<p>Edges from each <code>from-set</code> source to channels users moved to next. With <code>clojurecivitas</code> as the seed, no self-loops:</p>
 <div class="sourceClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb81"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">let</span> [g (graph/migration-graph sample-with-time #{<span class="st">"clay-dev"</span>} <span class="at">:min-users</span> <span class="dv">1</span>)]</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb81"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">let</span> [g (graph/migration-graph sample-with-time #{<span class="st">"clojurecivitas"</span>} <span class="at">:min-users</span> <span class="dv">1</span>)]</span>
 <span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a>  (<span class="kw">every?</span> (<span class="kw">fn</span> [<span class="kw">e</span>] (<span class="kw">not=</span> (.getEdgeSource g <span class="kw">e</span>) (.getEdgeTarget g <span class="kw">e</span>)))</span>
 <span id="cb81-3"><a href="#cb81-3" aria-hidden="true" tabindex="-1"></a>          (.edgeSet g)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
