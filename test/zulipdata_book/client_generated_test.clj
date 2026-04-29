@@ -51,42 +51,42 @@
 
 
 (def
- v21_l118
+ v21_l121
  (def
   one-message-response
   (client/get-messages
-   {:narrow [{:operator "channel", :operand "kindly-dev"}],
+   {:narrow [{:operator "channel", :operand "clojurecivitas"}],
     :anchor "newest",
     :num-before 1,
     :num-after 0})))
 
 
-(def v22_l125 (-> one-message-response :messages count))
+(def v22_l128 (-> one-message-response :messages count))
 
 
-(deftest t23_l127 (is (= v22_l125 1)))
+(deftest t23_l130 (is (= v22_l128 1)))
 
 
-(def v25_l132 (-> one-message-response :messages first keys sort))
+(def v25_l139 (-> one-message-response :messages first))
 
 
 (def
- v27_l138
+ v27_l145
  (select-keys
   one-message-response
   [:found_anchor :found_oldest :found_newest]))
 
 
-(def v29_l150 client/base-url)
+(def v29_l157 client/base-url)
 
 
 (deftest
- t30_l152
- (is (= v29_l150 "https://clojurians.zulipchat.com/api/v1")))
+ t30_l159
+ (is (= v29_l157 "https://clojurians.zulipchat.com/api/v1")))
 
 
 (def
- v32_l158
+ v32_l165
  (->
   (client/api-get "/server_settings")
   (select-keys [:realm_name :realm_uri :zulip_version])))

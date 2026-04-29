@@ -9,53 +9,62 @@
   [clojure.test :refer [deftest is]]))
 
 
-(def v3_l24 (def me (client/whoami)))
+(def v3_l25 (def me (client/whoami)))
 
 
-(def v4_l26 (:email me))
+(def v4_l27 me)
 
 
-(def v5_l28 (:user-id me))
+(def v6_l35 (def public-channels (pull/public-channel-names)))
 
 
-(def v7_l35 (def public-channels (pull/public-channel-names)))
+(def v7_l37 (count public-channels))
 
 
-(def v8_l37 (count public-channels))
+(def v9_l41 (take 5 (sort public-channels)))
 
 
-(def v10_l41 (take 5 (sort public-channels)))
+(def v11_l47 (def web-public (pull/web-public-channel-names)))
 
 
-(def v12_l49 (def pulled (pull/pull-channels! ["kindly-dev"])))
+(def v12_l49 web-public)
 
 
-(def
- v13_l52
- (def message-count (get-in pulled ["kindly-dev" :message-count])))
-
-
-(def v14_l55 message-count)
+(def v14_l58 (def pulled (pull/pull-channels! ["clojurecivitas"])))
 
 
 (def
- v16_l59
- (def raw-messages (pull/all-messages (get pulled "kindly-dev"))))
+ v15_l61
+ (def message-count (get-in pulled ["clojurecivitas" :message-count])))
 
 
-(def v17_l62 (count raw-messages))
+(def v16_l64 message-count)
 
 
-(deftest t18_l64 (is (= v17_l62 message-count)))
+(def
+ v18_l68
+ (def raw-messages (pull/all-messages (get pulled "clojurecivitas"))))
 
 
-(def v20_l72 (def timeline (views/messages-timeline raw-messages)))
+(def v19_l71 (count raw-messages))
 
 
-(def v21_l74 (tc/row-count timeline))
+(deftest t20_l73 (is (= v19_l71 message-count)))
 
 
-(deftest t22_l76 (is (= v21_l74 message-count)))
+(def v22_l79 (first raw-messages))
 
 
-(def v24_l81 (tc/column-names timeline))
+(def v24_l86 (def timeline (views/messages-timeline raw-messages)))
+
+
+(def v25_l88 (-> timeline (tc/order-by :instant :desc)))
+
+
+(def v26_l91 (tc/row-count timeline))
+
+
+(deftest t27_l93 (is (= v26_l91 message-count)))
+
+
+(def v29_l98 (tc/column-names timeline))

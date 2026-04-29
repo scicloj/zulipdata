@@ -29,11 +29,13 @@
 ;;
 ;; This chapter needs more than one channel — `channels-by-shared-users`
 ;; and `prior-channels-of-newcomers` are about cross-channel structure.
-;; We use four small-to-medium scicloj channels with overlapping
+;; We use the same web-public fixture as the
+;; [Tablecloth views](./zulipdata_book.views.html) chapter:
+;; four small-to-medium scicloj-adjacent channels with overlapping
 ;; contributors. Subsequent runs are cache-served.
 
 (def fixture-channels
-  ["kindly-dev" "tableplot-dev" "clay-dev" "noj-dev"])
+  ["clojurecivitas" "scicloj-webpublic" "gratitude" "events"])
 
 (def messages
   (->> (pull/pull-channels! fixture-channels)
@@ -63,13 +65,20 @@
 
 (def timeline (nar/with-time-columns base-timeline))
 
-(tc/column-names timeline)
+(-> timeline tc/column-names sort)
 
-;; The three new columns:
+(every? (set (tc/column-names timeline))
+        [:month-date :year-month :year])
+
+(kind/test-last
+ (= true))
+
+;; A peek at the three new columns, freshest first:
 
 (-> timeline
     (tc/select-columns [:timestamp :month-date :year-month :year])
-    (tc/head 3))
+    (tc/order-by :timestamp :desc)
+    (tc/head 5))
 
 ;; The same three derivations are also exposed as scalar helpers
 ;; (`ts->month-date`, `ts->year-month`, `ts->year`), in case you need
@@ -108,7 +117,10 @@ lifecycles
 ;; for grabbing a name-defined cluster — but fragile because it
 ;; depends on naming conventions.
 
-(nar/channels-by-name-pattern timeline #"clay|tableplot")
+(nar/channels-by-name-pattern timeline #"civitas|gratitude")
+
+(kind/test-last
+ (= ["clojurecivitas" "gratitude"]))
 
 ;; ## Selecting channels by shared user-base
 ;;
@@ -118,12 +130,15 @@ lifecycles
 ;; `share` of activity. Use this to grow a cluster around a seed
 ;; channel by *who-posts-there*, rather than by name.
 ;;
-;; In a real corpus pull this finds many more channels than a naive
-;; name pattern; in our four-channel fixture it picks up only the
-;; ones that share a substantial slice of clay-dev's voices.
+;; Tightening `:share` shrinks the result: at `0.3` the seed's top
+;; posters reach all four channels in our fixture; at `0.5` they only
+;; account for that fraction of activity in three of them.
 
-(nar/channels-by-shared-users timeline "clay-dev"
-                              :share 0.4 :min-msgs 30 :top-n 30)
+(nar/channels-by-shared-users timeline "clojurecivitas"
+                              :share 0.5 :min-msgs 5 :top-n 5)
+
+(kind/test-last
+ (= ["clojurecivitas" "events" "scicloj-webpublic"]))
 
 ;; ## First posters of a channel
 ;;
@@ -131,7 +146,15 @@ lifecycles
 ;; `:user-key`s to ever post in a channel, with the date of their
 ;; first post. Useful for telling a "who started this" story.
 
-(nar/first-posters-of-channel timeline "kindly-dev" 5)
+(def civitas-first-posters
+  (nar/first-posters-of-channel timeline "clojurecivitas" 5))
+
+civitas-first-posters
+
+(tc/row-count civitas-first-posters)
+
+(kind/test-last
+ (= 5))
 
 ;; ## Tracing newcomers' prior channels
 ;;
@@ -143,11 +166,10 @@ lifecycles
 ;;
 ;; **A caveat on scope.** "Prior channels" is restricted to whatever
 ;; you pulled. In our four-channel fixture, anyone whose only prior
-;; activity was in `data-science` or `slack-archive` will not show
-;; up. Run the same call on a corpus-wide timeline and the answer
-;; covers the whole community.
+;; activity was outside the four will not show up. Run the same call
+;; on a corpus-wide timeline and the answer covers the whole community.
 
-(nar/prior-channels-of-newcomers timeline "kindly-dev" "2024-09")
+(nar/prior-channels-of-newcomers timeline "clojurecivitas" "2025-10")
 
 ;; ## Monthly activity per channel
 ;;
@@ -156,18 +178,18 @@ lifecycles
 ;; a `:msgs` count. Pass an optional set of channel names to restrict
 ;; the output.
 
-(def kindly-monthly
-  (nar/channel-monthly-activity timeline #{"kindly-dev"}))
+(def civitas-monthly
+  (nar/channel-monthly-activity timeline #{"clojurecivitas"}))
 
-(tc/head kindly-monthly 3)
+civitas-monthly
 
 ;; The total over the channel matches the lifecycle row:
 
-(reduce + (:msgs kindly-monthly))
+(reduce + (:msgs civitas-monthly))
 
 (kind/test-last
  (= (-> lifecycles
-        (tc/select-rows #(= "kindly-dev" (:channel %)))
+        (tc/select-rows #(= "clojurecivitas" (:channel %)))
         :total
         first)))
 

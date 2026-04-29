@@ -16,7 +16,7 @@
  v3_l46
  (def
   sample-channels
-  ["kindly-dev" "tableplot-dev" "clay-dev" "noj-dev"]))
+  ["clojurecivitas" "scicloj-webpublic" "gratitude" "events"]))
 
 
 (def v4_l49 (def sample-pull (pull/pull-channels! sample-channels)))
@@ -72,7 +72,7 @@
    "/messages"
    {"narrow"
     (charred.api/write-json-str
-     [{:operator "channel", :operand "kindly-dev"}]),
+     [{:operator "channel", :operand "clojurecivitas"}]),
     "anchor" "newest",
     "num_before" 1,
     "num_after" 0})
@@ -125,7 +125,7 @@
  v29_l115
  (->
   (client/get-messages
-   {:narrow [{:operator "channel", :operand "kindly-dev"}],
+   {:narrow [{:operator "channel", :operand "clojurecivitas"}],
     :anchor "newest",
     :num-before 3,
     :num-after 0})
@@ -150,7 +150,7 @@
 
 (def
  v36_l134
- (-> (pull/fetch-window "kindly-dev" 0 100) :messages count))
+ (-> (pull/fetch-window "clojurecivitas" 0 100) :messages count))
 
 
 (deftest t37_l137 (is (= v36_l134 100)))
@@ -162,7 +162,7 @@
 (def
  v40_l143
  (->
-  (pull/pull-channel! "kindly-dev" 0)
+  (pull/pull-channel! "clojurecivitas" 0)
   (select-keys [:pages :message-count])
   keys
   set))
@@ -178,7 +178,7 @@
  v43_l152
  (let
   [walk
-   (pull/pull-channel! "kindly-dev" 0)
+   (pull/pull-channel! "clojurecivitas" 0)
    messages
    (pull/all-messages walk)]
   (= (count messages) (:message-count walk))))
@@ -192,7 +192,9 @@
 
 (def
  v47_l163
- (-> (pull/pull-channels! ["kindly-dev" "no-such-channel"]) :not-found))
+ (->
+  (pull/pull-channels! ["clojurecivitas" "no-such-channel"])
+  :not-found))
 
 
 (deftest t48_l166 (is (= v47_l163 ["no-such-channel"])))
@@ -475,10 +477,10 @@
 
 (def
  v105_l309
- (nar/channels-by-name-pattern sample-with-time #"clay|tableplot"))
+ (nar/channels-by-name-pattern sample-with-time #"civitas|gratitude"))
 
 
-(deftest t106_l311 (is (= v105_l309 ["clay-dev" "tableplot-dev"])))
+(deftest t106_l311 (is (= v105_l309 ["clojurecivitas" "gratitude"])))
 
 
 (def v107_l313 (kind/doc #'nar/channels-by-shared-users))
@@ -489,16 +491,16 @@
  (set
   (nar/channels-by-shared-users
    sample-with-time
-   "clay-dev"
+   "clojurecivitas"
    :share
-   0.4
+   0.5
    :min-msgs
-   30
+   5
    :top-n
-   30)))
+   5)))
 
 
-(deftest t110_l323 (is (contains? v109_l319 "clay-dev")))
+(deftest t110_l323 (is (contains? v109_l319 "clojurecivitas")))
 
 
 (def v111_l325 (kind/doc #'nar/first-posters-of-channel))
@@ -507,7 +509,7 @@
 (def
  v112_l327
  (->
-  (nar/first-posters-of-channel sample-with-time "kindly-dev" 5)
+  (nar/first-posters-of-channel sample-with-time "clojurecivitas" 5)
   tc/column-names
   sort))
 
@@ -523,8 +525,8 @@
  (->
   (nar/prior-channels-of-newcomers
    sample-with-time
-   "kindly-dev"
-   "2024-09")
+   "clojurecivitas"
+   "2025-10")
   tc/column-names
   sort))
 
@@ -540,7 +542,7 @@
 (def
  v118_l341
  (->
-  (nar/channel-monthly-activity sample-with-time #{"kindly-dev"})
+  (nar/channel-monthly-activity sample-with-time #{"clojurecivitas"})
   tc/column-names
   sort))
 
@@ -603,7 +605,11 @@
  v133_l378
  (let
   [g
-   (graph/migration-graph sample-with-time #{"clay-dev"} :min-users 1)]
+   (graph/migration-graph
+    sample-with-time
+    #{"clojurecivitas"}
+    :min-users
+    1)]
   (every?
    (fn [e] (not= (.getEdgeSource g e) (.getEdgeTarget g e)))
    (.edgeSet g))))

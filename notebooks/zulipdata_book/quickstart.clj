@@ -6,7 +6,8 @@
 ;; your setup works.
 ;;
 ;; Credentials are read from `ZULIP_EMAIL` / `ZULIP_API_KEY` env vars
-;; or `~/.zuliprc` — see the project README.
+;; or `~/.zuliprc` — see Zulip's [API keys
+;; documentation](https://zulip.com/api/api-keys) for how to obtain them.
 
 (ns zulipdata-book.quickstart
   (:require
@@ -18,58 +19,74 @@
 
 ;; ## Authenticating
 ;;
-;; `client/whoami` calls `/users/me` and returns a small summary of the
-;; authenticated identity.
+;; `client/whoami` calls `/users/me` and returns a summary of the
+;; authenticated identity:
 
 (def me (client/whoami))
 
-(:email me)
+me
 
-(:user-id me)
-
-;; ## Listing public channels
+;; ## Listing channels
 ;;
 ;; `pull/public-channel-names` returns every channel the bot can read —
-;; both fully public and the smaller subset that is web-public.
+;; both fully public (login-gated) and the smaller subset that is
+;; web-public (readable without logging in).
 
 (def public-channels (pull/public-channel-names))
 
 (count public-channels)
 
-;; A few names:
+;; A prefix:
 
 (take 5 (sort public-channels))
+
+;; `pull/web-public-channel-names` returns just the web-public subset.
+;; Throughout this book we draw demo data from these channels so that
+;; message content can be shown without leaking anything login-gated.
+
+(def web-public (pull/web-public-channel-names))
+
+web-public
 
 ;; ## Pulling messages from one channel
 ;;
 ;; `pull/pull-channels!` walks forward through a list of channels in
 ;; cached windows. The first run populates the disk cache; subsequent
-;; runs are served from cache. We pull a single small channel here.
+;; runs are served from cache. We pull `clojurecivitas`, a web-public
+;; channel.
 
 (def pulled
-  (pull/pull-channels! ["kindly-dev"]))
+  (pull/pull-channels! ["clojurecivitas"]))
 
 (def message-count
-  (get-in pulled ["kindly-dev" :message-count]))
+  (get-in pulled ["clojurecivitas" :message-count]))
 
 message-count
 
 ;; Flatten the cached windows into a single seq of raw messages:
 
 (def raw-messages
-  (pull/all-messages (get pulled "kindly-dev")))
+  (pull/all-messages (get pulled "clojurecivitas")))
 
 (count raw-messages)
 
 (kind/test-last
  (= message-count))
 
+;; A single raw message — one map per Zulip message, with sender,
+;; topic, content, timestamps, reactions, and edit history:
+
+(first raw-messages)
+
 ;; ## Building a timeline view
 ;;
 ;; `views/messages-timeline` projects raw messages into a tablecloth
-;; dataset with one row per message and scalar columns only.
+;; dataset with one row per message and scalar columns only:
 
 (def timeline (views/messages-timeline raw-messages))
+
+(-> timeline
+    (tc/order-by :instant :desc))
 
 (tc/row-count timeline)
 

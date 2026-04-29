@@ -52,10 +52,11 @@
 
 ;; The first call hits the network; the second is served from the
 ;; cache. Both are identical from the caller's point of view. We
-;; reach for the small `kindly-dev` channel as our example.
+;; reach for `clojurecivitas`, a small web-public channel, as our
+;; example.
 
 (def first-window
-  (pull/fetch-window "kindly-dev" 0 100))
+  (pull/fetch-window "clojurecivitas" 0 100))
 
 (-> first-window :messages count)
 
@@ -92,12 +93,12 @@ pull/default-batch-size
 ;; To walk from the very beginning, start at id zero — the first real
 ;; message will satisfy the anchor and the walk runs from there.
 
-(def kindly-dev-pull
-  (pull/pull-channel! "kindly-dev" 0))
+(def clojurecivitas-pull
+  (pull/pull-channel! "clojurecivitas" 0))
 
-(:message-count kindly-dev-pull)
+(:message-count clojurecivitas-pull)
 
-(count (:pages kindly-dev-pull))
+(count (:pages clojurecivitas-pull))
 
 ;; ## Flattening pages into messages
 ;;
@@ -105,16 +106,16 @@ pull/default-batch-size
 ;; concatenates their `:messages` and de-duplicates by `:id` (windows
 ;; are non-overlapping by construction; the dedup is belt-and-braces).
 
-(def kindly-dev-messages (pull/all-messages kindly-dev-pull))
+(def clojurecivitas-messages (pull/all-messages clojurecivitas-pull))
 
-(count kindly-dev-messages)
+(count clojurecivitas-messages)
 
 (kind/test-last
- (= (:message-count kindly-dev-pull)))
+ (= (:message-count clojurecivitas-pull)))
 
 ;; A single message:
 
-(-> kindly-dev-messages first (select-keys [:id :sender_full_name :timestamp]))
+(first clojurecivitas-messages)
 
 ;; ## Pulling several channels at once
 ;;
@@ -124,12 +125,26 @@ pull/default-batch-size
 ;; the server are collected under `:not-found`.
 
 (def pulled
-  (pull/pull-channels! ["kindly-dev" "definitely-not-a-real-channel"]))
+  (pull/pull-channels! ["clojurecivitas" "definitely-not-a-real-channel"]))
 
-(get-in pulled ["kindly-dev" :message-count])
+(get-in pulled ["clojurecivitas" :message-count])
 
 (kind/test-last
- (= (:message-count kindly-dev-pull)))
+ (> 0))
+
+;; Note that this count is **less than or equal to** what
+;; `(pull/pull-channel! "clojurecivitas" 0)` returns above:
+;; `pull-channels!` walks from each channel's `:first_message_id`
+;; (looked up from `/streams`), while anchor `0` also picks up any
+;; messages with lower ids that were *moved into* the channel from
+;; elsewhere (cross-channel moves preserve the original id). For
+;; channels without inbound moves the two counts coincide.
+
+(<= (get-in pulled ["clojurecivitas" :message-count])
+    (:message-count clojurecivitas-pull))
+
+(kind/test-last
+ (= true))
 
 ;; The unknown channel ends up in `:not-found`:
 
@@ -142,7 +157,7 @@ pull/default-batch-size
 ;; first-message id — those are looked up by the function and
 ;; included for downstream use:
 
-(-> (get pulled "kindly-dev")
+(-> (get pulled "clojurecivitas")
     (select-keys [:stream-id :first-message-id :message-count]))
 
 ;; ## Pulling everything public
@@ -165,15 +180,15 @@ pull/default-batch-size
 ;; windows now appear. This is the right option for keeping a corpus
 ;; up to date without rebuilding it from scratch.
 
-(def kindly-dev-pull-fresh
-  (pull/pull-channel! "kindly-dev" 0 :refresh-tip true))
+(def clojurecivitas-pull-fresh
+  (pull/pull-channel! "clojurecivitas" 0 :refresh-tip true))
 
-(:message-count kindly-dev-pull-fresh)
+(:message-count clojurecivitas-pull-fresh)
 
 ;; The fresh count is at least the cached count — typically equal, or
 ;; slightly larger if new messages arrived since:
 
-(>= (:message-count kindly-dev-pull-fresh) (:message-count kindly-dev-pull))
+(>= (:message-count clojurecivitas-pull-fresh) (:message-count clojurecivitas-pull))
 
 (kind/test-last
  (= true))
@@ -197,11 +212,11 @@ pull/default-batch-size
 ;; channels (`slack-archive`-sized), bandwidth matters more and the
 ;; speedup is smaller.
 
-(def kindly-and-noj
-  (pull/pull-channels! ["kindly-dev" "noj-dev"] :parallelism 2))
+(def two-channel-pull
+  (pull/pull-channels! ["clojurecivitas" "scicloj-webpublic"] :parallelism 2))
 
 (map (fn [[k v]] [k (:message-count v)])
-     (dissoc kindly-and-noj :not-found))
+     (dissoc two-channel-pull :not-found))
 
 ;; ## Where to go next
 ;;

@@ -98,11 +98,14 @@ web-public-channels
 ;; The distinction matters when sharing data downstream — content
 ;; from a non-web-public channel should not appear in artifacts that
 ;; leave your machine, while content from web-public channels is fair
-;; game. The
-;; [**Tablecloth views**](./zulipdata_book.views.html#showing-real-content-from-web-public-channels)
-;; chapter uses `gratitude` (web-public) to show real `:content`
-;; and sender names; everywhere else in this book we either hide
-;; content or run on the
+;; game. The book's tutorial chapters
+;; ([**Tablecloth views**](./zulipdata_book.views.html),
+;; [**Narrative helpers**](./zulipdata_book.narrative.html),
+;; [**Graph views**](./zulipdata_book.graph.html))
+;; deliberately use a four-channel **web-public** fixture so the
+;; rendered output can show real names, topic strings, and message
+;; content without leaking anything login-gated. For analyses on
+;; non-web-public channels, see
 ;; [**Anonymized views**](./zulipdata_book.anonymize.html).
 
 ;; ## Fetching messages
@@ -112,12 +115,12 @@ web-public-channels
 ;; the keywords `"newest"`, `"oldest"`, `"first_unread"`), and counts
 ;; of messages to fetch before and after the anchor.
 ;;
-;; A single message from `kindly-dev`, one of the small channels we
-;; reuse as a fixture throughout this book:
+;; A single message from `clojurecivitas`, one of the web-public
+;; channels we reuse as a fixture throughout this book:
 
 (def one-message-response
   (client/get-messages
-   {:narrow     [{:operator "channel" :operand "kindly-dev"}]
+   {:narrow     [{:operator "channel" :operand "clojurecivitas"}]
     :anchor     "newest"
     :num-before 1
     :num-after  0}))
@@ -127,9 +130,13 @@ web-public-channels
 (kind/test-last
  (= 1))
 
-;; The fields a message carries (a sample — full set varies):
+;; The whole message map — sender, topic, content, timestamps,
+;; reactions, and edit history. The exact set of fields varies
+;; slightly across messages; the rest of the library normalises
+;; this shape into the views described in
+;; [**Tablecloth views**](./zulipdata_book.views.html).
 
-(-> one-message-response :messages first keys sort)
+(-> one-message-response :messages first)
 
 ;; The response also tells you whether the window touches the start or
 ;; end of the channel's history — this is what `pull/pull-channel!`

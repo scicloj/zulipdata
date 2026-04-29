@@ -44,7 +44,7 @@
 ;; (anonymized), `sample-with-time` (anonymized + date columns).
 
 (def sample-channels
-  ["kindly-dev" "tableplot-dev" "clay-dev" "noj-dev"])
+  ["clojurecivitas" "scicloj-webpublic" "gratitude" "events"])
 
 (def sample-pull
   (pull/pull-channels! sample-channels))
@@ -82,7 +82,7 @@ client/base-url
 
 (-> (client/api-get "/messages"
                     {"narrow"     (charred.api/write-json-str
-                                   [{:operator "channel" :operand "kindly-dev"}])
+                                   [{:operator "channel" :operand "clojurecivitas"}])
                      "anchor"     "newest"
                      "num_before" 1
                      "num_after"  0})
@@ -113,7 +113,7 @@ client/base-url
 (kind/doc #'client/get-messages)
 
 (-> (client/get-messages
-     {:narrow     [{:operator "channel" :operand "kindly-dev"}]
+     {:narrow     [{:operator "channel" :operand "clojurecivitas"}]
       :anchor     "newest"
       :num-before 3
       :num-after  0})
@@ -131,7 +131,7 @@ pull/default-batch-size
 
 (kind/doc #'pull/fetch-window)
 
-(-> (pull/fetch-window "kindly-dev" 0 100)
+(-> (pull/fetch-window "clojurecivitas" 0 100)
     :messages count)
 
 (kind/test-last [= 100])
@@ -140,7 +140,7 @@ pull/default-batch-size
 
 ;; A complete walk from id zero to the channel's tip. Result keys:
 
-(-> (pull/pull-channel! "kindly-dev" 0)
+(-> (pull/pull-channel! "clojurecivitas" 0)
     (select-keys [:pages :message-count])
     keys
     set)
@@ -149,7 +149,7 @@ pull/default-batch-size
 
 (kind/doc #'pull/all-messages)
 
-(let [walk     (pull/pull-channel! "kindly-dev" 0)
+(let [walk     (pull/pull-channel! "clojurecivitas" 0)
       messages (pull/all-messages walk)]
   (= (count messages) (:message-count walk)))
 
@@ -160,7 +160,7 @@ pull/default-batch-size
 ;; Successful entries are keyed by name; unknown names land in
 ;; `:not-found`.
 
-(-> (pull/pull-channels! ["kindly-dev" "no-such-channel"])
+(-> (pull/pull-channels! ["clojurecivitas" "no-such-channel"])
     :not-found)
 
 (kind/test-last [= ["no-such-channel"]])
@@ -306,9 +306,9 @@ pull/default-batch-size
 
 (kind/doc #'nar/channels-by-name-pattern)
 
-(nar/channels-by-name-pattern sample-with-time #"clay|tableplot")
+(nar/channels-by-name-pattern sample-with-time #"civitas|gratitude")
 
-(kind/test-last [= ["clay-dev" "tableplot-dev"]])
+(kind/test-last [= ["clojurecivitas" "gratitude"]])
 
 (kind/doc #'nar/channels-by-shared-users)
 
@@ -317,28 +317,28 @@ pull/default-batch-size
 ;; its activity.
 
 (set
- (nar/channels-by-shared-users sample-with-time "clay-dev"
-                               :share 0.4 :min-msgs 30 :top-n 30))
+ (nar/channels-by-shared-users sample-with-time "clojurecivitas"
+                               :share 0.5 :min-msgs 5 :top-n 5))
 
-(kind/test-last [contains? "clay-dev"])
+(kind/test-last [contains? "clojurecivitas"])
 
 (kind/doc #'nar/first-posters-of-channel)
 
-(-> (nar/first-posters-of-channel sample-with-time "kindly-dev" 5)
+(-> (nar/first-posters-of-channel sample-with-time "clojurecivitas" 5)
     tc/column-names sort)
 
 (kind/test-last [= '(:first-post-date :user-key)])
 
 (kind/doc #'nar/prior-channels-of-newcomers)
 
-(-> (nar/prior-channels-of-newcomers sample-with-time "kindly-dev" "2024-09")
+(-> (nar/prior-channels-of-newcomers sample-with-time "clojurecivitas" "2025-10")
     tc/column-names sort)
 
 (kind/test-last [= '(:newcomers-touched :prior-channel)])
 
 (kind/doc #'nar/channel-monthly-activity)
 
-(-> (nar/channel-monthly-activity sample-with-time #{"kindly-dev"})
+(-> (nar/channel-monthly-activity sample-with-time #{"clojurecivitas"})
     tc/column-names sort)
 
 (kind/test-last [= '(:channel :month-date :msgs)])
@@ -373,9 +373,9 @@ pull/default-batch-size
 (kind/doc #'graph/migration-graph)
 
 ;; Edges from each `from-set` source to channels users moved to next.
-;; With `clay-dev` as the seed, no self-loops:
+;; With `clojurecivitas` as the seed, no self-loops:
 
-(let [g (graph/migration-graph sample-with-time #{"clay-dev"} :min-users 1)]
+(let [g (graph/migration-graph sample-with-time #{"clojurecivitas"} :min-users 1)]
   (every? (fn [e] (not= (.getEdgeSource g e) (.getEdgeTarget g e)))
           (.edgeSet g)))
 

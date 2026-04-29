@@ -10,14 +10,14 @@
 
 
 (def
- v3_l35
+ v3_l37
  (def
   fixture-channels
-  ["kindly-dev" "tableplot-dev" "clay-dev" "noj-dev"]))
+  ["clojurecivitas" "scicloj-webpublic" "gratitude" "events"]))
 
 
 (def
- v4_l38
+ v4_l40
  (def
   messages
   (->>
@@ -26,34 +26,45 @@
    (mapcat (fn [[_ r]] (pull/all-messages r))))))
 
 
-(def v5_l43 (count messages))
+(def v5_l45 (count messages))
 
 
-(def v6_l45 (def base-timeline (anon/anonymized-timeline messages)))
+(def v6_l47 (def base-timeline (anon/anonymized-timeline messages)))
 
 
-(def v7_l48 (tc/row-count base-timeline))
+(def v7_l50 (tc/row-count base-timeline))
 
 
-(deftest t8_l50 (is (= v7_l48 (count messages))))
+(deftest t8_l52 (is (= v7_l50 (count messages))))
 
 
-(def v10_l64 (def timeline (nar/with-time-columns base-timeline)))
+(def v10_l66 (def timeline (nar/with-time-columns base-timeline)))
 
 
-(def v11_l66 (tc/column-names timeline))
+(def v11_l68 (-> timeline tc/column-names sort))
 
 
 (def
- v13_l70
- (->
-  timeline
-  (tc/select-columns [:timestamp :month-date :year-month :year])
-  (tc/head 3)))
+ v12_l70
+ (every?
+  (set (tc/column-names timeline))
+  [:month-date :year-month :year]))
+
+
+(deftest t13_l73 (is (= v12_l70 true)))
 
 
 (def
  v15_l78
+ (->
+  timeline
+  (tc/select-columns [:timestamp :month-date :year-month :year])
+  (tc/order-by :timestamp :desc)
+  (tc/head 5)))
+
+
+(def
+ v17_l87
  (let
   [ts (-> timeline :timestamp first)]
   {:ts ts,
@@ -62,65 +73,88 @@
    :year (nar/ts->year ts)}))
 
 
-(def v17_l92 (def lifecycles (nar/channel-lifecycle timeline)))
+(def v19_l101 (def lifecycles (nar/channel-lifecycle timeline)))
 
 
-(def v18_l94 lifecycles)
+(def v20_l103 lifecycles)
 
 
-(def v20_l99 (tc/row-count lifecycles))
+(def v22_l108 (tc/row-count lifecycles))
 
 
 (deftest
- t21_l101
- (is (= v20_l99 (-> timeline :channel distinct count))))
-
-
-(def v23_l111 (nar/channels-by-name-pattern timeline #"clay|tableplot"))
+ t23_l110
+ (is (= v22_l108 (-> timeline :channel distinct count))))
 
 
 (def
- v25_l125
+ v25_l120
+ (nar/channels-by-name-pattern timeline #"civitas|gratitude"))
+
+
+(deftest t26_l122 (is (= v25_l120 ["clojurecivitas" "gratitude"])))
+
+
+(def
+ v28_l137
  (nar/channels-by-shared-users
   timeline
-  "clay-dev"
+  "clojurecivitas"
   :share
-  0.4
+  0.5
   :min-msgs
-  30
+  5
   :top-n
-  30))
-
-
-(def v27_l134 (nar/first-posters-of-channel timeline "kindly-dev" 5))
-
-
-(def
- v29_l150
- (nar/prior-channels-of-newcomers timeline "kindly-dev" "2024-09"))
-
-
-(def
- v31_l159
- (def
-  kindly-monthly
-  (nar/channel-monthly-activity timeline #{"kindly-dev"})))
-
-
-(def v32_l162 (tc/head kindly-monthly 3))
-
-
-(def v34_l166 (reduce + (:msgs kindly-monthly)))
+  5))
 
 
 (deftest
- t35_l168
+ t29_l140
+ (is (= v28_l137 ["clojurecivitas" "events" "scicloj-webpublic"])))
+
+
+(def
+ v31_l149
+ (def
+  civitas-first-posters
+  (nar/first-posters-of-channel timeline "clojurecivitas" 5)))
+
+
+(def v32_l152 civitas-first-posters)
+
+
+(def v33_l154 (tc/row-count civitas-first-posters))
+
+
+(deftest t34_l156 (is (= v33_l154 5)))
+
+
+(def
+ v36_l172
+ (nar/prior-channels-of-newcomers timeline "clojurecivitas" "2025-10"))
+
+
+(def
+ v38_l181
+ (def
+  civitas-monthly
+  (nar/channel-monthly-activity timeline #{"clojurecivitas"})))
+
+
+(def v39_l184 civitas-monthly)
+
+
+(def v41_l188 (reduce + (:msgs civitas-monthly)))
+
+
+(deftest
+ t42_l190
  (is
   (=
-   v34_l166
+   v41_l188
    (->
     lifecycles
     (tc/select-rows
-     (fn* [p1__49170#] (= "kindly-dev" (:channel p1__49170#))))
+     (fn* [p1__45017#] (= "clojurecivitas" (:channel p1__45017#))))
     :total
     first))))

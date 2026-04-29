@@ -14,7 +14,7 @@
  v3_l37
  (def
   fixture-channels
-  ["kindly-dev" "tableplot-dev" "clay-dev" "noj-dev"]))
+  ["clojurecivitas" "scicloj-webpublic" "gratitude" "events"]))
 
 
 (def
@@ -62,8 +62,11 @@
 (def v17_l87 (count (.edgeSet co-channel)))
 
 
+(deftest t19_l92 (is (= v17_l87 6)))
+
+
 (def
- v19_l91
+ v21_l97
  (->>
   (.edgeSet co-channel)
   (map
@@ -77,27 +80,27 @@
 
 
 (def
- v21_l107
+ v23_l113
  (def
   co-user
   (graph/user-copresence-graph timeline :min-shared 2 :min-channels 2)))
 
 
 (def
- v23_l112
+ v25_l118
  {:nodes (count (.vertexSet co-user)),
   :edges (count (.edgeSet co-user))})
 
 
 (def
- v25_l127
+ v27_l133
  (def
   migration
-  (graph/migration-graph timeline #{"clay-dev"} :min-users 1)))
+  (graph/migration-graph timeline #{"clojurecivitas"} :min-users 1)))
 
 
 (def
- v26_l130
+ v28_l136
  (->>
   (.edgeSet migration)
   (map
@@ -110,17 +113,35 @@
   tc/dataset))
 
 
-(def v28_l143 (graph/betweenness co-channel))
+(def v30_l149 (graph/betweenness co-channel))
 
 
-(def v30_l159 (graph/girvan-newman co-channel 2))
+(def v32_l156 (every? zero? (vals (graph/betweenness co-channel))))
 
 
-(def v32_l165 (graph/label-propagation co-channel))
+(deftest t33_l158 (is (= v32_l156 true)))
+
+
+(def v35_l170 (graph/girvan-newman co-channel 2))
+
+
+(def v36_l172 (count (graph/girvan-newman co-channel 2)))
+
+
+(deftest t37_l174 (is (= v36_l172 2)))
+
+
+(def v39_l181 (graph/label-propagation co-channel))
+
+
+(def v40_l183 (count (graph/label-propagation co-channel)))
+
+
+(deftest t41_l185 (is (= v40_l183 1)))
 
 
 (def
- v34_l175
+ v43_l196
  (kind/cytoscape
   {:elements (graph/->cytoscape-elements co-channel),
    :style
@@ -130,7 +151,7 @@
 
 
 (def
- v36_l190
+ v45_l211
  (def
   co-channel-dot
   (graph/->dot
@@ -141,4 +162,4 @@
    (fn [[_ _ w]] (str (long w))))))
 
 
-(def v37_l195 (kind/graphviz co-channel-dot))
+(def v46_l216 (kind/graphviz co-channel-dot))

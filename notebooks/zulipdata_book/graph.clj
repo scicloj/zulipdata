@@ -29,13 +29,13 @@
 
 ;; ## A multi-channel fixture
 ;;
-;; The same four-channel anonymized timeline used in
+;; The same web-public anonymized timeline used in
 ;; [**Narrative helpers**](./zulipdata_book.narrative.html) —
 ;; small enough to render, large enough to have non-trivial
 ;; structure.
 
 (def fixture-channels
-  ["kindly-dev" "tableplot-dev" "clay-dev" "noj-dev"])
+  ["clojurecivitas" "scicloj-webpublic" "gratitude" "events"])
 
 (def timeline
   (->> (pull/pull-channels! fixture-channels)
@@ -86,6 +86,12 @@
 
 (count (.edgeSet co-channel))
 
+;; The graph is complete on the four channels — every pair shares at
+;; least one user — so there are `C(4,2) = 6` edges:
+
+(kind/test-last
+ (= 6))
+
 ;; The edge-weight table:
 
 (->> (.edgeSet co-channel)
@@ -120,12 +126,12 @@
 ;; `from-set` source they used to each later destination. Edges with
 ;; fewer than `:min-users` are dropped.
 ;;
-;; In our fixture, taking `clay-dev` as the seed shows where
-;; clay-dev posters subsequently appeared (within the four channels
-;; we pulled).
+;; In our fixture, taking `clojurecivitas` as the seed shows where
+;; clojurecivitas posters subsequently appeared (within the four
+;; channels we pulled).
 
 (def migration
-  (graph/migration-graph timeline #{"clay-dev"} :min-users 1))
+  (graph/migration-graph timeline #{"clojurecivitas"} :min-users 1))
 
 (->> (.edgeSet migration)
      (map (fn [e]
@@ -147,6 +153,11 @@
 ;; shortest path. Betweenness comes alive on graphs with structural
 ;; bottlenecks; on a four-node clique there are none.
 
+(every? zero? (vals (graph/betweenness co-channel)))
+
+(kind/test-last
+ (= true))
+
 ;; ## Communities
 ;;
 ;; Two algorithms, both returning a vector of node-sets — one set per
@@ -158,11 +169,21 @@
 
 (graph/girvan-newman co-channel 2)
 
+(count (graph/girvan-newman co-channel 2))
+
+(kind/test-last
+ (= 2))
+
 ;; Label propagation chooses `k` itself. On a small dense graph it
 ;; will often collapse to one cluster — which is informative in its
 ;; own right.
 
 (graph/label-propagation co-channel)
+
+(count (graph/label-propagation co-channel))
+
+(kind/test-last
+ (= 1))
 
 ;; ## Rendering: `kind/cytoscape`
 ;;

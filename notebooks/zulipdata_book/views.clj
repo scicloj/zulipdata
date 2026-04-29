@@ -23,20 +23,25 @@
    [scicloj.kindly.v4.kind :as kind]
    [tablecloth.api :as tc]))
 
-;; ## Setting up a small fixture
+;; ## Setting up a fixture
 ;;
-;; We use the same four-channel sample as the later chapters: small
-;; enough to render quickly, varied enough that every view has
-;; non-empty rows. Subsequent runs are cache-served.
+;; We use a four-channel **web-public** fixture throughout this chapter
+;; so the view contents — sender names, topic strings, message bodies —
+;; can be shown without leaking anything login-gated. Web-public means
+;; the channel is readable on `clojurians.zulipchat.com` without a
+;; Zulip account; see
+;; [**Web-public channels**](./zulipdata_book.client.html#web-public-channels)
+;; in the client chapter.
 ;;
-;; `pull/pull-channels!` returns a map keyed by channel name plus a
-;; `:not-found` entry for any unknown names. The `(filter (string? k))`
-;; step keeps only the channel-keyed entries before flattening their
-;; pages into a single seq of raw messages. This same idiom recurs in
-;; the later chapters.
+;; The four channels are small enough to render quickly, varied enough
+;; that every view has non-empty rows, and have overlapping
+;; contributors so the cross-channel analyses in
+;; [Narrative helpers](./zulipdata_book.narrative.html) and
+;; [Graph views](./zulipdata_book.graph.html) are non-trivial.
+;; Subsequent runs are cache-served.
 
 (def fixture-channels
-  ["kindly-dev" "tableplot-dev" "clay-dev" "noj-dev"])
+  ["clojurecivitas" "scicloj-webpublic" "gratitude" "events"])
 
 (def messages
   (->> (pull/pull-channels! fixture-channels)
@@ -61,15 +66,20 @@
 (kind/test-last
  (= (count messages)))
 
-;; The columns:
+;; The columns (sorted alphabetically):
 
-(tc/column-names timeline)
+(-> timeline tc/column-names sort)
 
-;; A peek at the first three rows, with a few interesting columns:
+(kind/test-last
+ (= '(:channel :client :content :content-length :edited :id :instant
+               :last-edit-ts :sender :sender-id :stream-id :subject :timestamp)))
+
+;; The whole dataset, freshest first. Inline emoji codes
+;; (`:gratitude:`, `:pray:`) and `@**Real Name**` mentions are how
+;; Zulip tags content; they pass through verbatim.
 
 (-> timeline
-    (tc/select-columns [:id :instant :channel :sender :content-length :edited])
-    (tc/head 3))
+    (tc/order-by :instant :desc))
 
 ;; The `:instant` column is a Java `Instant` derived from
 ;; `:timestamp` (epoch seconds). Both are kept — `:timestamp` is good
@@ -77,8 +87,11 @@
 
 (-> timeline :instant first type)
 
+(kind/test-last
+ (= java.time.Instant))
+
 ;; The `:edited` column is a structural derivation from the raw
-;; message — true iff `:last_edit_timestamp` is present.
+;; message — true iff `:last_edit_timestamp` is present:
 
 (-> timeline (tc/select-rows :edited) tc/row-count)
 
@@ -92,7 +105,11 @@
 
 (tc/row-count reactions)
 
-(tc/column-names reactions)
+(-> reactions tc/column-names sort)
+
+(kind/test-last
+ (= '(:channel :emoji-code :emoji-name :message-id :message-ts
+               :reaction-type :stream-id :subject :user-id)))
 
 ;; Top emoji across the fixture, by reaction count:
 
@@ -114,14 +131,19 @@
 
 (tc/row-count edits)
 
-(tc/column-names edits)
+(-> edits tc/column-names sort)
 
-;; A few rows. We project the columns to keep the table narrow and
-;; avoid showing prior message text.
+(kind/test-last
+ (= '(:channel :edit-ts :edit-user-id :message-id
+               :prev-content :prev-stream :prev-subject :stream-id)))
+
+;; A few rows. We project the columns to keep the table narrow:
 
 (-> edits
-    (tc/select-columns [:message-id :edit-ts :edit-user-id])
-    (tc/head 3))
+    (tc/select-columns [:message-id :edit-ts :edit-user-id
+                        :prev-subject :prev-stream])
+    (tc/order-by :edit-ts :desc)
+    (tc/head 5))
 
 ;; ## One row per linked URL
 ;;
@@ -134,6 +156,9 @@
 (tc/row-count links)
 
 (tc/column-names links)
+
+(kind/test-last
+ (= [:message-id :stream-id :channel :link-text :link-url]))
 
 ;; The most-linked URL hosts:
 
@@ -157,48 +182,14 @@
 ;; links. Each view is independently complete — joins are *additional*
 ;; structure, not required structure.
 
-;; ## Showing real content (from web-public channels)
-;;
-;; The four-channel fixture above is from non-web-public channels, so
-;; the `:content` and `:sender_full_name` columns are present in the
-;; views but not safe to display in the rendered book. For
-;; demonstration purposes, this section pulls
-;; [`gratitude`](https://clojurians.zulipchat.com/#narrow/channel/474994-gratitude)
-;; — a small (~20-message) **web-public** channel where members
-;; thank one another. Web-public means anyone can read the content
-;; without a Clojurians account, so showing real names and message
-;; bodies in the docs is fine. See
-;; [**Web-public channels**](./zulipdata_book.client.html#web-public-channels)
-;; in the client chapter for how to identify them.
-
-(def gratitude-messages
-  (->> (pull/pull-channels! ["gratitude"])
-       (filter (fn [[k _]] (string? k)))
-       (mapcat (fn [[_ r]] (pull/all-messages r)))))
-
-(def gratitude-timeline (views/messages-timeline gratitude-messages))
-
-;; A few rows showing real senders, topics, and content (truncated).
-;; Notice the inline emoji codes (`:gratitude:`, `:pray:`) and
-;; `@**Real Name**` mentions Zulip uses for tagging.
-
-(-> gratitude-timeline
-    (tc/select-columns [:sender :subject :content])
-    (tc/map-columns :content [:content]
-                    (fn [c] (subs c 0 (min 160 (count c)))))
-    (tc/head 4))
-
-;; The same view shape applies — `:reaction-count`, `:content-length`,
-;; `:edited`, `:timestamp`, etc. — but here you see the columns the
-;; rest of the book deliberately keeps hidden.
-
 ;; ## Where to go next
 ;;
 ;; - [**Anonymized views**](./zulipdata_book.anonymize.html) —
 ;;   `scicloj.zulipdata.anonymize` mirrors `messages-timeline`,
 ;;   `reactions-long`, and `edits-long` with sender names and topic
 ;;   strings replaced by stable hash keys, and message content
-;;   dropped. Use those for any artifact that leaves your machine.
+;;   dropped. Use those for any artifact derived from non-web-public
+;;   channels.
 ;; - [**Narrative helpers**](./zulipdata_book.narrative.html) —
 ;;   adds time columns, channel-lifecycle summaries, and
 ;;   newcomer-tracking helpers built on top of the timeline.

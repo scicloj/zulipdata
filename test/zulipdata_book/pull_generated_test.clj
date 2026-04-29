@@ -15,110 +15,125 @@
 (def v5_l45 (take 5 (sort public-channels)))
 
 
-(def v7_l57 (def first-window (pull/fetch-window "kindly-dev" 0 100)))
+(def
+ v7_l58
+ (def first-window (pull/fetch-window "clojurecivitas" 0 100)))
 
 
-(def v8_l60 (-> first-window :messages count))
+(def v8_l61 (-> first-window :messages count))
 
 
-(def v9_l62 (:found_anchor first-window))
+(def v9_l63 (:found_anchor first-window))
 
 
-(deftest t10_l64 (is (= v9_l62 false)))
+(deftest t10_l65 (is (= v9_l63 false)))
 
 
-(def v12_l70 (:found_newest first-window))
+(def v12_l71 (:found_newest first-window))
 
 
-(def v14_l80 pull/default-batch-size)
+(def v14_l81 pull/default-batch-size)
 
 
-(deftest t15_l82 (is (= v14_l80 5000)))
-
-
-(def v17_l95 (def kindly-dev-pull (pull/pull-channel! "kindly-dev" 0)))
-
-
-(def v18_l98 (:message-count kindly-dev-pull))
-
-
-(def v19_l100 (count (:pages kindly-dev-pull)))
+(deftest t15_l83 (is (= v14_l81 5000)))
 
 
 (def
- v21_l108
- (def kindly-dev-messages (pull/all-messages kindly-dev-pull)))
+ v17_l96
+ (def clojurecivitas-pull (pull/pull-channel! "clojurecivitas" 0)))
 
 
-(def v22_l110 (count kindly-dev-messages))
+(def v18_l99 (:message-count clojurecivitas-pull))
 
 
-(deftest t23_l112 (is (= v22_l110 (:message-count kindly-dev-pull))))
-
-
-(def
- v25_l117
- (->
-  kindly-dev-messages
-  first
-  (select-keys [:id :sender_full_name :timestamp])))
+(def v19_l101 (count (:pages clojurecivitas-pull)))
 
 
 (def
- v27_l126
+ v21_l109
+ (def clojurecivitas-messages (pull/all-messages clojurecivitas-pull)))
+
+
+(def v22_l111 (count clojurecivitas-messages))
+
+
+(deftest
+ t23_l113
+ (is (= v22_l111 (:message-count clojurecivitas-pull))))
+
+
+(def v25_l118 (first clojurecivitas-messages))
+
+
+(def
+ v27_l127
  (def
   pulled
-  (pull/pull-channels! ["kindly-dev" "definitely-not-a-real-channel"])))
+  (pull/pull-channels!
+   ["clojurecivitas" "definitely-not-a-real-channel"])))
 
 
-(def v28_l129 (get-in pulled ["kindly-dev" :message-count]))
+(def v28_l130 (get-in pulled ["clojurecivitas" :message-count]))
 
 
-(deftest t29_l131 (is (= v28_l129 (:message-count kindly-dev-pull))))
-
-
-(def v31_l136 (:not-found pulled))
-
-
-(deftest t32_l138 (is (= v31_l136 ["definitely-not-a-real-channel"])))
+(deftest t29_l132 (is (> v28_l130 0)))
 
 
 (def
- v34_l145
+ v31_l143
+ (<=
+  (get-in pulled ["clojurecivitas" :message-count])
+  (:message-count clojurecivitas-pull)))
+
+
+(deftest t32_l146 (is (= v31_l143 true)))
+
+
+(def v34_l151 (:not-found pulled))
+
+
+(deftest t35_l153 (is (= v34_l151 ["definitely-not-a-real-channel"])))
+
+
+(def
+ v37_l160
  (->
-  (get pulled "kindly-dev")
+  (get pulled "clojurecivitas")
   (select-keys [:stream-id :first-message-id :message-count])))
 
 
 (def
- v36_l168
+ v39_l183
  (def
-  kindly-dev-pull-fresh
-  (pull/pull-channel! "kindly-dev" 0 :refresh-tip true)))
+  clojurecivitas-pull-fresh
+  (pull/pull-channel! "clojurecivitas" 0 :refresh-tip true)))
 
 
-(def v37_l171 (:message-count kindly-dev-pull-fresh))
+(def v40_l186 (:message-count clojurecivitas-pull-fresh))
 
 
 (def
- v39_l176
+ v42_l191
  (>=
-  (:message-count kindly-dev-pull-fresh)
-  (:message-count kindly-dev-pull)))
+  (:message-count clojurecivitas-pull-fresh)
+  (:message-count clojurecivitas-pull)))
 
 
-(deftest t40_l178 (is (= v39_l176 true)))
+(deftest t43_l193 (is (= v42_l191 true)))
 
 
 (def
- v42_l200
+ v45_l215
  (def
-  kindly-and-noj
-  (pull/pull-channels! ["kindly-dev" "noj-dev"] :parallelism 2)))
+  two-channel-pull
+  (pull/pull-channels!
+   ["clojurecivitas" "scicloj-webpublic"]
+   :parallelism
+   2)))
 
 
 (def
- v43_l203
+ v46_l218
  (map
   (fn [[k v]] [k (:message-count v)])
-  (dissoc kindly-and-noj :not-found)))
+  (dissoc two-channel-pull :not-found)))
