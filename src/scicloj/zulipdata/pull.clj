@@ -151,6 +151,15 @@
        (filter #(or (not (:invite_only %)) (:is_web_public %)))
        (mapv :name)))
 
+(defn web-public-channel-names
+  "Names of channels visible to the bot that are web-public — readable
+   without logging in. A small subset of `public-channel-names`, suitable
+   for sharing demo data."
+  []
+  (->> (client/get-streams) :streams
+       (filter :is_web_public)
+       (mapv :name)))
+
 (defn pull-public-channels!
   "Convenience: pull every public + web-public channel visible to the bot.
    Same options as `pull-channels!`."
