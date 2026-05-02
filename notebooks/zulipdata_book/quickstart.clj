@@ -106,7 +106,7 @@ message-count
 ;;   endpoints the library wraps.
 ;; - [**Pulling and caching channels**](./zulipdata_book.pull.html) —
 ;;   the cache model behind `pull/pull-channels!`, plus options
-;;   like `:refresh-tip` for keeping a corpus up to date.
+;;   like `:refresh` for keeping a corpus up to date.
 ;; - [**Tablecloth views**](./zulipdata_book.views.html) —
 ;;   `views/messages-timeline`, `views/reactions-long`,
 ;;   `views/edits-long`, and `views/topic-links-long`.

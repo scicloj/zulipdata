@@ -106,7 +106,7 @@
  v39_l183
  (def
   clojurecivitas-pull-fresh
-  (pull/pull-channel! "clojurecivitas" 0 :refresh-tip true)))
+  (pull/pull-channel! "clojurecivitas" 0 :refresh true)))
 
 
 (def v40_l186 (:message-count clojurecivitas-pull-fresh))

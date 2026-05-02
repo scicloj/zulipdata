@@ -168,20 +168,20 @@ pull/default-batch-size
 ;; run it here — a full pull on a fresh cache can take minutes — but
 ;; use it when building a corpus-wide dataset.
 
-;; ## Catching up: the `:refresh-tip` option
+;; ## Catching up: the `:refresh` option
 ;;
 ;; By default, repeated calls are entirely cache-served. That is
 ;; usually what you want — but it means a re-run misses any messages
 ;; posted since the last pull, because the final cached window will
 ;; have been stored with `:found_newest true`.
 ;;
-;; Pass `:refresh-tip true` to invalidate any cached page with
+;; Pass `:refresh true` to invalidate any cached page with
 ;; `:found_newest true`, re-fetch it, and continue walking if new full
 ;; windows now appear. This is the right option for keeping a corpus
 ;; up to date without rebuilding it from scratch.
 
 (def clojurecivitas-pull-fresh
-  (pull/pull-channel! "clojurecivitas" 0 :refresh-tip true))
+  (pull/pull-channel! "clojurecivitas" 0 :refresh true))
 
 (:message-count clojurecivitas-pull-fresh)
 

@@ -54,16 +54,16 @@
    `start-anchor-id`. Returns `{:pages [...], :message-count n}`.
 
    Options:
-     :batch-size  — messages per window (default 5000)
-     :refresh-tip — when true, any cached page with `found_newest: true`
-                    is invalidated and re-fetched once, then the walk
-                    continues if new full windows appeared. Use to catch
-                    up after messages were posted since the last pull.
+     :batch-size — messages per window (default 5000)
+     :refresh    — when true, any cached page with `found_newest: true`
+                   is invalidated and re-fetched once, then the walk
+                   continues if new full windows appeared. Use to catch
+                   up after messages were posted since the last pull.
 
-   With `:refresh-tip false` (default), repeated calls are served
+   With `:refresh false` (default), repeated calls are served
    entirely from cache."
   [stream-name start-anchor-id
-   & {:keys [batch-size refresh-tip]
+   & {:keys [batch-size refresh]
       :or   {batch-size default-batch-size}}]
   (loop [anchor         start-anchor-id
          pages          []
@@ -74,7 +74,7 @@
           n    (count msgs)]
       (cond
         ;; stale tip — invalidate once, loop at the same anchor
-        (and refresh-tip (:found_newest page) (not refreshed-here))
+        (and refresh (:found_newest page) (not refreshed-here))
         (do (invalidate-window! stream-name anchor batch-size)
             (recur anchor pages total true))
 
@@ -120,11 +120,11 @@
 
    Options:
      :batch-size  — passed through to `pull-channel!` (default 5000)
-     :refresh-tip — passed through to `pull-channel!`
+     :refresh     — passed through to `pull-channel!`
      :parallelism — number of channels to pull concurrently
                     (default `default-parallelism`, currently 8).
                     Pass 1 for fully sequential pulls."
-  [channel-names & {:keys [batch-size refresh-tip parallelism] :as opts
+  [channel-names & {:keys [batch-size refresh parallelism] :as opts
                     :or   {parallelism default-parallelism}}]
   (let [by-name   (streams-by-name)
         {known true unknown false} (group-by #(contains? by-name %) channel-names)
