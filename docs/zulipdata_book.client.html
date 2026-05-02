@@ -204,7 +204,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./zulipdata_book.narrative.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Narrative helpers</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Narrative</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -372,7 +372,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">-&gt;</span> streams-response <span class="at">:streams</span> <span class="kw">count</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="printedClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="dv">236</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="dv">237</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>A single stream entry, with its raw Zulip field names:</p>
 <div class="sourceClojure">
@@ -459,7 +459,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a> <span class="st">"xtdb"</span></span>
 <span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a> <span class="st">"zulip"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>The distinction matters when sharing data downstream — content from a non-web-public channel should not appear in artifacts that leave your machine, while content from web-public channels is fair game. The book’s tutorial chapters (<a href="./zulipdata_book.views.html"><strong>Tablecloth views</strong></a>, <a href="./zulipdata_book.narrative.html"><strong>Narrative helpers</strong></a>, <a href="./zulipdata_book.graph.html"><strong>Graph views</strong></a>) deliberately use a four-channel <strong>web-public</strong> fixture so the rendered output can show real names, topic strings, and message content without leaking anything login-gated. For analyses on non-web-public channels, see <a href="./zulipdata_book.anonymize.html"><strong>Anonymized views</strong></a>.</p>
+<p>The distinction matters when sharing data downstream — content from a non-web-public channel should not appear in artifacts that leave your machine, while content from web-public channels is fair game. The book’s tutorial chapters (<a href="./zulipdata_book.views.html"><strong>Tablecloth views</strong></a>, <a href="./zulipdata_book.narrative.html"><strong>Narrative</strong></a>, <a href="./zulipdata_book.graph.html"><strong>Graph views</strong></a>) deliberately use a four-channel <strong>web-public</strong> fixture so the rendered output can show real names, topic strings, and message content without leaking anything login-gated. For analyses on non-web-public channels, see <a href="./zulipdata_book.anonymize.html"><strong>Anonymized views</strong></a>.</p>
 </section>
 </section>
 <section id="fetching-messages" class="level2">
@@ -487,26 +487,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="printedClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>{<span class="at">:display</span>_recipient <span class="st">"clojurecivitas"</span>,</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a> <span class="at">:content</span></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a> <span class="st">":cool: - reminds me of (at least a little) https://tones.wolfram.com/"</span>,</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a> <span class="at">:sender</span>_id <span class="dv">465822</span>,</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a> <span class="st">"These days, we are exploring Babashka for data analysis and using Babqua for interactive data visualization. This time, we are looking into @**Gert Goet**'s Clojure Events Calendar Feed."</span>,</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a> <span class="at">:sender</span>_id <span class="dv">138175</span>,</span>
 <span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a> <span class="at">:client</span> <span class="st">"website"</span>,</span>
 <span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a> <span class="at">:submessages</span> [],</span>
 <span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a> <span class="at">:type</span> <span class="st">"stream"</span>,</span>
 <span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a> <span class="at">:sender</span>_realm_str <span class="st">"clojurians"</span>,</span>
 <span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a> <span class="at">:stream</span>_id <span class="dv">528764</span>,</span>
 <span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a> <span class="at">:content</span>_type <span class="st">"text/x-markdown"</span>,</span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a> <span class="at">:id</span> <span class="dv">591473970</span>,</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a> <span class="at">:id</span> <span class="dv">592473831</span>,</span>
 <span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a> <span class="at">:is</span>_me_message <span class="va">false</span>,</span>
-<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a> <span class="at">:sender</span>_email <span class="st">"user465822@clojurians.zulipchat.com"</span>,</span>
-<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a> <span class="at">:sender</span>_full_name <span class="st">"Harold"</span>,</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a> <span class="at">:sender</span>_email <span class="st">"user138175@clojurians.zulipchat.com"</span>,</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a> <span class="at">:sender</span>_full_name <span class="st">"Daniel Slutsky"</span>,</span>
 <span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a> <span class="at">:recipient</span>_id <span class="dv">1681040</span>,</span>
-<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a> <span class="at">:timestamp</span> <span class="dv">1777406718</span>,</span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a> <span class="at">:timestamp</span> <span class="dv">1777747330</span>,</span>
 <span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a> <span class="at">:flags</span> [<span class="st">"read"</span>],</span>
-<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a> <span class="at">:subject</span> <span class="st">"The Shape of a Kookaburra Call"</span>,</span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a> <span class="at">:subject</span> <span class="st">"Datavis in Babashka: analysing our calendar feed"</span>,</span>
 <span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a> <span class="at">:reactions</span> [],</span>
 <span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a> <span class="at">:topic</span>_links [],</span>
 <span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a> <span class="at">:avatar</span>_url</span>
-<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a> <span class="st">"https://secure.gravatar.com/avatar/7f891fbe8e3bae7f9fe375407ce90d9d?d=identicon&amp;version=1"</span>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a> <span class="st">"https://avatars.zulip.com/9096/ae339dcb9dd0c56484977aeb0b0236822df7e6da.png"</span>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The response also tells you whether the window touches the start or end of the channel’s history — this is what <code>pull/pull-channel!</code> uses to decide when to stop walking forward:</p>
 <div class="sourceClojure">

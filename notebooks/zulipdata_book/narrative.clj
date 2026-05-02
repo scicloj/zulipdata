@@ -1,4 +1,4 @@
-;; # Narrative helpers
+;; # Narrative
 ;;
 ;; `scicloj.zulipdata.narrative` is a small toolkit for the kinds of
 ;; questions that recur across analyses on this corpus: enriching a
@@ -10,7 +10,7 @@
 ;; a tablecloth dataset with `:channel`, `:user-key`, and `:timestamp`
 ;; columns produced by `anonymized-timeline` (see
 ;; [**Anonymized views**](./zulipdata_book.anonymize.html)).
-;; The helpers do not care that it is anonymized; they just want
+;; The helpers do not depend on anonymization; they only require
 ;; those columns. We work on the anonymized form throughout because
 ;; that is what the next step
 ;; ([**Graph views**](./zulipdata_book.graph.html))
@@ -73,7 +73,7 @@
 (kind/test-last
  (= true))
 
-;; A peek at the three new columns, freshest first:
+;; The three new columns, freshest first:
 
 (-> timeline
     (tc/select-columns [:timestamp :month-date :year-month :year])
@@ -92,8 +92,8 @@
 
 ;; ## Channel lifecycles
 ;;
-;; `channel-lifecycle` is the one-row-per-channel summary that drives
-;; most "where are we?" reports. It collapses every message in the
+;; `channel-lifecycle` is the one-row-per-channel summary used in
+;; activity reports. It collapses every message in the
 ;; timeline into five columns per channel: first month, last month,
 ;; total messages, distinct active months, and distinct (anonymized)
 ;; users. Sorted ascending by first-date.
@@ -127,8 +127,8 @@ lifecycles
 ;; `channels-by-shared-users` is the user-overlap counterpart to the
 ;; name pattern. Pick a `seed-channel`, take its top-N posters, and
 ;; return every channel where those users account for at least
-;; `share` of activity. Use this to grow a cluster around a seed
-;; channel by *who-posts-there*, rather than by name.
+;; `share` of activity. Use this to build a cluster around a seed
+;; channel by who posts there, rather than by name.
 ;;
 ;; Tightening `:share` shrinks the result: at `0.3` the seed's top
 ;; posters reach all four channels in our fixture; at `0.5` they only
@@ -144,7 +144,7 @@ lifecycles
 ;;
 ;; `first-posters-of-channel` returns the first `n` distinct
 ;; `:user-key`s to ever post in a channel, with the date of their
-;; first post. Useful for telling a "who started this" story.
+;; first post. Useful for identifying a channel's earliest contributors.
 
 (def civitas-first-posters
   (nar/first-posters-of-channel timeline "clojurecivitas" 5))
@@ -164,7 +164,7 @@ civitas-first-posters
 ;; per prior channel with the count of newcomers who passed through
 ;; it.
 ;;
-;; **A caveat on scope.** "Prior channels" is restricted to whatever
+;; **A note on scope.** "Prior channels" is restricted to whatever
 ;; you pulled. In our four-channel fixture, anyone whose only prior
 ;; activity was outside the four will not show up. Run the same call
 ;; on a corpus-wide timeline and the answer covers the whole community.

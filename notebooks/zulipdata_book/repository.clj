@@ -38,7 +38,7 @@
 ;;
 ;; The `:dev` alias adds the `notebooks/` and `test/` directories to
 ;; the classpath, plus the rendering dependencies (Clay, plotje, and
-;; friends) that the notebooks need.
+;; other rendering libraries) that the notebooks need.
 
 ;; ## Rendering the book
 ;;
@@ -73,8 +73,8 @@
 ;;
 ;; The standard test runner picks up both the hand-written tests
 ;; under `test/scicloj/zulipdata/` and the generated tests, so a
-;; full pass guarantees that every notebook example actually
-;; evaluates to what its prose claims.
+;; full pass guarantees that every notebook example evaluates to
+;; what its prose claims.
 ;;
 ;; The flow when you change a notebook:
 ;;

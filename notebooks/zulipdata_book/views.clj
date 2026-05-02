@@ -2,8 +2,8 @@
 ;;
 ;; Raw Zulip messages — pulled via
 ;; [`scicloj.zulipdata.pull`](./zulipdata_book.pull.html) — are
-;; nested maps with snake_case keys. Useful for some things,
-;; awkward for analysis. `scicloj.zulipdata.views` offers four
+;; nested maps with snake_case keys. Suitable for some uses but
+;; inconvenient for analysis. `scicloj.zulipdata.views` offers four
 ;; projections that turn a sequence of raw messages into tablecloth
 ;; datasets — flat, scalar-only, ready for grouping and plotting.
 ;;
@@ -36,7 +36,7 @@
 ;; The four channels are small enough to render quickly, varied enough
 ;; that every view has non-empty rows, and have overlapping
 ;; contributors so the cross-channel analyses in
-;; [Narrative helpers](./zulipdata_book.narrative.html) and
+;; [Narrative](./zulipdata_book.narrative.html) and
 ;; [Graph views](./zulipdata_book.graph.html) are non-trivial.
 ;; Subsequent runs are cache-served.
 
@@ -190,7 +190,7 @@
 ;;   strings replaced by stable hash keys, and message content
 ;;   dropped. Use those for any artifact derived from non-web-public
 ;;   channels.
-;; - [**Narrative helpers**](./zulipdata_book.narrative.html) —
+;; - [**Narrative**](./zulipdata_book.narrative.html) —
 ;;   adds time columns, channel-lifecycle summaries, and
 ;;   newcomer-tracking helpers built on top of the timeline.
 ;; - [**API Reference**](./zulipdata_book.api_reference.html) —

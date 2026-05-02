@@ -19,8 +19,7 @@
 ;;
 ;; Each entry shows the docstring, a live example, and a test. The
 ;; namespace links above lead to the conceptual walkthrough for
-;; each — read those for *why* and *when*; come back here for *what
-;; and how*.
+;; each — read those for context; this chapter is the API reference.
 
 ^{:kindly/hide-code true
   :kindly/options  {:kinds-that-hide-code #{:kind/doc}}}

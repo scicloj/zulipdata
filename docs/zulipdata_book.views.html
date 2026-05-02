@@ -204,7 +204,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./zulipdata_book.narrative.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Narrative helpers</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Narrative</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -320,7 +320,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="setting-up-a-fixture" class="level2">
 <h2 class="anchored" data-anchor-id="setting-up-a-fixture">Setting up a fixture</h2>
 <p>We use a four-channel <strong>web-public</strong> fixture throughout this chapter so the view contents — sender names, topic strings, message bodies — can be shown without leaking anything login-gated. Web-public means the channel is readable on <code>clojurians.zulipchat.com</code> without a Zulip account; see <a href="./zulipdata_book.client.html#web-public-channels"><strong>Web-public channels</strong></a> in the client chapter.</p>
-<p>The four channels are small enough to render quickly, varied enough that every view has non-empty rows, and have overlapping contributors so the cross-channel analyses in <a href="./zulipdata_book.narrative.html">Narrative helpers</a> and <a href="./zulipdata_book.graph.html">Graph views</a> are non-trivial. Subsequent runs are cache-served.</p>
+<p>The four channels are small enough to render quickly, varied enough that every view has non-empty rows, and have overlapping contributors so the cross-channel analyses in <a href="./zulipdata_book.narrative.html">Narrative</a> and <a href="./zulipdata_book.graph.html">Graph views</a> are non-trivial. Subsequent runs are cache-served.</p>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>(<span class="bu">def</span><span class="fu"> fixture-channels</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  [<span class="st">"clojurecivitas"</span> <span class="st">"scicloj-webpublic"</span> <span class="st">"gratitude"</span> <span class="st">"events"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -2229,7 +2229,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="where-to-go-next">Where to go next</h2>
 <ul>
 <li><p><a href="./zulipdata_book.anonymize.html"><strong>Anonymized views</strong></a> — <code>scicloj.zulipdata.anonymize</code> mirrors <code>messages-timeline</code>, <code>reactions-long</code>, and <code>edits-long</code> with sender names and topic strings replaced by stable hash keys, and message content dropped. Use those for any artifact derived from non-web-public channels.</p></li>
-<li><p><a href="./zulipdata_book.narrative.html"><strong>Narrative helpers</strong></a> — adds time columns, channel-lifecycle summaries, and newcomer-tracking helpers built on top of the timeline.</p></li>
+<li><p><a href="./zulipdata_book.narrative.html"><strong>Narrative</strong></a> — adds time columns, channel-lifecycle summaries, and newcomer-tracking helpers built on top of the timeline.</p></li>
 <li><p><a href="./zulipdata_book.api_reference.html"><strong>API Reference</strong></a> — every public function in one chapter, with docstrings and a worked example each.</p></li>
 </ul>
 <div style="background-color:grey;height:2px;width:100%;"></div>

@@ -30,7 +30,7 @@
 ;; ## A multi-channel fixture
 ;;
 ;; The same web-public anonymized timeline used in
-;; [**Narrative helpers**](./zulipdata_book.narrative.html) —
+;; [**Narrative**](./zulipdata_book.narrative.html) —
 ;; small enough to render, large enough to have non-trivial
 ;; structure.
 
@@ -57,7 +57,7 @@
 
 (count u->chans)
 
-;; A peek at five entries:
+;; The first five entries:
 
 (->> u->chans (take 5) (into {}))
 
@@ -150,8 +150,8 @@
 
 ;; All four scores are zero on this graph — every pair of channels is
 ;; directly connected, so no node ever lies on the *interior* of a
-;; shortest path. Betweenness comes alive on graphs with structural
-;; bottlenecks; on a four-node clique there are none.
+;; shortest path. Betweenness becomes informative on graphs with
+;; structural bottlenecks; on a four-node clique there are none.
 
 (every? zero? (vals (graph/betweenness co-channel)))
 
@@ -221,11 +221,11 @@
 ;; helpers were designed for corpus-scale work — full-corpus analyses
 ;; over `(pull/pull-public-channels!)` build co-membership graphs of
 ;; dozens of channels and co-presence graphs of around a thousand
-;; users. The same functions, the same shapes, just larger inputs.
+;; users. The same functions, the same shapes, with larger inputs.
 
 ;; ## Where to go next
 ;;
-;; You have now walked the full tutorial. From here:
+;; You have now completed the full tutorial. From here:
 ;;
 ;; - [**API Reference**](./zulipdata_book.api_reference.html) —
 ;;   every public function in one chapter, with docstrings and a

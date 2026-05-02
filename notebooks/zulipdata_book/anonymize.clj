@@ -161,7 +161,7 @@
 
 ;; ## Where to go next
 ;;
-;; - [**Narrative helpers**](./zulipdata_book.narrative.html) —
+;; - [**Narrative**](./zulipdata_book.narrative.html) —
 ;;   `scicloj.zulipdata.narrative` adds time columns,
 ;;   channel-lifecycle summaries, and newcomer-tracking helpers
 ;;   that operate on the anonymized timeline.

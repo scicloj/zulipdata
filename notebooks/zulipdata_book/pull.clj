@@ -6,7 +6,7 @@
 ;; and stitches the windows back together. This chapter explains
 ;; the cache model, then tours every public function.
 ;;
-;; The big idea: each window is identified by
+;; The model: each window is identified by
 ;; `(channel-name, anchor-id, batch-size)`. Once a window has been
 ;; fetched, it is cached, and any future call with the same triple is
 ;; served from disk. That makes pulls **resumable** (a crashed pull
@@ -29,8 +29,8 @@
 ;;
 ;; Each cached window lives in a sharded subdirectory keyed by a hash
 ;; of the call. You should not need to inspect the cache directly —
-;; but if you ever need to start over for a particular window, the
-;; right move is `(pocket/invalidate! ...)`, not `rm -rf`.
+;; but if you ever need to start over for a particular window, use
+;; `(pocket/invalidate! ...)` rather than `rm -rf`.
 
 ;; ## Listing channels you can pull
 ;;
@@ -50,10 +50,9 @@
 ;; from Zulip — the same shape `client/get-messages` returns,
 ;; including the `:found_newest` flag the walker uses.
 
-;; The first call hits the network; the second is served from the
-;; cache. Both are identical from the caller's point of view. We
-;; reach for `clojurecivitas`, a small web-public channel, as our
-;; example.
+;; The first call performs a network request; the second is served
+;; from the cache. Both are identical from the caller's point of view.
+;; We use `clojurecivitas`, a small web-public channel, as our example.
 
 (def first-window
   (pull/fetch-window "clojurecivitas" 0 100))
@@ -104,7 +103,8 @@ pull/default-batch-size
 ;;
 ;; A walk's `:pages` is a vector of raw page maps. `all-messages`
 ;; concatenates their `:messages` and de-duplicates by `:id` (windows
-;; are non-overlapping by construction; the dedup is belt-and-braces).
+;; are non-overlapping by construction; the dedup is a redundant
+;; safety check).
 
 (def clojurecivitas-messages (pull/all-messages clojurecivitas-pull))
 
@@ -155,7 +155,7 @@ pull/default-batch-size
 
 ;; The successful entries also carry the stream id and the channel's
 ;; first-message id — those are looked up by the function and
-;; included for downstream use:
+;; included in the result:
 
 (-> (get pulled "clojurecivitas")
     (select-keys [:stream-id :first-message-id :message-count]))
@@ -166,7 +166,7 @@ pull/default-batch-size
 ;; full-corpus analyses: it pulls every channel in
 ;; `public-channel-names` with whatever options you pass. We do **not**
 ;; run it here — a full pull on a fresh cache can take minutes — but
-;; this is the call to reach for when building a corpus-wide dataset.
+;; use it when building a corpus-wide dataset.
 
 ;; ## Catching up: the `:refresh-tip` option
 ;;
@@ -200,7 +200,7 @@ pull/default-batch-size
 ;; independent — separate cache keys, separate Zulip endpoints — so
 ;; per-channel work parallelises cleanly.
 ;;
-;; The cap is small to stay polite to the Zulip API. Pass
+;; The cap is small to be respectful of the Zulip API's rate limits. Pass
 ;; `:parallelism 1` for fully sequential pulls. Empirically, on the
 ;; warm-cache refresh path:
 ;;

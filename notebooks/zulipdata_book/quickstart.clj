@@ -102,7 +102,7 @@ message-count
 ;; The rest of this book is one chapter per namespace:
 ;;
 ;; - [**The REST client**](./zulipdata_book.client.html) — what
-;;   `client/whoami` is doing under the hood, plus the four
+;;   `client/whoami` does internally, plus the four
 ;;   endpoints the library wraps.
 ;; - [**Pulling and caching channels**](./zulipdata_book.pull.html) —
 ;;   the cache model behind `pull/pull-channels!`, plus options
@@ -114,7 +114,7 @@ message-count
 ;;   parallel views with sender names and topic strings replaced
 ;;   by stable hash keys, message content dropped — for sharing
 ;;   datasets without leaking identities or text.
-;; - [**Narrative helpers**](./zulipdata_book.narrative.html) —
+;; - [**Narrative**](./zulipdata_book.narrative.html) —
 ;;   date columns, channel lifecycles, and newcomer tracking.
 ;; - [**Graph views**](./zulipdata_book.graph.html) — co-membership
 ;;   and co-presence graphs, community detection, and rendering.

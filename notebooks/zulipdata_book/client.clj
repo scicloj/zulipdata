@@ -42,7 +42,7 @@
 
 ;; ## A first request
 ;;
-;; `whoami` is the simplest possible round-trip: it hits `/users/me`
+;; `whoami` is the simplest possible request: it calls `/users/me`
 ;; and returns a small summary of the authenticated identity. It is
 ;; the right first call after configuring credentials.
 
@@ -59,7 +59,7 @@ me
 
 ;; If you need the full `/users/me` response — including fields
 ;; `whoami` does not surface, like timezone or avatar URL — use
-;; `get-me`. We just print the count of fields here:
+;; `get-me`. We print the count of fields here:
 
 (-> (client/get-me) keys count)
 
@@ -95,12 +95,12 @@ me
 
 web-public-channels
 
-;; The distinction matters when sharing data downstream — content
+;; The distinction matters when sharing data — content
 ;; from a non-web-public channel should not appear in artifacts that
-;; leave your machine, while content from web-public channels is fair
-;; game. The book's tutorial chapters
+;; leave your machine, while content from web-public channels is
+;; suitable for sharing. The book's tutorial chapters
 ;; ([**Tablecloth views**](./zulipdata_book.views.html),
-;; [**Narrative helpers**](./zulipdata_book.narrative.html),
+;; [**Narrative**](./zulipdata_book.narrative.html),
 ;; [**Graph views**](./zulipdata_book.graph.html))
 ;; deliberately use a four-channel **web-public** fixture so the
 ;; rendered output can show real names, topic strings, and message
@@ -170,7 +170,7 @@ client/base-url
 ;; The client wraps every request in a small retry loop with
 ;; exponential backoff (up to four retries) for I/O errors and
 ;; timeouts. A single request times out after ninety seconds. This is
-;; opaque from the outside — calls just succeed or, after exhausting
+;; opaque from the outside — calls succeed or, after exhausting
 ;; retries, throw — but it is worth knowing when interpreting unusual
 ;; latencies.
 
