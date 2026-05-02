@@ -326,7 +326,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="repl-workflow">REPL workflow</h2>
 <p>Start a REPL with the <code>:dev</code> alias, then connect from your editor:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">clojure</span> <span class="at">-M:dev</span> <span class="at">-m</span> nrepl.cmdline</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The <code>:dev</code> alias adds the <code>notebooks/</code> and <code>test/</code> directories to the classpath, plus the rendering dependencies (Clay, plotje, and friends) that the notebooks need.</p>
+<p>The <code>:dev</code> alias adds the <code>notebooks/</code> and <code>test/</code> directories to the classpath, plus the rendering dependencies (Clay, plotje, and other rendering libraries) that the notebooks need.</p>
 </section>
 <section id="rendering-the-book" class="level2">
 <h2 class="anchored" data-anchor-id="rendering-the-book">Rendering the book</h2>
@@ -340,7 +340,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="gfm-is-a-verification-artifact" class="level2">
 <h2 class="anchored" data-anchor-id="gfm-is-a-verification-artifact">GFM is a verification artifact</h2>
 <p>The published documentation site is the HTML build under <code>docs/</code>. The Markdown files under <code>gfm/</code> are not the publishing target — they exist because Clay’s GFM render also writes a generated test file per notebook to <code>test/zulipdata_book/&lt;name&gt;_generated_test.clj</code>. Each <code>kind/test-last</code> form in a notebook becomes a <code>clojure.test</code> assertion in that file.</p>
-<p>The standard test runner picks up both the hand-written tests under <code>test/scicloj/zulipdata/</code> and the generated tests, so a full pass guarantees that every notebook example actually evaluates to what its prose claims.</p>
+<p>The standard test runner picks up both the hand-written tests under <code>test/scicloj/zulipdata/</code> and the generated tests, so a full pass guarantees that every notebook example evaluates to what its prose claims.</p>
 <p>The flow when you change a notebook:</p>
 <ol type="1">
 <li>Edit the notebook under <code>notebooks/zulipdata_book/</code>.</li>

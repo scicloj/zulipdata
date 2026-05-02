@@ -360,7 +360,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="printedClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="dv">60</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>A peek at five entries:</p>
+<p>The first five entries:</p>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">-&gt;&gt;</span> u-&gt;chans (<span class="kw">take</span> <span class="dv">5</span>) (<span class="kw">into</span> {}))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -530,7 +530,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="printedClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>{<span class="st">"clojurecivitas"</span> <span class="fl">0.0</span>, <span class="st">"gratitude"</span> <span class="fl">0.0</span>, <span class="st">"scicloj-webpublic"</span> <span class="fl">0.0</span>, <span class="st">"events"</span> <span class="fl">0.0</span>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>All four scores are zero on this graph — every pair of channels is directly connected, so no node ever lies on the <em>interior</em> of a shortest path. Betweenness comes alive on graphs with structural bottlenecks; on a four-node clique there are none.</p>
+<p>All four scores are zero on this graph — every pair of channels is directly connected, so no node ever lies on the <em>interior</em> of a shortest path. Betweenness becomes informative on graphs with structural bottlenecks; on a four-node clique there are none.</p>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">every?</span> <span class="kw">zero?</span> (<span class="kw">vals</span> (graph/betweenness co-channel)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -546,7 +546,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>(graph/girvan-newman co-channel <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="printedClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>[#{<span class="st">"gratitude"</span> <span class="st">"clojurecivitas"</span> <span class="st">"events"</span>} #{<span class="st">"scicloj-webpublic"</span>}]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>[#{<span class="st">"gratitude"</span> <span class="st">"scicloj-webpublic"</span> <span class="st">"clojurecivitas"</span>} #{<span class="st">"events"</span>}]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">count</span> (graph/girvan-newman co-channel <span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -629,11 +629,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="a-note-on-scale" class="level2">
 <h2 class="anchored" data-anchor-id="a-note-on-scale">A note on scale</h2>
-<p>All examples in this chapter use a four-channel slice. The graph helpers were designed for corpus-scale work — full-corpus analyses over <code>(pull/pull-public-channels!)</code> build co-membership graphs of dozens of channels and co-presence graphs of around a thousand users. The same functions, the same shapes, just larger inputs.</p>
+<p>All examples in this chapter use a four-channel slice. The graph helpers were designed for corpus-scale work — full-corpus analyses over <code>(pull/pull-public-channels!)</code> build co-membership graphs of dozens of channels and co-presence graphs of around a thousand users. The same functions, the same shapes, with larger inputs.</p>
 </section>
 <section id="where-to-go-next" class="level2">
 <h2 class="anchored" data-anchor-id="where-to-go-next">Where to go next</h2>
-<p>You have now walked the full tutorial. From here:</p>
+<p>You have now completed the full tutorial. From here:</p>
 <ul>
 <li><p><a href="./zulipdata_book.api_reference.html"><strong>API Reference</strong></a> — every public function in one chapter, with docstrings and a worked example each. The right place to look when you know which function you want.</p></li>
 <li><p>The source under <code>src/scicloj/zulipdata/</code> is small enough to read straight through whenever a docstring leaves you uncertain.</p></li>

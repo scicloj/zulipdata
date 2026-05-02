@@ -16,37 +16,37 @@
 
 
 (def
- v7_l58
+ v7_l57
  (def first-window (pull/fetch-window "clojurecivitas" 0 100)))
 
 
-(def v8_l61 (-> first-window :messages count))
+(def v8_l60 (-> first-window :messages count))
 
 
-(def v9_l63 (:found_anchor first-window))
+(def v9_l62 (:found_anchor first-window))
 
 
-(deftest t10_l65 (is (= v9_l63 false)))
+(deftest t10_l64 (is (= v9_l62 false)))
 
 
-(def v12_l71 (:found_newest first-window))
+(def v12_l70 (:found_newest first-window))
 
 
-(def v14_l81 pull/default-batch-size)
+(def v14_l80 pull/default-batch-size)
 
 
-(deftest t15_l83 (is (= v14_l81 5000)))
+(deftest t15_l82 (is (= v14_l80 5000)))
 
 
 (def
- v17_l96
+ v17_l95
  (def clojurecivitas-pull (pull/pull-channel! "clojurecivitas" 0)))
 
 
-(def v18_l99 (:message-count clojurecivitas-pull))
+(def v18_l98 (:message-count clojurecivitas-pull))
 
 
-(def v19_l101 (count (:pages clojurecivitas-pull)))
+(def v19_l100 (count (:pages clojurecivitas-pull)))
 
 
 (def

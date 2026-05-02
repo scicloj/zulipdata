@@ -303,7 +303,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" type="text/javascript"></script>
 <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js" type="text/javascript"></script>
-<p>Raw Zulip messages — pulled via <a href="./zulipdata_book.pull.html"><code>scicloj.zulipdata.pull</code></a> — are nested maps with snake_case keys. Useful for some things, awkward for analysis. <code>scicloj.zulipdata.views</code> offers four projections that turn a sequence of raw messages into tablecloth datasets — flat, scalar-only, ready for grouping and plotting.</p>
+<p>Raw Zulip messages — pulled via <a href="./zulipdata_book.pull.html"><code>scicloj.zulipdata.pull</code></a> — are nested maps with snake_case keys. Suitable for some uses but inconvenient for analysis. <code>scicloj.zulipdata.views</code> offers four projections that turn a sequence of raw messages into tablecloth datasets — flat, scalar-only, ready for grouping and plotting.</p>
 <p>Two design choices worth knowing about:</p>
 <ul>
 <li><p><strong>Raw messages stay the source of truth.</strong> The views are computed on demand; nothing is cached at the dataset layer. Pulling once and re-projecting many times is cheap.</p></li>

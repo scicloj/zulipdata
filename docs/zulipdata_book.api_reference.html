@@ -365,7 +365,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p><a href="./zulipdata_book.narrative.html"><code>scicloj.zulipdata.narrative</code></a> — date helpers, channel lifecycles, newcomer tracking.</p></li>
 <li><p><a href="./zulipdata_book.graph.html"><code>scicloj.zulipdata.graph</code></a> — co-membership and co-presence graphs, community detection, rendering.</p></li>
 </ul>
-<p>Each entry shows the docstring, a live example, and a test. The namespace links above lead to the conceptual walkthrough for each — read those for <em>why</em> and <em>when</em>; come back here for <em>what and how</em>.</p>
+<p>Each entry shows the docstring, a live example, and a test. The namespace links above lead to the conceptual walkthrough for each — read those for context; this chapter is the API reference.</p>
 <section id="sample-data" class="level2">
 <h2 class="anchored" data-anchor-id="sample-data">Sample data</h2>
 <p>A small four-channel pull, reused across every example below. Each layer of the pipeline is bound for direct reuse: <code>sample-pull</code> (raw pull result), <code>sample-messages</code> (flat seq of raw messages), <code>sample-timeline</code> (plain tablecloth view), <code>sample-anon</code> (anonymized), <code>sample-with-time</code> (anonymized + date columns).</p>
@@ -764,7 +764,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb55"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>(nar/ts-&gt;month-date <span class="dv">1725611765</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="printedClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb56"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>#object[java.<span class="kw">time</span>.LocalDate <span class="bn">0x144a6226</span> <span class="st">"2024-09-01"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb56"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>#object[java.<span class="kw">time</span>.LocalDate <span class="bn">0x636e05c8</span> <span class="st">"2024-09-01"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="ts-year-month" class="level3">
