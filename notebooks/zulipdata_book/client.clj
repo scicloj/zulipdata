@@ -1,7 +1,7 @@
 ;; # The REST client
 ;;
 ;; `scicloj.zulipdata.client` is the lowest layer of the library: a thin
-;; wrapper over Zulip's HTTP REST API for the
+;; wrapper over [Zulip's HTTP REST API](https://zulip.com/api/) for the
 ;; [Clojurians](https://clojurians.zulipchat.com) instance. Almost all
 ;; analyses can stay on the higher-level `pull` namespace, but it helps
 ;; to know what is happening underneath, and the client is the right
@@ -42,9 +42,10 @@
 
 ;; ## A first request
 ;;
-;; `whoami` is the simplest possible request: it calls `/users/me`
-;; and returns a small summary of the authenticated identity. It is
-;; the right first call after configuring credentials.
+;; `whoami` is the simplest possible request: it calls
+;; [`/users/me`](https://zulip.com/api/get-own-user) and returns a
+;; small summary of the authenticated identity. It is the right first
+;; call after configuring credentials.
 
 (def me (client/whoami))
 
@@ -65,8 +66,9 @@ me
 
 ;; ## Listing channels
 ;;
-;; `get-streams` calls `/streams` and returns the full Zulip API
-;; response, including every channel the authenticated user can see.
+;; `get-streams` calls [`/streams`](https://zulip.com/api/get-streams)
+;; and returns the full Zulip API response, including every channel
+;; the authenticated user can see.
 
 (def streams-response (client/get-streams))
 
@@ -78,7 +80,8 @@ me
 
 ;; ### Web-public channels
 ;;
-;; Among those streams, some are marked **web-public**: their
+;; Among those streams, some are marked
+;; [**web-public**](https://zulip.com/help/public-access-option): their
 ;; messages are readable without a Zulip account. The flag lives on
 ;; the stream entry as `:is_web_public`.
 
@@ -110,10 +113,12 @@ web-public-channels
 
 ;; ## Fetching messages
 ;;
-;; `get-messages` is the message-history endpoint. It takes a *narrow*
-;; (a vector of operator/operand maps), an *anchor* (an id, or one of
-;; the keywords `"newest"`, `"oldest"`, `"first_unread"`), and counts
-;; of messages to fetch before and after the anchor.
+;; [`get-messages`](https://zulip.com/api/get-messages) is the
+;; message-history endpoint. It takes a
+;; [*narrow*](https://zulip.com/api/construct-narrow) (a vector of
+;; operator/operand maps), an *anchor* (an id, or one of the keywords
+;; `"newest"`, `"oldest"`, `"first_unread"`), and counts of messages
+;; to fetch before and after the anchor.
 ;;
 ;; A single message from `clojurecivitas`, one of the web-public
 ;; channels we reuse as a fixture throughout this book:
@@ -159,8 +164,9 @@ client/base-url
 (kind/test-last
  (= "https://clojurians.zulipchat.com/api/v1"))
 
-;; A direct call. `/server_settings` is unauthenticated metadata — a
-;; harmless example.
+;; A direct call.
+;; [`/server_settings`](https://zulip.com/api/get-server-settings) is
+;; unauthenticated metadata — a harmless example.
 
 (-> (client/api-get "/server_settings")
     (select-keys [:realm_name :realm_uri :zulip_version]))

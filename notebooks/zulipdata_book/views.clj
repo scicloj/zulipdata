@@ -121,11 +121,12 @@
 
 ;; ## One row per edit
 ;;
-;; Zulip stores an `edit_history` for every message that has been
-;; edited or moved. `edits-long` flattens those events. Note: an
-;; "edit" here may be a content edit, a topic move, or a stream move
-;; — `:prev-content`, `:prev-subject`, and `:prev-stream` indicate
-;; which by being non-nil.
+;; Zulip stores an
+;; [`edit_history`](https://zulip.com/api/get-message-history) for
+;; every message that has been edited or moved. `edits-long` flattens
+;; those events. Note: an "edit" here may be a content edit, a topic
+;; move, or a stream move — `:prev-content`, `:prev-subject`, and
+;; `:prev-stream` indicate which by being non-nil.
 
 (def edits (views/edits-long messages))
 

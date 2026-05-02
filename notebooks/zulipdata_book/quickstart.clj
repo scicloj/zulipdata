@@ -19,8 +19,9 @@
 
 ;; ## Authenticating
 ;;
-;; `client/whoami` calls `/users/me` and returns a summary of the
-;; authenticated identity:
+;; `client/whoami` calls
+;; [`/users/me`](https://zulip.com/api/get-own-user) and returns a
+;; summary of the authenticated identity:
 
 (def me (client/whoami))
 
