@@ -267,7 +267,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#flattening-pages-into-messages" id="toc-flattening-pages-into-messages" class="nav-link" data-scroll-target="#flattening-pages-into-messages">Flattening pages into messages</a></li>
   <li><a href="#pulling-several-channels-at-once" id="toc-pulling-several-channels-at-once" class="nav-link" data-scroll-target="#pulling-several-channels-at-once">Pulling several channels at once</a></li>
   <li><a href="#pulling-everything-public" id="toc-pulling-everything-public" class="nav-link" data-scroll-target="#pulling-everything-public">Pulling everything public</a></li>
-  <li><a href="#catching-up-the-refresh-tip-option" id="toc-catching-up-the-refresh-tip-option" class="nav-link" data-scroll-target="#catching-up-the-refresh-tip-option">Catching up: the <code>:refresh-tip</code> option</a></li>
+  <li><a href="#catching-up-the-refresh-option" id="toc-catching-up-the-refresh-option" class="nav-link" data-scroll-target="#catching-up-the-refresh-option">Catching up: the <code>:refresh</code> option</a></li>
   <li><a href="#pulling-many-channels-in-parallel" id="toc-pulling-many-channels-in-parallel" class="nav-link" data-scroll-target="#pulling-many-channels-in-parallel">Pulling many channels in parallel</a></li>
   <li><a href="#where-to-go-next" id="toc-where-to-go-next" class="nav-link" data-scroll-target="#where-to-go-next">Where to go next</a></li>
   </ul>
@@ -450,7 +450,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">get-in</span> pulled [<span class="st">"clojurecivitas"</span> <span class="at">:message-count</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="printedClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="dv">236</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="dv">273</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Note that this count is <strong>less than or equal to</strong> what <code>(pull/pull-channel! "clojurecivitas" 0)</code> returns above: <code>pull-channels!</code> walks from each channel’s <code>:first_message_id</code> (looked up from <code>/streams</code>), while anchor <code>0</code> also picks up any messages with lower ids that were <em>moved into</em> the channel from elsewhere (cross-channel moves preserve the original id). For channels without inbound moves the two counts coincide.</p>
 <div class="sourceClojure">
@@ -473,20 +473,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>    (<span class="kw">select-keys</span> [<span class="at">:stream-id</span> <span class="at">:first-message-id</span> <span class="at">:message-count</span>]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="printedClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>{<span class="at">:stream-id</span> <span class="dv">528764</span>, <span class="at">:first-message-id</span> <span class="dv">538932511</span>, <span class="at">:message-count</span> <span class="dv">236</span>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>{<span class="at">:stream-id</span> <span class="dv">528764</span>, <span class="at">:first-message-id</span> <span class="dv">538932511</span>, <span class="at">:message-count</span> <span class="dv">273</span>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="pulling-everything-public" class="level2">
 <h2 class="anchored" data-anchor-id="pulling-everything-public">Pulling everything public</h2>
 <p><code>pull-public-channels!</code> is the convenience wrapper used by the full-corpus analyses: it pulls every channel in <code>public-channel-names</code> with whatever options you pass. We do <strong>not</strong> run it here — a full pull on a fresh cache can take minutes — but use it when building a corpus-wide dataset.</p>
 </section>
-<section id="catching-up-the-refresh-tip-option" class="level2">
-<h2 class="anchored" data-anchor-id="catching-up-the-refresh-tip-option">Catching up: the <code>:refresh-tip</code> option</h2>
+<section id="catching-up-the-refresh-option" class="level2">
+<h2 class="anchored" data-anchor-id="catching-up-the-refresh-option">Catching up: the <code>:refresh</code> option</h2>
 <p>By default, repeated calls are entirely cache-served. That is usually what you want — but it means a re-run misses any messages posted since the last pull, because the final cached window will have been stored with <code>:found_newest true</code>.</p>
-<p>Pass <code>:refresh-tip true</code> to invalidate any cached page with <code>:found_newest true</code>, re-fetch it, and continue walking if new full windows now appear. This is the right option for keeping a corpus up to date without rebuilding it from scratch.</p>
+<p>Pass <code>:refresh true</code> to invalidate any cached page with <code>:found_newest true</code>, re-fetch it, and continue walking if new full windows now appear. This is the right option for keeping a corpus up to date without rebuilding it from scratch.</p>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>(<span class="bu">def</span><span class="fu"> clojurecivitas-pull-fresh</span></span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  (pull/pull-channel! <span class="st">"clojurecivitas"</span> <span class="dv">0</span> <span class="at">:refresh-tip</span> <span class="va">true</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  (pull/pull-channel! <span class="st">"clojurecivitas"</span> <span class="dv">0</span> <span class="at">:refresh</span> <span class="va">true</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>(<span class="at">:message-count</span> clojurecivitas-pull-fresh)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -520,7 +520,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>     (<span class="kw">dissoc</span> two-channel-pull <span class="at">:not-found</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="printedClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb42"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>([<span class="st">"clojurecivitas"</span> <span class="dv">236</span>] [<span class="st">"scicloj-webpublic"</span> <span class="dv">336</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb42"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>([<span class="st">"clojurecivitas"</span> <span class="dv">273</span>] [<span class="st">"scicloj-webpublic"</span> <span class="dv">336</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="where-to-go-next" class="level2">

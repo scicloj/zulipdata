@@ -314,7 +314,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <section id="authenticating" class="level2">
 <h2 class="anchored" data-anchor-id="authenticating">Authenticating</h2>
-<p><code>client/whoami</code> calls <code>/users/me</code> and returns a summary of the authenticated identity:</p>
+<p><code>client/whoami</code> calls <a href="https://zulip.com/api/get-own-user"><code>/users/me</code></a> and returns a summary of the authenticated identity:</p>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>(<span class="bu">def</span><span class="fu"> me </span>(client/whoami))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -400,7 +400,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>message-count</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="printedClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="dv">236</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="dv">273</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Flatten the cached windows into a single seq of raw messages:</p>
 <div class="sourceClojure">
@@ -411,7 +411,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">count</span> raw-messages)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="printedClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="dv">236</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="dv">273</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>A single raw message — one map per Zulip message, with sender, topic, content, timestamps, reactions, and edit history:</p>
 <div class="sourceClojure">
@@ -453,7 +453,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    (tc/order-by <span class="at">:instant</span> <span class="at">:desc</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="clay-dataset">
-<p>_unnamed [236 13]:</p>
+<p>_unnamed [273 13]:</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -474,98 +474,38 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td>2026-04-16T12:37:14Z</td>
-<td><a href="https://clojurecivitas.org/mentat_collective/emmy/helloeuroffice.html">Emmy and the EurOffice Spreadsheet</a></td>
-<td style="text-align: right;"></td>
-<td>ZulipZapierApp</td>
-<td>clojurecivitas</td>
-<td style="text-align: right;">528764</td>
-<td>false</td>
-<td style="text-align: right;">199</td>
-<td style="text-align: right;">585889009</td>
-<td>Civitas</td>
-<td style="text-align: right;">942591</td>
-<td style="text-align: right;">1776343034</td>
-<td>Emmy and the EurOffice Spreadsheet</td>
-</tr>
-<tr class="even">
-<td></td>
-<td>by Markus Agwin Kloimwieder</td>
-<td style="text-align: right;"></td>
-<td></td>
-<td></td>
-<td style="text-align: right;"></td>
-<td></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-<td></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-<td></td>
-</tr>
-<tr class="odd">
-<td></td>
-<td>Coding Clojure with scittle-kitchen in the FOSS EurOffice suite</td>
-<td style="text-align: right;"></td>
-<td></td>
-<td></td>
-<td style="text-align: right;"></td>
-<td></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-<td></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-<td></td>
-</tr>
-<tr class="even">
-<td>2026-03-29T08:12:30Z</td>
-<td>Lovely write up. The first illustration does not load for me, the others do.</td>
+<td>2026-05-02T18:42:10Z</td>
+<td>These days, we are exploring Babashka for data analysis and using Babqua for interactive data visualization. This time, we are looking into <span class="citation" data-cites="*">@*</span>*Gert Goet**’s Clojure Events Calendar Feed.</td>
 <td style="text-align: right;"></td>
 <td>website</td>
 <td>clojurecivitas</td>
 <td style="text-align: right;">528764</td>
 <td>false</td>
-<td style="text-align: right;">76</td>
-<td style="text-align: right;">582390906</td>
-<td>Martin Clausen</td>
-<td style="text-align: right;">138235</td>
-<td style="text-align: right;">1774771950</td>
-<td>Relaunching tablecloth.time: Composability over Abstraction</td>
+<td style="text-align: right;">186</td>
+<td style="text-align: right;">592473831</td>
+<td>Daniel Slutsky</td>
+<td style="text-align: right;">138175</td>
+<td style="text-align: right;">1777747330</td>
+<td>Datavis in Babashka: analysing our calendar feed</td>
 </tr>
-<tr class="odd">
-<td>2026-03-28T22:16:31Z</td>
-<td><a href="https://clojurecivitas.org/ezmiller/relaunching_tablecloth_time.html">Relaunching tablecloth.time: Composability over Abstraction</a></td>
+<tr class="even">
+<td>2026-05-02T18:39:21Z</td>
+<td><a href="https://clojurecivitas.org/babashka/clojure-events-feed.html">Datavis in Babashka: analysing our calendar feed</a></td>
 <td style="text-align: right;"></td>
 <td>ZulipZapierApp</td>
 <td>clojurecivitas</td>
 <td style="text-align: right;">528764</td>
 <td>false</td>
-<td style="text-align: right;">204</td>
-<td style="text-align: right;">582363945</td>
+<td style="text-align: right;">130</td>
+<td style="text-align: right;">592473657</td>
 <td>Civitas</td>
 <td style="text-align: right;">942591</td>
-<td style="text-align: right;">1774736191</td>
-<td>Relaunching tablecloth.time: Composability over Abstraction</td>
-</tr>
-<tr class="even">
-<td></td>
-<td>by Ethan Miller</td>
-<td style="text-align: right;"></td>
-<td></td>
-<td></td>
-<td style="text-align: right;"></td>
-<td></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-<td></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-<td></td>
+<td style="text-align: right;">1777747161</td>
+<td>Datavis in Babashka: analysing our calendar feed</td>
 </tr>
 <tr class="odd">
 <td></td>
-<td>A composable approach to time series analysis in Clojure</td>
+<td>by Daniel Slutsky</td>
 <td style="text-align: right;"></td>
 <td></td>
 <td></td>
@@ -579,98 +519,128 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td></td>
 </tr>
 <tr class="even">
-<td>2026-03-22T01:31:18Z</td>
-<td><a href="https://clojurecivitas.org/math/sets/negative_sets.html">Negative Sets as Data</a></td>
+<td>2026-05-02T16:31:38Z</td>
+<td>lovely :smile:</td>
 <td style="text-align: right;"></td>
-<td>ZulipZapierApp</td>
+<td>ZulipElectron</td>
 <td>clojurecivitas</td>
 <td style="text-align: right;">528764</td>
 <td>false</td>
-<td style="text-align: right;">189</td>
-<td style="text-align: right;">580873417</td>
-<td>Civitas</td>
-<td style="text-align: right;">942591</td>
-<td style="text-align: right;">1774143078</td>
-<td>Negative Sets as Data</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">592462084</td>
+<td>Timothy Pratley</td>
+<td style="text-align: right;">550430</td>
+<td style="text-align: right;">1777739498</td>
+<td>Hello, Babashka</td>
 </tr>
 <tr class="odd">
-<td></td>
-<td>by Jonathan Claggett</td>
-<td style="text-align: right;"></td>
-<td></td>
-<td></td>
-<td style="text-align: right;"></td>
-<td></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-<td></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-<td></td>
-</tr>
-<tr class="even">
-<td></td>
-<td>Cofinite sets with one sentinel key: all set operations reduce to three map primitives.</td>
-<td style="text-align: right;"></td>
-<td></td>
-<td></td>
-<td style="text-align: right;"></td>
-<td></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-<td></td>
-<td style="text-align: right;"></td>
-<td style="text-align: right;"></td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>2026-03-22T01:12:36Z</td>
-<td><span class="citation" data-cites="*">@*</span>*Timothy Pratley** That counts for me :-). Publishing now.</td>
+<td>2026-05-02T15:01:33Z</td>
+<td>Dark mode in mermaid works now, thanks <span class="citation" data-cites="*">@*</span>*Timothy Pratley**.</td>
 <td style="text-align: right;"></td>
 <td>website</td>
 <td>clojurecivitas</td>
 <td style="text-align: right;">528764</td>
 <td>false</td>
 <td style="text-align: right;">60</td>
-<td style="text-align: right;">580868928</td>
-<td>Jonathan Claggett</td>
-<td style="text-align: right;">1014034</td>
-<td style="text-align: right;">1774141956</td>
-<td>negative-sets</td>
+<td style="text-align: right;">592454894</td>
+<td>Daniel Slutsky</td>
+<td style="text-align: right;">138175</td>
+<td style="text-align: right;">1777734093</td>
+<td>Hello, Babashka</td>
 </tr>
 <tr class="even">
-<td>2026-03-21T22:12:30Z</td>
-<td>If you want to “see it” before publishing you can also merge it with the <code>:draft true</code> flag and it will only show up in the “drafts” section… but FWIW I think it looks ready to publish now :smile:</td>
+<td>2026-05-01T17:15:48Z</td>
+<td>https://github.com/scicloj/babqua/issues/1</td>
+<td style="text-align: right;"></td>
+<td>website</td>
+<td>clojurecivitas</td>
+<td style="text-align: right;">528764</td>
+<td>false</td>
+<td style="text-align: right;">42</td>
+<td style="text-align: right;">592324446</td>
+<td>Daniel Slutsky</td>
+<td style="text-align: right;">138175</td>
+<td style="text-align: right;">1777655748</td>
+<td>Hello, Babashka</td>
+</tr>
+<tr class="odd">
+<td>2026-05-01T17:13:13Z</td>
+<td>:thumbs_up:</td>
 <td style="text-align: right;"></td>
 <td>ZulipElectron</td>
 <td>clojurecivitas</td>
 <td style="text-align: right;">528764</td>
 <td>false</td>
-<td style="text-align: right;">198</td>
-<td style="text-align: right;">580856126</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">592323987</td>
 <td>Timothy Pratley</td>
 <td style="text-align: right;">550430</td>
-<td style="text-align: right;">1774131150</td>
-<td>negative-sets</td>
+<td style="text-align: right;">1777655593</td>
+<td>Hello, Babashka</td>
+</tr>
+<tr class="even">
+<td>2026-05-01T17:12:20Z</td>
+<td>Kindly is handled in a very ad-hoc way at the moment:</td>
+<td style="text-align: right;"></td>
+<td>website</td>
+<td>clojurecivitas</td>
+<td style="text-align: right;">528764</td>
+<td>false</td>
+<td style="text-align: right;">130</td>
+<td style="text-align: right;">592323846</td>
+<td>Daniel Slutsky</td>
+<td style="text-align: right;">138175</td>
+<td style="text-align: right;">1777655540</td>
+<td>Hello, Babashka</td>
 </tr>
 <tr class="odd">
-<td>2026-03-21T22:11:08Z</td>
-<td>Great!</td>
+<td></td>
+<td>https://github.com/scicloj/babqua/blob/6f9f703/_extensions/bb/runtime.bb#L74</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>2026-05-01T17:11:14Z</td>
+<td>Oh, thanks.</td>
+<td style="text-align: right;"></td>
+<td>website</td>
+<td>clojurecivitas</td>
+<td style="text-align: right;">528764</td>
+<td>false</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">592323688</td>
+<td>Daniel Slutsky</td>
+<td style="text-align: right;">138175</td>
+<td style="text-align: right;">1777655474</td>
+<td>Hello, Babashka</td>
+</tr>
+<tr class="odd">
+<td>2026-05-01T17:08:06Z</td>
+<td>In dark mode the mermaid connection lines are not very visible. This might be fixed by adding the class “mermaid” (which is what happens here: https://clojurecivitas.org/scicloj/clay/mermaid.html)</td>
 <td style="text-align: right;"></td>
 <td>ZulipElectron</td>
 <td>clojurecivitas</td>
 <td style="text-align: right;">528764</td>
 <td>false</td>
-<td style="text-align: right;">252</td>
-<td style="text-align: right;">580856012</td>
+<td style="text-align: right;">911</td>
+<td style="text-align: right;">592323242</td>
 <td>Timothy Pratley</td>
 <td style="text-align: right;">550430</td>
-<td style="text-align: right;">1774131068</td>
-<td>negative-sets</td>
+<td style="text-align: right;">1777655286</td>
+<td>Hello, Babashka</td>
 </tr>
 <tr class="even">
 <td></td>
-<td></td>
+<td>“mermaid” and “js-plotly-plot” classes currently have their hue inverted for this purpose:</td>
 <td style="text-align: right;"></td>
 <td></td>
 <td></td>
@@ -685,7 +655,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="odd">
 <td></td>
-<td>There’s no approval process for publishing, so it’s up to you to merge it whenever you are comfortable :smile:</td>
+<td>https://github.com/ClojureCivitas/clojurecivitas.github.io/blob/68b5e81b4733aea601d0e5822eb88fa9b2adbdf6/site/styles.scss#L33</td>
 <td style="text-align: right;"></td>
 <td></td>
 <td></td>
@@ -700,7 +670,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="even">
 <td></td>
-<td></td>
+<td>Alternatively this could be addressed by setting a background or using other properties to identify when hue should be inversed. In any case dark mode is just a minor issue but mentioning some details if you are curious.</td>
 <td style="text-align: right;"></td>
 <td></td>
 <td></td>
@@ -715,7 +685,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="odd">
 <td></td>
-<td>Looks very interesting, thank you for taking the time to write about it!</td>
+<td></td>
 <td style="text-align: right;"></td>
 <td></td>
 <td></td>
@@ -730,7 +700,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="even">
 <td></td>
-<td>Let me know if you are looking for more detailed feedback.</td>
+<td>The tree of babashka icons looks really cool!</td>
 <td style="text-align: right;"></td>
 <td></td>
 <td></td>
@@ -744,49 +714,109 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td></td>
 </tr>
 <tr class="odd">
-<td>2026-03-21T17:36:28Z</td>
-<td>Hello all! I just created a new article showing how to define negative sets using this one simple trick! Feel free give me any feedback as you like: https://github.com/ClojureCivitas/clojurecivitas.github.io/pull/341</td>
+<td></td>
+<td></td>
 <td style="text-align: right;"></td>
-<td>website</td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td>How does kindly work? Is it using Clay or kindly-render or a custom implementation?</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td>Should we also hope for a Clojurqua? (Maybe Babashqua fills this need)</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="even">
+<td></td>
+<td>Looking forward to hearing more details at the real-world-data meeting.</td>
+<td style="text-align: right;"></td>
+<td></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>2026-05-01T16:51:39Z</td>
+<td>amazing!</td>
+<td style="text-align: right;"></td>
+<td>ZulipElectron</td>
 <td>clojurecivitas</td>
 <td style="text-align: right;">528764</td>
 <td>false</td>
-<td style="text-align: right;">216</td>
-<td style="text-align: right;">580837393</td>
-<td>Jonathan Claggett</td>
-<td style="text-align: right;">1014034</td>
-<td style="text-align: right;">1774114588</td>
-<td>negative-sets</td>
-</tr>
-<tr class="even">
-<td>2026-03-13T21:10:37Z</td>
-<td>So hopefully everything is ok now.</td>
-<td style="text-align: right;"></td>
-<td>website</td>
-<td>clojurecivitas</td>
-<td style="text-align: right;">528764</td>
-<td>false</td>
-<td style="text-align: right;">34</td>
-<td style="text-align: right;">579356953</td>
-<td>Daniel Slutsky</td>
-<td style="text-align: right;">138175</td>
-<td style="text-align: right;">1773436237</td>
-<td>is git-lfs required now?</td>
-</tr>
-<tr class="odd">
-<td>2026-03-13T20:59:42Z</td>
-<td>https://github.com/ClojureCivitas/clojurecivitas.github.io/pull/340</td>
-<td style="text-align: right;"></td>
-<td>website</td>
-<td>clojurecivitas</td>
-<td style="text-align: right;">528764</td>
-<td>false</td>
-<td style="text-align: right;">67</td>
-<td style="text-align: right;">579355430</td>
-<td>Daniel Slutsky</td>
-<td style="text-align: right;">138175</td>
-<td style="text-align: right;">1773435582</td>
-<td>is git-lfs required now?</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">592320484</td>
+<td>Timothy Pratley</td>
+<td style="text-align: right;">550430</td>
+<td style="text-align: right;">1777654299</td>
+<td>Hello, Babashka</td>
 </tr>
 <tr class="even">
 <td>…</td>
@@ -835,7 +865,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="odd">
 <td></td>
-<td><code>quote                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |               |                |                |            |         |                 |           |                   |            |            |                                                             | |                      | It is common to see the following text at the bottom of READMEs in libraries from the Clojure ecosystem:                                                                                                                                                                                                                                                                                                                                                                             |               |                |                |            |         |                 |           |                   |            |            |                                                             | |                      |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |               |                |                |            |         |                 |           |                   |            |            |                                                             | |                      | Distributed under the Eclipse Public License, the same as Clojure.                                                                                                                                                                                                                                                                                                                                                                                                                   |               |                |                |            |         |                 |           |                   |            |            |                                                             | |                      |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |               |                |                |            |         |                 |           |                   |            |            |                                                             | |                      | There is an implication worthy of deconstruction embedded in such a sentence. When we declare “we do X, the same as Clojure” what we’re really saying is “we use X because Clojure uses X.” This sort of thinking makes sense if our constraints mirror Clojure’s constraints. Unfortunately, it’s very unlikely that they do.                                                                                                                                                       |               |                |                |            |         |                 |           |                   |            |            |                                                             | |                      |</code></td>
+<td><code>quote                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |               |                |                |            |         |                 |           |                  |            |            |                                                  | |                      | It is common to see the following text at the bottom of READMEs in libraries from the Clojure ecosystem:                                                                                                                                                                                                                                                                                                                                                                             |               |                |                |            |         |                 |           |                  |            |            |                                                  | |                      |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |               |                |                |            |         |                 |           |                  |            |            |                                                  | |                      | Distributed under the Eclipse Public License, the same as Clojure.                                                                                                                                                                                                                                                                                                                                                                                                                   |               |                |                |            |         |                 |           |                  |            |            |                                                  | |                      |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |               |                |                |            |         |                 |           |                  |            |            |                                                  | |                      | There is an implication worthy of deconstruction embedded in such a sentence. When we declare “we do X, the same as Clojure” what we’re really saying is “we use X because Clojure uses X.” This sort of thinking makes sense if our constraints mirror Clojure’s constraints. Unfortunately, it’s very unlikely that they do.                                                                                                                                                       |               |                |                |            |         |                 |           |                  |            |            |                                                  | |                      |</code></td>
 <td style="text-align: right;"></td>
 <td></td>
 <td></td>
@@ -1030,7 +1060,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="even">
 <td></td>
-<td><code>quote                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |               |                |                |            |         |                 |           |                   |            |            |                                                             | |                      | there's no lawyers available to help                                                                                                                                                                                                                                                                                                                                                                                                                                                 |               |                |                |            |         |                 |           |                   |            |            |                                                             | |                      |</code></td>
+<td><code>quote                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |               |                |                |            |         |                 |           |                  |            |            |                                                  | |                      | there's no lawyers available to help                                                                                                                                                                                                                                                                                                                                                                                                                                                 |               |                |                |            |         |                 |           |                  |            |            |                                                  | |                      |</code></td>
 <td style="text-align: right;"></td>
 <td></td>
 <td></td>
@@ -1705,7 +1735,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="odd">
 <td></td>
-<td><code>quote                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |               |                |                |            |         |                 |           |                   |            |            |                                                             | |                      | *No description.*                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |               |                |                |            |         |                 |           |                   |            |            |                                                             | |                      |</code></td>
+<td><code>quote                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |               |                |                |            |         |                 |           |                  |            |            |                                                  | |                      | *No description.*                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |               |                |                |            |         |                 |           |                  |            |            |                                                  | |                      |</code></td>
 <td style="text-align: right;"></td>
 <td></td>
 <td></td>
@@ -1725,7 +1755,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>(tc/row-count timeline)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="printedClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="dv">236</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="dv">273</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The dataset’s columns:</p>
 <div class="sourceClojure">
@@ -1752,7 +1782,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The rest of this book is one chapter per namespace:</p>
 <ul>
 <li><p><a href="./zulipdata_book.client.html"><strong>The REST client</strong></a> — what <code>client/whoami</code> does internally, plus the four endpoints the library wraps.</p></li>
-<li><p><a href="./zulipdata_book.pull.html"><strong>Pulling and caching channels</strong></a> — the cache model behind <code>pull/pull-channels!</code>, plus options like <code>:refresh-tip</code> for keeping a corpus up to date.</p></li>
+<li><p><a href="./zulipdata_book.pull.html"><strong>Pulling and caching channels</strong></a> — the cache model behind <code>pull/pull-channels!</code>, plus options like <code>:refresh</code> for keeping a corpus up to date.</p></li>
 <li><p><a href="./zulipdata_book.views.html"><strong>Tablecloth views</strong></a> — <code>views/messages-timeline</code>, <code>views/reactions-long</code>, <code>views/edits-long</code>, and <code>views/topic-links-long</code>.</p></li>
 <li><p><a href="./zulipdata_book.anonymize.html"><strong>Anonymized views</strong></a> — parallel views with sender names and topic strings replaced by stable hash keys, message content dropped — for sharing datasets without leaking identities or text.</p></li>
 <li><p><a href="./zulipdata_book.narrative.html"><strong>Narrative</strong></a> — date columns, channel lifecycles, and newcomer tracking.</p></li>

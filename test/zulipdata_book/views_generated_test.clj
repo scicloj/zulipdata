@@ -107,20 +107,20 @@
   (tc/head 5)))
 
 
-(def v28_l130 (def edits (views/edits-long messages)))
+(def v28_l131 (def edits (views/edits-long messages)))
 
 
-(def v29_l132 (tc/row-count edits))
+(def v29_l133 (tc/row-count edits))
 
 
-(def v30_l134 (-> edits tc/column-names sort))
+(def v30_l135 (-> edits tc/column-names sort))
 
 
 (deftest
- t31_l136
+ t31_l137
  (is
   (=
-   v30_l134
+   v30_l135
    '(:channel
      :edit-ts
      :edit-user-id
@@ -132,7 +132,7 @@
 
 
 (def
- v33_l142
+ v33_l143
  (->
   edits
   (tc/select-columns
@@ -141,23 +141,23 @@
   (tc/head 5)))
 
 
-(def v35_l154 (def links (views/topic-links-long messages)))
+(def v35_l155 (def links (views/topic-links-long messages)))
 
 
-(def v36_l156 (tc/row-count links))
+(def v36_l157 (tc/row-count links))
 
 
-(def v37_l158 (tc/column-names links))
+(def v37_l159 (tc/column-names links))
 
 
 (deftest
- t38_l160
+ t38_l161
  (is
-  (= v37_l158 [:message-id :stream-id :channel :link-text :link-url])))
+  (= v37_l159 [:message-id :stream-id :channel :link-text :link-url])))
 
 
 (def
- v40_l165
+ v40_l166
  (->
   links
   (tc/add-column
@@ -165,7 +165,7 @@
    (fn
     [ds]
     (mapv
-     (fn* [p1__49875#] (some-> p1__49875# (java.net.URI.) .getHost))
+     (fn* [p1__50817#] (some-> p1__50817# (java.net.URI.) .getHost))
      (:link-url ds))))
   (tc/group-by [:host])
   (tc/aggregate {:n tc/row-count})
