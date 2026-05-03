@@ -503,10 +503,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a> <span class="at">:timestamp</span> <span class="dv">1777747330</span>,</span>
 <span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a> <span class="at">:flags</span> [<span class="st">"read"</span>],</span>
 <span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a> <span class="at">:subject</span> <span class="st">"Datavis in Babashka: analysing our calendar feed"</span>,</span>
-<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a> <span class="at">:reactions</span> [],</span>
-<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a> <span class="at">:topic</span>_links [],</span>
-<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a> <span class="at">:avatar</span>_url</span>
-<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a> <span class="st">"https://avatars.zulip.com/9096/ae339dcb9dd0c56484977aeb0b0236822df7e6da.png"</span>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a> <span class="at">:reactions</span></span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a> [{<span class="at">:emoji</span>_name <span class="st">"eyes"</span>,</span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a>   <span class="at">:emoji</span>_code <span class="st">"1f440"</span>,</span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a>   <span class="at">:reaction</span>_type <span class="st">"unicode_emoji"</span>,</span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a>   <span class="at">:user</span>_id <span class="dv">137562</span>}],</span>
+<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a> <span class="at">:topic</span>_links [],</span>
+<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a> <span class="at">:avatar</span>_url</span>
+<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a> <span class="st">"https://avatars.zulip.com/9096/ae339dcb9dd0c56484977aeb0b0236822df7e6da.png"</span>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The response also tells you whether the window touches the start or end of the channel’s history — this is what <code>pull/pull-channel!</code> uses to decide when to stop walking forward:</p>
 <div class="sourceClojure">
