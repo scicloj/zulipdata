@@ -9,7 +9,7 @@
 ;;
 ;; `scicloj.zulipdata.anonymize` produces parallel views with:
 ;;
-;; - sender ids replaced by stable 12-hex-character `:user-key`s,
+;; - sender ids replaced by stable 16-hex-character `:user-key`s,
 ;; - topic strings replaced by stable 16-hex-character `:subject-key`s,
 ;; - message content dropped (only `:content-length` survives).
 ;;
@@ -36,9 +36,9 @@
 ;; and message text from appearing in checked-in markdown, slides, or
 ;; dashboards — not to be unbreakable.
 ;;
-;; The key sizes were chosen so collisions are not a practical concern
-;; at this corpus's scale: 48 bits for users (with low-thousands of
-;; users) and 64 bits for subjects (with low-thousands of subjects).
+;; Both keys are 16 hex characters (64 bits) — wide enough that
+;; collisions are not a practical concern at this corpus's scale
+;; (low-thousands of users, low-thousands of subjects).
 
 ;; ## Hashing one value
 ;;

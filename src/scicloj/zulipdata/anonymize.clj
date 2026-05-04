@@ -15,7 +15,7 @@
 (def ^:private salt
   "scicloj-zulipdata-2026-anon-v1")
 
-(def ^:private user-key-len    12)
+(def ^:private user-key-len    16)
 (def ^:private subject-key-len 16)
 
 (defn- hmac-sha256 ^bytes [^String k ^String msg]
@@ -30,7 +30,7 @@
   (-> (hmac-sha256 salt value) bytes->hex (subs 0 len)))
 
 (defn user-key
-  "Stable, irreversible 12-hex-char identifier for a sender id."
+  "Stable, irreversible 16-hex-char identifier for a sender id."
   [sender-id]
   (when sender-id (key-of (str sender-id) user-key-len)))
 
