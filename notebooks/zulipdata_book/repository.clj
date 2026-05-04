@@ -2,7 +2,7 @@
 ;;
 ;; This chapter is for people who clone the repository — to read it,
 ;; to edit a chapter, or to release a new version. Everything below
-;; is about the artifacts in this repo, not the library API itself.
+;; is about the files in this repo, not the library API itself.
 ;; If you only want to *use* zulipdata as a dependency, start at the
 ;; [**Quickstart**](./zulipdata_book.quickstart.html) and follow the
 ;; tutorial chapters.
@@ -16,7 +16,7 @@
 ;; - `src/scicloj/zulipdata/` — library source.
 ;; - `notebooks/zulipdata_book/` — the book chapters that you are
 ;;   reading right now.
-;; - `notebooks/index.clj` — book preface; slurps `README.md` to
+;; - `notebooks/index.clj` — book preface; reads `README.md` to
 ;;   avoid duplication.
 ;; - `notebooks/chapters.edn` — chapter ordering, used by both
 ;;   `make-book!` and `make-gfm!`.
@@ -24,9 +24,9 @@
 ;;   for rendering the book.
 ;; - `test/scicloj/zulipdata/` — hand-written tests.
 ;; - `test/zulipdata_book/` — tests *generated* from the notebooks.
-;; - `docs/` — rendered HTML book, shipped via GitHub Pages.
+;; - `docs/` — rendered HTML book, published via GitHub Pages.
 ;; - `gfm/` — GitHub-flavoured Markdown renders, used as a
-;;   verification artifact for the tutorial chapters.
+;;   verification step for the tutorial chapters.
 
 ;; ## REPL workflow
 ;;
@@ -62,7 +62,7 @@
 ;; Calling `dev/make-gfm!` with no arguments renders every registered
 ;; chapter.
 
-;; ## GFM is a verification artifact
+;; ## GFM as a verification step
 ;;
 ;; The published documentation site is the HTML build under `docs/`.
 ;; The Markdown files under `gfm/` are not the publishing target —

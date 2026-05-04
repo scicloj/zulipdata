@@ -95,9 +95,9 @@
 (defn api-get
   "Authenticated GET against the Clojurians Zulip API. `path` is
    resolved relative to `base-url`; `query-params` is an optional map.
-   Wraps the request in a small retry loop with exponential backoff
-   and a 90-second per-request timeout. Returns the JSON body parsed
-   with keyword keys."
+   Wraps the request in a small retry loop with longer waits between
+   retries and a 90-second per-request timeout. Returns the JSON body
+   parsed with keyword keys."
   ([path] (api-get path nil))
   ([path query-params]
    (-> (http-get-with-retry
@@ -110,7 +110,7 @@
        (json/read-json :key-fn keyword))))
 
 (defn whoami
-  "Hits `/users/me` and returns a short summary of the authenticated
+  "Calls `/users/me` and returns a short summary of the authenticated
    identity. Use this after configuring credentials to confirm
    everything works before running a pull."
   []

@@ -1,12 +1,11 @@
 ;; # The REST client
 ;;
-;; `scicloj.zulipdata.client` is the lowest layer of the library: a thin
-;; wrapper over [Zulip's HTTP REST API](https://zulip.com/api/) for the
-;; [Clojurians](https://clojurians.zulipchat.com) instance. Almost all
-;; analyses can stay on the higher-level `pull` namespace, but it helps
-;; to know what is happening underneath, and the client is the right
-;; tool when you need to call an endpoint the rest of the library does
-;; not cover.
+;; `scicloj.zulipdata.client` is the library's lowest level: a thin
+;; wrapper over [Zulip's HTTP REST API](https://zulip.com/api/) for
+;; the [Clojurians](https://clojurians.zulipchat.com) instance. Most
+;; analyses can use the higher-level `pull` namespace. The client is
+;; useful to understand, and is what you call directly for any
+;; endpoint the rest of the library does not cover.
 ;;
 ;; This chapter walks through:
 ;;
@@ -28,9 +27,9 @@
 ;; 2. The `[api]` section of `~/.zuliprc` (the standard Zulip CLI
 ;;    config file), with `email`, `key`, and `site = https://clojurians.zulipchat.com`.
 ;;
-;; The environment wins if both are present. If `~/.zuliprc` points at
-;; a different `site` value, the client refuses rather than hitting the
-;; wrong host. If neither path yields a complete pair, the first
+;; If both are present, the environment variables take precedence.
+;; If `~/.zuliprc` points at a different `site` value, the client
+;; raises an error rather than calling the wrong host. If neither path yields a complete pair, the first
 ;; request raises an exception with instructions for fixing it.
 ;;
 ;; You can generate an API key from
@@ -59,7 +58,7 @@ me
  (= [:email :full-name :user-id :is-bot :is-admin :role]))
 
 ;; If you need the full `/users/me` response — including fields
-;; `whoami` does not surface, like timezone or avatar URL — use
+;; `whoami` does not include, like timezone or avatar URL — use
 ;; `get-me`. We print the count of fields here:
 
 (-> (client/get-me) keys count)
@@ -105,7 +104,7 @@ web-public-channels
 ;; ([**Tablecloth views**](./zulipdata_book.views.html),
 ;; [**Narrative**](./zulipdata_book.narrative.html),
 ;; [**Graph views**](./zulipdata_book.graph.html))
-;; deliberately use a four-channel **web-public** fixture so the
+;; deliberately use a small **web-public** sample so the
 ;; rendered output can show real names, topic strings, and message
 ;; content without leaking anything login-gated. For analyses on
 ;; non-web-public channels, see
@@ -121,7 +120,7 @@ web-public-channels
 ;; to fetch before and after the anchor.
 ;;
 ;; A single message from `clojurecivitas`, one of the web-public
-;; channels we reuse as a fixture throughout this book:
+;; channels we reuse as a sample throughout this book:
 
 (def one-message-response
   (client/get-messages
@@ -143,8 +142,8 @@ web-public-channels
 
 (-> one-message-response :messages first)
 
-;; The response also tells you whether the window touches the start or
-;; end of the channel's history — this is what `pull/pull-channel!`
+;; The response also indicates whether the window touches the start
+;; or end of the channel's history — this is what `pull/pull-channel!`
 ;; uses to decide when to stop walking forward:
 
 (select-keys one-message-response
@@ -173,12 +172,12 @@ client/base-url
 
 ;; ## Reliability: timeouts and retries
 ;;
-;; The client wraps every request in a small retry loop with
-;; exponential backoff (up to four retries) for I/O errors and
+;; The client wraps every request in a small retry loop with longer
+;; waits between retries (up to four retries) for network errors and
 ;; timeouts. A single request times out after ninety seconds. This is
-;; opaque from the outside — calls succeed or, after exhausting
-;; retries, throw — but it is worth knowing when interpreting unusual
-;; latencies.
+;; invisible from the outside — calls succeed or, after exhausting
+;; retries, throw — but it is worth knowing when explaining occasional
+;; slow responses.
 
 ;; ## Where to go next
 ;;

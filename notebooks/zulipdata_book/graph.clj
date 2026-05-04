@@ -1,6 +1,6 @@
 ;; # Graph views
 ;;
-;; `scicloj.zulipdata.graph` lifts the corpus into graph-shaped
+;; `scicloj.zulipdata.graph` turns the corpus into graph-shaped
 ;; structures backed by [JGraphT](https://jgrapht.org/). Two graphs
 ;; cover most analyses:
 ;;
@@ -27,18 +27,18 @@
    [scicloj.kindly.v4.kind :as kind]
    [tablecloth.api :as tc]))
 
-;; ## A multi-channel fixture
+;; ## A multi-channel sample
 ;;
 ;; The same web-public anonymized timeline used in
 ;; [**Narrative**](./zulipdata_book.narrative.html) —
 ;; small enough to render, large enough to have non-trivial
 ;; structure.
 
-(def fixture-channels
+(def sample-channels
   ["clojurecivitas" "scicloj-webpublic" "gratitude" "events"])
 
 (def timeline
-  (->> (pull/pull-channels! fixture-channels)
+  (->> (pull/pull-channels! sample-channels)
        (filter (fn [[k _]] (string? k)))
        (mapcat (fn [[_ r]] (pull/all-messages r)))
        anon/anonymized-timeline
@@ -82,12 +82,12 @@
 (.vertexSet co-channel)
 
 (kind/test-last
- (= (set fixture-channels)))
+ (= (set sample-channels)))
 
 (count (.edgeSet co-channel))
 
-;; The graph is complete on the four channels — every pair shares at
-;; least one user — so there are `C(4,2) = 6` edges:
+;; The graph is complete — every pair of channels shares at least
+;; one user, so every possible pair becomes an edge:
 
 (kind/test-last
  (= 6))
@@ -108,7 +108,7 @@
 ;; edges are weighted by shared-channel count. The defaults
 ;; (`:min-shared 3 :min-channels 3`) are tuned for corpus-scale runs
 ;; where you want to see only the densely-connected core. We loosen
-;; them for our four-channel fixture.
+;; them for our small sample.
 
 (def co-user
   (graph/user-copresence-graph timeline :min-shared 2 :min-channels 2))
@@ -126,7 +126,7 @@
 ;; `from-set` source they used to each later destination. Edges with
 ;; fewer than `:min-users` are dropped.
 ;;
-;; In our fixture, taking `clojurecivitas` as the seed shows where
+;; In our sample, taking `clojurecivitas` as the seed shows where
 ;; clojurecivitas posters subsequently appeared (within the four
 ;; channels we pulled).
 
@@ -148,10 +148,10 @@
 
 (graph/betweenness co-channel)
 
-;; All four scores are zero on this graph — every pair of channels is
-;; directly connected, so no node ever lies on the *interior* of a
+;; All scores are zero on this graph — every pair of channels is
+;; directly connected, so no node lies on the *interior* of a
 ;; shortest path. Betweenness becomes informative on graphs with
-;; structural bottlenecks; on a four-node clique there are none.
+;; structural bottlenecks; on a small clique there are none.
 
 (every? zero? (vals (graph/betweenness co-channel)))
 
@@ -164,8 +164,7 @@
 ;; cluster.
 
 ;; Girvan-Newman needs you to pick `k` (the desired number of
-;; clusters). On a four-node graph, `k = 2` produces the most useful
-;; split.
+;; clusters). On this small graph, `k = 2` produces a useful split.
 
 (graph/girvan-newman co-channel 2)
 
@@ -175,7 +174,7 @@
  (= 2))
 
 ;; Label propagation chooses `k` itself. On a small dense graph it
-;; will often collapse to one cluster — which is informative in its
+;; will often produce only one cluster — which is informative in its
 ;; own right.
 
 (graph/label-propagation co-channel)
@@ -189,8 +188,8 @@
 ;;
 ;; `->cytoscape-elements` converts a JGraphT graph to the
 ;; `:elements` shape that `kind/cytoscape` consumes. Optional
-;; `:node-attrs` and `:edge-attrs` functions inject extra attributes
-;; into each `:data` map — handy for colour-coding by community or
+;; `:node-attrs` and `:edge-attrs` functions add extra attributes to
+;; each `:data` map — useful for colour-coding by community or
 ;; thickness by weight.
 
 (kind/cytoscape
@@ -206,7 +205,7 @@
 ;;
 ;; `->dot` returns a Graphviz DOT string. Pass it straight to
 ;; `kind/graphviz` for a static rendering. `directed?`, `node-label`,
-;; and `edge-label` are optional knobs.
+;; and `edge-label` are optional settings.
 
 (def co-channel-dot
   (graph/->dot co-channel
@@ -217,7 +216,7 @@
 
 ;; ## A note on scale
 ;;
-;; All examples in this chapter use a four-channel slice. The graph
+;; All examples in this chapter use a small sample. The graph
 ;; helpers were designed for corpus-scale work — full-corpus analyses
 ;; over `(pull/pull-public-channels!)` build co-membership graphs of
 ;; dozens of channels and co-presence graphs of around a thousand

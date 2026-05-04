@@ -36,7 +36,7 @@
 
 ;; ## Sample data
 ;;
-;; A small four-channel pull, reused across every example below. Each
+;; A small pull, reused across every example below. Each
 ;; layer of the pipeline is bound for direct reuse: `sample-pull`
 ;; (raw pull result), `sample-messages` (flat seq of raw messages),
 ;; `sample-timeline` (plain tablecloth view), `sample-anon`

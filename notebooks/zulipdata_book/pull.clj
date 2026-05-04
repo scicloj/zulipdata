@@ -3,7 +3,7 @@
 ;; `scicloj.zulipdata.pull` sits above the
 ;; [REST client](./zulipdata_book.client.html). It walks a channel's
 ;; full message history in *windows*, caches each window on disk,
-;; and stitches the windows back together. This chapter explains
+;; and combines the windows back into one history. This chapter explains
 ;; the cache model, then tours every public function.
 ;;
 ;; The model: each window is identified by
@@ -27,16 +27,16 @@
 ;; `~/.cache/zulipdata-clojurians/`. The directory is created on first
 ;; use.
 ;;
-;; Each cached window lives in a sharded subdirectory keyed by a hash
-;; of the call. You should not need to inspect the cache directly —
+;; Each cached window lives in a subdirectory keyed by a hash of the
+;; call. You should not need to inspect the cache directly —
 ;; but if you ever need to start over for a particular window, use
 ;; `(pocket/invalidate! ...)` rather than `rm -rf`.
 
 ;; ## Listing channels you can pull
 ;;
 ;; `public-channel-names` filters `/streams` down to channels that are
-;; either fully public or web-public — i.e. the ones a research bot
-;; can read.
+;; either fully public or web-public — i.e. the channels the API
+;; key can access.
 
 (def public-channels (pull/public-channel-names))
 
@@ -64,8 +64,9 @@
 (kind/test-last
  (= false))
 
-;; The walker stops once it sees `:found_newest` true, but a single
-;; small window like this one usually does not reach the tip:
+;; The walker stops once it encounters `:found_newest` true, but a single
+;; small window like this one usually does not reach the most recent
+;; message:
 
 (:found_newest first-window)
 
@@ -201,8 +202,8 @@ pull/default-batch-size
 ;; per-channel work parallelises cleanly.
 ;;
 ;; The cap is small to be respectful of the Zulip API's rate limits. Pass
-;; `:parallelism 1` for fully sequential pulls. Empirically, on the
-;; warm-cache refresh path:
+;; `:parallelism 1` for fully sequential pulls. Empirically, when
+;; refreshing with the cache already populated:
 ;;
 ;; - sequential (`:parallelism 1`) is ~24 s for 15 channels
 ;; - parallel (`:parallelism 8`, default) is ~3 s — about 8× faster

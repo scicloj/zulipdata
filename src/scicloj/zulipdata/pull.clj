@@ -89,9 +89,9 @@
                false)))))
 
 (defn all-messages
-  "Flatten the :pages result of pull-channel! into a single seq of messages,
-   de-duplicating by :id (windows are non-overlapping by construction, but
-   this is a cheap belt-and-braces safeguard)."
+  "Flatten the :pages result of pull-channel! into a single sequence of
+   messages, de-duplicating by :id (windows are non-overlapping by
+   construction; this is a redundant safety check)."
   [pull-result]
   (->> (:pages pull-result)
        (mapcat :messages)
@@ -108,7 +108,7 @@
   "Default number of channels pulled concurrently by `pull-channels!`.
    Channels are independent (separate cache keys, separate Zulip
    endpoints), so per-channel work parallelises cleanly. The cap is
-   small to stay polite to the Zulip API."
+   small to be respectful of the Zulip API's rate limits."
   8)
 
 (defn pull-channels!

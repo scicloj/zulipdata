@@ -1,11 +1,11 @@
 (ns scicloj.zulipdata.anonymize
   "Anonymized projections of the corpus. Sender identities and
    subject lines are replaced by stable hash keys; message content
-   is dropped. Suitable for sharing dataset views without leaking
-   the things we don't want to publish (real names, message text).
+   is dropped. Suitable for sharing dataset views without exposing
+   real names or message text.
 
    The salt is committed in source: anonymization here is about not
-   displaying real identities in published artifacts, not about
+   displaying real identities in published files, not about
    preventing re-identification by anyone with access to the original
    Zulip data."
   (:require [tablecloth.api :as tc])
@@ -65,7 +65,7 @@
 (defn anonymized-reactions
   "One row per (message, reaction). Both the message author's
    subject and the reactor's identity are anonymized; the emoji name
-   is preserved (it carries community-sentiment signal, not message
+   is preserved (it captures community sentiment, not message
    content)."
   [messages]
   (tc/dataset
@@ -84,7 +84,7 @@
 (defn anonymized-edits
   "One row per edit event. Editor and prior subject are anonymized;
    prior content is dropped. `prev-stream` is left as-is — it is a
-   stream id, not PII."
+   stream id, not personal data."
   [messages]
   (tc/dataset
    (for [m messages

@@ -28,8 +28,7 @@
 
 (defn with-time-columns
   "Add `:month-date`, `:year-month`, and `:year` columns to a timeline
-   that has a `:timestamp` column (epoch seconds). Avoids reinventing
-   the date wheel in every notebook."
+   that has a `:timestamp` column (epoch seconds)."
   [timeline]
   (-> timeline
       (tc/add-column :month-date (fn [ds] (mapv ts->month-date  (:timestamp ds))))
@@ -60,7 +59,7 @@
    least `share` of messages, restricted to channels with at least
    `min-msgs` total. Returns a sorted vector of channel names.
 
-   Use to grow a curated cluster around a seed channel by user-overlap
+   Use to build a curated cluster around a seed channel by user-overlap
    rather than name patterns."
   [timeline seed-channel
    & {:keys [share min-msgs top-n] :or {share 0.4 min-msgs 30 top-n 30}}]
@@ -81,7 +80,8 @@
 
 (defn first-posters-of-channel
   "First `n` distinct user-keys to post in `channel`, with their
-   first-post date. Useful for telling a 'who started this' story."
+   first-post date. Useful for identifying a channel's earliest
+   contributors."
   [timeline channel n]
   (->> (tc/rows timeline :as-maps)
        (filter #(= channel (:channel %)))

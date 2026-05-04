@@ -2,10 +2,10 @@
 ;;
 ;; The plain views in
 ;; [`scicloj.zulipdata.views`](./zulipdata_book.views.html)
-;; carry real names, topic strings, and message text. That is the
-;; right shape for analyses that stay on your machine — but the
+;; carry real names, topic strings, and message text. That is fine
+;; for analyses that stay on your machine — but the
 ;; moment a chart, a markdown table, or an exported dataset leaves
-;; your laptop, real identities and quoted content travel with it.
+;; your laptop, real identities and quoted content go with it.
 ;;
 ;; `scicloj.zulipdata.anonymize` produces parallel views with:
 ;;
@@ -24,14 +24,15 @@
 
 ;; ## How the keys are derived
 ;;
-;; Both keys come from HMAC-SHA256 with a single committed salt — see
+;; Both keys come from HMAC-SHA256 (a one-way cryptographic hash) with
+;; a single committed salt — see
 ;; `src/scicloj/zulipdata/anonymize.clj`. The salt is in source on
 ;; purpose: re-running the analysis must produce the same keys, so
 ;; that follow-up work links back to prior artifacts.
 ;;
 ;; This means the published artifacts are **pseudonymous, not
 ;; anonymous**. Anyone with the salt and access to the original Zulip
-;; data can re-identify by re-hashing. The point is to keep real names
+;; data can re-identify by re-hashing. The goal is to keep real names
 ;; and message text from appearing in checked-in markdown, slides, or
 ;; dashboards — not to be unbreakable.
 ;;
@@ -72,7 +73,7 @@
 
 (anon/subject-key "channel introductions")
 
-;; ## A small fixture
+;; ## A small sample
 ;;
 ;; A single channel, `kindly-dev`, is enough to illustrate the
 ;; anonymization layer. The cross-channel patterns come back in the
@@ -130,8 +131,8 @@
 ;; `anonymized-edits` mirrors
 ;; [`views/edits-long`](./zulipdata_book.views.html#one-row-per-edit)
 ;; with the editor and prior subject anonymized and prior content
-;; dropped. `:prev-stream` (a numeric stream id, not PII) is left
-;; as-is.
+;; dropped. `:prev-stream` (a numeric stream id, not personal data) is
+;; left as-is.
 
 (def anon-edits (anon/anonymized-edits messages))
 
@@ -141,8 +142,8 @@
 
 ;; ## What the anonymized data can — and cannot — answer
 ;;
-;; The anonymized views are designed for *who-when-where, not what*
-;; analyses.
+;; The anonymized views are designed for questions about who, when,
+;; and where — not about what was said.
 ;;
 ;; **Can be answered:**
 ;;

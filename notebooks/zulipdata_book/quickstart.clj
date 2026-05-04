@@ -64,7 +64,7 @@ web-public
 
 message-count
 
-;; Flatten the cached windows into a single seq of raw messages:
+;; Flatten the cached windows into a single sequence of raw messages:
 
 (def raw-messages
   (pull/all-messages (get pulled "clojurecivitas")))
@@ -82,7 +82,7 @@ message-count
 ;; ## Building a timeline view
 ;;
 ;; `views/messages-timeline` projects raw messages into a tablecloth
-;; dataset with one row per message and scalar columns only:
+;; dataset with one row per message and simple-valued columns only:
 
 (def timeline (views/messages-timeline raw-messages))
 

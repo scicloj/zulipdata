@@ -7,8 +7,8 @@
   (when ts (java.time.Instant/ofEpochSecond ts)))
 
 (defn messages-timeline
-  "One row per message — scalar fields only. Good for activity-over-time
-   and sender/topic analyses."
+  "One row per message — simple-valued fields only. Good for
+   activity-over-time and sender/topic analyses."
   [messages]
   (tc/dataset
    (map (fn [m]
@@ -46,7 +46,7 @@
 
 (defn edits-long
   "One row per edit event in :edit_history. Note: some edits record only
-   topic/stream moves (no :prev_content); we surface prev-content as-is."
+   topic/stream moves (no :prev_content); we include prev-content as-is."
   [messages]
   (tc/dataset
    (for [m messages

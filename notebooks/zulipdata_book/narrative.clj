@@ -25,20 +25,20 @@
    [scicloj.kindly.v4.kind :as kind]
    [tablecloth.api :as tc]))
 
-;; ## A multi-channel fixture
+;; ## A multi-channel sample
 ;;
 ;; This chapter needs more than one channel — `channels-by-shared-users`
 ;; and `prior-channels-of-newcomers` are about cross-channel structure.
-;; We use the same web-public fixture as the
+;; We use the same web-public sample as the
 ;; [Tablecloth views](./zulipdata_book.views.html) chapter:
-;; four small-to-medium scicloj-adjacent channels with overlapping
-;; contributors. Subsequent runs are cache-served.
+;; small-to-medium scicloj-adjacent channels with overlapping
+;; contributors. Later runs are served from the cache.
 
-(def fixture-channels
+(def sample-channels
   ["clojurecivitas" "scicloj-webpublic" "gratitude" "events"])
 
 (def messages
-  (->> (pull/pull-channels! fixture-channels)
+  (->> (pull/pull-channels! sample-channels)
        (filter (fn [[k _]] (string? k)))
        (mapcat (fn [[_ r]] (pull/all-messages r)))))
 
@@ -93,7 +93,7 @@
 ;; ## Channel lifecycles
 ;;
 ;; `channel-lifecycle` is the one-row-per-channel summary used in
-;; activity reports. It collapses every message in the
+;; activity reports. It summarises every message in the
 ;; timeline into five columns per channel: first month, last month,
 ;; total messages, distinct active months, and distinct (anonymized)
 ;; users. Sorted ascending by first-date.
@@ -113,8 +113,8 @@ lifecycles
 ;; ## Selecting channels by name pattern
 ;;
 ;; `channels-by-name-pattern` is a thin convenience around
-;; `re-find` against the distinct `:channel` values. Cheap and useful
-;; for grabbing a name-defined cluster — but fragile because it
+;; `re-find` against the distinct `:channel` values. Quick and useful
+;; for picking out a name-defined cluster — but fragile because it
 ;; depends on naming conventions.
 
 (nar/channels-by-name-pattern timeline #"civitas|gratitude")
@@ -131,7 +131,7 @@ lifecycles
 ;; channel by who posts there, rather than by name.
 ;;
 ;; Tightening `:share` shrinks the result: at `0.3` the seed's top
-;; posters reach all four channels in our fixture; at `0.5` they only
+;; posters reach every channel in our sample; at `0.5` they only
 ;; account for that fraction of activity in three of them.
 
 (nar/channels-by-shared-users timeline "clojurecivitas"
@@ -165,7 +165,7 @@ civitas-first-posters
 ;; it.
 ;;
 ;; **A note on scope.** "Prior channels" is restricted to whatever
-;; you pulled. In our four-channel fixture, anyone whose only prior
+;; you pulled. In our small sample, anyone whose only prior
 ;; activity was outside the four will not show up. Run the same call
 ;; on a corpus-wide timeline and the answer covers the whole community.
 

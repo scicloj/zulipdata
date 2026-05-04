@@ -5,7 +5,7 @@
 ;; nested maps with snake_case keys. Suitable for some uses but
 ;; inconvenient for analysis. `scicloj.zulipdata.views` offers four
 ;; projections that turn a sequence of raw messages into tablecloth
-;; datasets — flat, scalar-only, ready for grouping and plotting.
+;; datasets — flat, simple-valued, ready for grouping and plotting.
 ;;
 ;; Two design choices worth knowing about:
 ;;
@@ -23,9 +23,9 @@
    [scicloj.kindly.v4.kind :as kind]
    [tablecloth.api :as tc]))
 
-;; ## Setting up a fixture
+;; ## Setting up a sample
 ;;
-;; We use a four-channel **web-public** fixture throughout this chapter
+;; We use a small **web-public** sample throughout this chapter
 ;; so the view contents — sender names, topic strings, message bodies —
 ;; can be shown without leaking anything login-gated. Web-public means
 ;; the channel is readable on `clojurians.zulipchat.com` without a
@@ -33,18 +33,18 @@
 ;; [**Web-public channels**](./zulipdata_book.client.html#web-public-channels)
 ;; in the client chapter.
 ;;
-;; The four channels are small enough to render quickly, varied enough
+;; The channels are small enough to render quickly, varied enough
 ;; that every view has non-empty rows, and have overlapping
 ;; contributors so the cross-channel analyses in
 ;; [Narrative](./zulipdata_book.narrative.html) and
 ;; [Graph views](./zulipdata_book.graph.html) are non-trivial.
-;; Subsequent runs are cache-served.
+;; Later runs are served from the cache.
 
-(def fixture-channels
+(def sample-channels
   ["clojurecivitas" "scicloj-webpublic" "gratitude" "events"])
 
 (def messages
-  (->> (pull/pull-channels! fixture-channels)
+  (->> (pull/pull-channels! sample-channels)
        (filter (fn [[k _]] (string? k)))
        (mapcat (fn [[_ r]] (pull/all-messages r)))))
 
@@ -53,7 +53,7 @@
 ;; ## One row per message
 ;;
 ;; `messages-timeline` is the primary view. One row per message,
-;; only scalar columns — no reactions list, no edit history, no
+;; only simple-valued columns — no reactions list, no edit history, no
 ;; nested topic-link records. Those live in their own views. For
 ;; an anonymized parallel that drops sender names and message
 ;; content, see
@@ -76,7 +76,7 @@
 
 ;; The whole dataset, freshest first. Inline emoji codes
 ;; (`:gratitude:`, `:pray:`) and `@**Real Name**` mentions are how
-;; Zulip tags content; they pass through verbatim.
+;; Zulip marks content; they pass through verbatim.
 
 (-> timeline
     (tc/order-by :instant :desc))
@@ -91,7 +91,7 @@
  (= java.time.Instant))
 
 ;; The `:edited` column is a structural derivation from the raw
-;; message — true iff `:last_edit_timestamp` is present:
+;; message — true exactly when `:last_edit_timestamp` is present:
 
 (-> timeline (tc/select-rows :edited) tc/row-count)
 
@@ -111,7 +111,7 @@
  (= '(:channel :emoji-code :emoji-name :message-id :message-ts
                :reaction-type :stream-id :subject :user-id)))
 
-;; Top emoji across the fixture, by reaction count:
+;; Top emoji across the sample, by reaction count:
 
 (-> reactions
     (tc/group-by [:emoji-name])
