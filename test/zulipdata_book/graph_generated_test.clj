@@ -11,14 +11,14 @@
 
 
 (def
- v3_l37
+ v3_l40
  (def
   sample-channels
   ["clojurecivitas" "scicloj-webpublic" "gratitude" "events"]))
 
 
 (def
- v4_l40
+ v4_l43
  (def
   timeline
   (->>
@@ -29,44 +29,44 @@
    nar/with-time-columns)))
 
 
-(def v5_l47 (tc/row-count timeline))
+(def v5_l50 (tc/row-count timeline))
 
 
-(def v7_l56 (def u->chans (graph/user-channel-sets timeline)))
+(def v7_l59 (def u->chans (graph/user-channel-sets timeline)))
 
 
-(def v8_l58 (count u->chans))
+(def v8_l61 (count u->chans))
 
 
-(def v10_l62 (->> u->chans (take 5) (into {})))
+(def v10_l65 (->> u->chans (take 5) (into {})))
 
 
 (def
- v12_l66
+ v12_l69
  (->> u->chans vals (map count) frequencies (into (sorted-map))))
 
 
 (def
- v14_l79
+ v14_l82
  (def
   co-channel
   (graph/channel-comembership-graph timeline :min-shared 1)))
 
 
-(def v15_l82 (.vertexSet co-channel))
+(def v15_l85 (.vertexSet co-channel))
 
 
-(deftest t16_l84 (is (= v15_l82 (set sample-channels))))
+(deftest t16_l87 (is (= v15_l85 (set sample-channels))))
 
 
-(def v17_l87 (count (.edgeSet co-channel)))
+(def v17_l90 (count (.edgeSet co-channel)))
 
 
-(deftest t19_l92 (is (= v17_l87 6)))
+(deftest t19_l95 (is (= v17_l90 6)))
 
 
 (def
- v21_l97
+ v21_l100
  (->>
   (.edgeSet co-channel)
   (map
@@ -80,27 +80,27 @@
 
 
 (def
- v23_l113
+ v23_l116
  (def
   co-user
   (graph/user-copresence-graph timeline :min-shared 2 :min-channels 2)))
 
 
 (def
- v25_l118
+ v25_l121
  {:nodes (count (.vertexSet co-user)),
   :edges (count (.edgeSet co-user))})
 
 
 (def
- v27_l133
+ v27_l136
  (def
   migration
   (graph/migration-graph timeline #{"clojurecivitas"} :min-users 1)))
 
 
 (def
- v28_l136
+ v28_l139
  (->>
   (.edgeSet migration)
   (map
@@ -113,35 +113,35 @@
   tc/dataset))
 
 
-(def v30_l149 (graph/betweenness co-channel))
+(def v30_l152 (graph/betweenness co-channel))
 
 
-(def v32_l156 (every? zero? (vals (graph/betweenness co-channel))))
+(def v32_l161 (every? zero? (vals (graph/betweenness co-channel))))
 
 
-(deftest t33_l158 (is (= v32_l156 true)))
+(deftest t33_l163 (is (= v32_l161 true)))
 
 
-(def v35_l169 (graph/girvan-newman co-channel 2))
+(def v35_l174 (graph/girvan-newman co-channel 2))
 
 
-(def v36_l171 (count (graph/girvan-newman co-channel 2)))
+(def v36_l176 (count (graph/girvan-newman co-channel 2)))
 
 
-(deftest t37_l173 (is (= v36_l171 2)))
+(deftest t37_l178 (is (= v36_l176 2)))
 
 
-(def v39_l180 (graph/label-propagation co-channel))
+(def v39_l185 (graph/label-propagation co-channel))
 
 
-(def v40_l182 (count (graph/label-propagation co-channel)))
+(def v40_l187 (count (graph/label-propagation co-channel)))
 
 
-(deftest t41_l184 (is (= v40_l182 1)))
+(deftest t41_l189 (is (= v40_l187 1)))
 
 
 (def
- v43_l195
+ v43_l200
  (kind/cytoscape
   {:elements (graph/->cytoscape-elements co-channel),
    :style
@@ -151,7 +151,7 @@
 
 
 (def
- v45_l210
+ v45_l215
  (def
   co-channel-dot
   (graph/->dot
@@ -162,4 +162,4 @@
    (fn [[_ _ w]] (str (long w))))))
 
 
-(def v46_l215 (kind/graphviz co-channel-dot))
+(def v46_l220 (kind/graphviz co-channel-dot))

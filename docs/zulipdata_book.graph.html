@@ -315,7 +315,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p><strong>User co-presence</strong> — undirected weighted; nodes are anonymized user-keys, edges weighted by the number of channels the two users share.</p></li>
 </ul>
 <p>A third — <strong>migration</strong> — is directed and answers “after these users last posted in <code>from-set</code>, where did they show up next?”</p>
-<p>Plus utilities for community detection (Girvan-Newman, Label Propagation), betweenness centrality, and conversion to shapes that <code>kind/cytoscape</code> and <code>kind/graphviz</code> know how to render.</p>
+<p>Plus utilities for community detection (<a href="https://en.wikipedia.org/wiki/Girvan-Newman_algorithm">Girvan-Newman</a>, <a href="https://en.wikipedia.org/wiki/Label_propagation_algorithm">Label Propagation</a>), <a href="https://en.wikipedia.org/wiki/Betweenness_centrality">betweenness centrality</a>, and conversion to shapes that <code>kind/cytoscape</code> and <code>kind/graphviz</code> know how to render.</p>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">ns</span> zulipdata-book.graph</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  (<span class="at">:require</span></span>
@@ -520,7 +520,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="printedClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>{<span class="st">"clojurecivitas"</span> <span class="fl">0.0</span>, <span class="st">"gratitude"</span> <span class="fl">0.0</span>, <span class="st">"scicloj-webpublic"</span> <span class="fl">0.0</span>, <span class="st">"events"</span> <span class="fl">0.0</span>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>All scores are zero on this graph — every pair of channels is directly connected, so no node lies on the <em>interior</em> of a shortest path. Betweenness becomes informative on graphs with structural bottlenecks; on a small clique there are none.</p>
+<p>All scores are zero on this graph — every pair of channels is directly connected, so no node lies on the <em>interior</em> of a shortest path. Betweenness becomes informative on graphs with structural bottlenecks; on a small <a href="https://en.wikipedia.org/wiki/Clique_(graph_theory)">clique</a> there are none.</p>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">every?</span> <span class="kw">zero?</span> (<span class="kw">vals</span> (graph/betweenness co-channel)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -536,7 +536,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>(graph/girvan-newman co-channel <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="printedClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>[#{<span class="st">"gratitude"</span> <span class="st">"scicloj-webpublic"</span> <span class="st">"clojurecivitas"</span>} #{<span class="st">"events"</span>}]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>[#{<span class="st">"gratitude"</span> <span class="st">"scicloj-webpublic"</span> <span class="st">"events"</span>} #{<span class="st">"clojurecivitas"</span>}]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">count</span> (graph/girvan-newman co-channel <span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>

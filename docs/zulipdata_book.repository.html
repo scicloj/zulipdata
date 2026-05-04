@@ -326,11 +326,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="repl-workflow">REPL workflow</h2>
 <p>Start a REPL with the <code>:dev</code> alias, then connect from your editor:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">clojure</span> <span class="at">-M:dev</span> <span class="at">-m</span> nrepl.cmdline</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The <code>:dev</code> alias adds the <code>notebooks/</code> and <code>test/</code> directories to the classpath, plus the rendering dependencies (Clay, plotje, and other rendering libraries) that the notebooks need.</p>
+<p>The <code>:dev</code> alias adds the <code>notebooks/</code> and <code>test/</code> directories to the classpath, plus the rendering dependencies (<a href="https://github.com/scicloj/clay">Clay</a>, <a href="https://github.com/scicloj/plotje">plotje</a>, and other rendering libraries) that the notebooks need.</p>
 </section>
 <section id="rendering-the-book" class="level2">
 <h2 class="anchored" data-anchor-id="rendering-the-book">Rendering the book</h2>
-<p>The notebook helper <code>dev/make-book!</code> builds the full HTML book into <code>docs/</code> via Clay + Quarto. That directory is what GitHub Pages publishes:</p>
+<p>The notebook helper <code>dev/make-book!</code> builds the full HTML book into <code>docs/</code> via Clay + <a href="https://quarto.org/">Quarto</a>. That directory is what GitHub Pages publishes:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">require</span> '[dev <span class="at">:as</span> dev])</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>(dev/make-book!)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>To render a single chapter for quick iteration, pass a path to <code>dev/make-gfm!</code> — same Clay pipeline, GitHub-flavoured Markdown output, into <code>gfm/</code>:</p>
@@ -352,7 +352,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="running-tests" class="level2">
 <h2 class="anchored" data-anchor-id="running-tests">Running tests</h2>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">./run_tests.sh</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The runner is the cognitect test-runner via the <code>:test</code> alias and covers both directories under <code>test/</code>. The notebook-derived tests pull live data from Zulip the first time (cache-served thereafter), so the suite needs valid credentials — see <code>quickstart</code> if you have not configured them yet.</p>
+<p>The runner is the <a href="https://github.com/cognitect-labs/test-runner">cognitect test-runner</a> via the <code>:test</code> alias and covers both directories under <code>test/</code>. The notebook-derived tests pull live data from Zulip the first time (cache-served thereafter), so the suite needs valid credentials — see <code>quickstart</code> if you have not configured them yet.</p>
 </section>
 <section id="releases" class="level2">
 <h2 class="anchored" data-anchor-id="releases">Releases</h2>
