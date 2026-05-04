@@ -37,14 +37,16 @@
 ;; ```
 ;;
 ;; The `:dev` alias adds the `notebooks/` and `test/` directories to
-;; the classpath, plus the rendering dependencies (Clay, plotje, and
-;; other rendering libraries) that the notebooks need.
+;; the classpath, plus the rendering dependencies
+;; ([Clay](https://github.com/scicloj/clay),
+;; [plotje](https://github.com/scicloj/plotje), and other rendering
+;; libraries) that the notebooks need.
 
 ;; ## Rendering the book
 ;;
 ;; The notebook helper `dev/make-book!` builds the full HTML book
-;; into `docs/` via Clay + Quarto. That directory is what GitHub
-;; Pages publishes:
+;; into `docs/` via Clay + [Quarto](https://quarto.org/). That
+;; directory is what GitHub Pages publishes:
 ;;
 ;; ```clojure
 ;; (require '[dev :as dev])
@@ -91,7 +93,9 @@
 ;; ./run_tests.sh
 ;; ```
 ;;
-;; The runner is the cognitect test-runner via the `:test` alias and
+;; The runner is the
+;; [cognitect test-runner](https://github.com/cognitect-labs/test-runner)
+;; via the `:test` alias and
 ;; covers both directories under `test/`. The notebook-derived tests
 ;; pull live data from Zulip the first time (cache-served thereafter),
 ;; so the suite needs valid credentials — see `quickstart` if you

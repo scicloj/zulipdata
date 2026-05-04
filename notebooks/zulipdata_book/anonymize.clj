@@ -24,8 +24,8 @@
 
 ;; ## How the keys are derived
 ;;
-;; Both keys come from HMAC-SHA256 (a one-way cryptographic hash) with
-;; a single committed salt — see
+;; Both keys come from [HMAC-SHA256](https://en.wikipedia.org/wiki/HMAC)
+;; (a one-way cryptographic hash) with a single committed salt — see
 ;; `src/scicloj/zulipdata/anonymize.clj`. The salt is in source on
 ;; purpose: re-running the analysis must produce the same keys, so
 ;; that follow-up work links back to prior artifacts.

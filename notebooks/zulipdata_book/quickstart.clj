@@ -2,8 +2,8 @@
 ;;
 ;; A walkthrough of the `zulipdata` library's core API: authenticating,
 ;; listing public channels, pulling channel messages, and shaping them
-;; into a tablecloth dataset. Run this notebook end-to-end to confirm
-;; your setup works.
+;; into a [tablecloth](https://github.com/scicloj/tablecloth) dataset.
+;; Run this notebook end-to-end to confirm your setup works.
 ;;
 ;; Credentials are read from `ZULIP_EMAIL` / `ZULIP_API_KEY` env vars
 ;; or `~/.zuliprc` — see Zulip's [API keys

@@ -14,9 +14,12 @@
 ;; A third — **migration** — is directed and answers "after these
 ;; users last posted in `from-set`, where did they show up next?"
 ;;
-;; Plus utilities for community detection (Girvan-Newman, Label
-;; Propagation), betweenness centrality, and conversion to shapes
-;; that `kind/cytoscape` and `kind/graphviz` know how to render.
+;; Plus utilities for community detection
+;; ([Girvan-Newman](https://en.wikipedia.org/wiki/Girvan-Newman_algorithm),
+;; [Label Propagation](https://en.wikipedia.org/wiki/Label_propagation_algorithm)),
+;; [betweenness centrality](https://en.wikipedia.org/wiki/Betweenness_centrality),
+;; and conversion to shapes that `kind/cytoscape` and `kind/graphviz`
+;; know how to render.
 
 (ns zulipdata-book.graph
   (:require
@@ -151,7 +154,9 @@
 ;; All scores are zero on this graph — every pair of channels is
 ;; directly connected, so no node lies on the *interior* of a
 ;; shortest path. Betweenness becomes informative on graphs with
-;; structural bottlenecks; on a small clique there are none.
+;; structural bottlenecks; on a small
+;; [clique](https://en.wikipedia.org/wiki/Clique_(graph_theory)) there
+;; are none.
 
 (every? zero? (vals (graph/betweenness co-channel)))
 
