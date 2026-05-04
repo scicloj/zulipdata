@@ -261,7 +261,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#layout" id="toc-layout" class="nav-link active" data-scroll-target="#layout">Layout</a></li>
   <li><a href="#repl-workflow" id="toc-repl-workflow" class="nav-link" data-scroll-target="#repl-workflow">REPL workflow</a></li>
   <li><a href="#rendering-the-book" id="toc-rendering-the-book" class="nav-link" data-scroll-target="#rendering-the-book">Rendering the book</a></li>
-  <li><a href="#gfm-is-a-verification-artifact" id="toc-gfm-is-a-verification-artifact" class="nav-link" data-scroll-target="#gfm-is-a-verification-artifact">GFM is a verification artifact</a></li>
+  <li><a href="#gfm-as-a-verification-step" id="toc-gfm-as-a-verification-step" class="nav-link" data-scroll-target="#gfm-as-a-verification-step">GFM as a verification step</a></li>
   <li><a href="#running-tests" id="toc-running-tests" class="nav-link" data-scroll-target="#running-tests">Running tests</a></li>
   <li><a href="#releases" id="toc-releases" class="nav-link" data-scroll-target="#releases">Releases</a></li>
   <li><a href="#where-to-send-things" id="toc-where-to-send-things" class="nav-link" data-scroll-target="#where-to-send-things">Where to send things</a></li>
@@ -302,7 +302,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" type="text/javascript"></script>
 <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js" type="text/javascript"></script>
-<p>This chapter is for people who clone the repository — to read it, to edit a chapter, or to release a new version. Everything below is about the artifacts in this repo, not the library API itself. If you only want to <em>use</em> zulipdata as a dependency, start at the <a href="./zulipdata_book.quickstart.html"><strong>Quickstart</strong></a> and follow the tutorial chapters.</p>
+<p>This chapter is for people who clone the repository — to read it, to edit a chapter, or to release a new version. Everything below is about the files in this repo, not the library API itself. If you only want to <em>use</em> zulipdata as a dependency, start at the <a href="./zulipdata_book.quickstart.html"><strong>Quickstart</strong></a> and follow the tutorial chapters.</p>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">ns</span> zulipdata-book.repository</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  (<span class="at">:require</span></span>
@@ -313,13 +313,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul>
 <li><p><code>src/scicloj/zulipdata/</code> — library source.</p></li>
 <li><p><code>notebooks/zulipdata_book/</code> — the book chapters that you are reading right now.</p></li>
-<li><p><code>notebooks/index.clj</code> — book preface; slurps <code>README.md</code> to avoid duplication.</p></li>
+<li><p><code>notebooks/index.clj</code> — book preface; reads <code>README.md</code> to avoid duplication.</p></li>
 <li><p><code>notebooks/chapters.edn</code> — chapter ordering, used by both <code>make-book!</code> and <code>make-gfm!</code>.</p></li>
 <li><p><code>notebooks/dev.clj</code> — small helpers exposed in the dev REPL for rendering the book.</p></li>
 <li><p><code>test/scicloj/zulipdata/</code> — hand-written tests.</p></li>
 <li><p><code>test/zulipdata_book/</code> — tests <em>generated</em> from the notebooks.</p></li>
-<li><p><code>docs/</code> — rendered HTML book, shipped via GitHub Pages.</p></li>
-<li><p><code>gfm/</code> — GitHub-flavoured Markdown renders, used as a verification artifact for the tutorial chapters.</p></li>
+<li><p><code>docs/</code> — rendered HTML book, published via GitHub Pages.</p></li>
+<li><p><code>gfm/</code> — GitHub-flavoured Markdown renders, used as a verification step for the tutorial chapters.</p></li>
 </ul>
 </section>
 <section id="repl-workflow" class="level2">
@@ -337,8 +337,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>(dev/make-gfm! <span class="st">"zulipdata_book/quickstart.clj"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Calling <code>dev/make-gfm!</code> with no arguments renders every registered chapter.</p>
 </section>
-<section id="gfm-is-a-verification-artifact" class="level2">
-<h2 class="anchored" data-anchor-id="gfm-is-a-verification-artifact">GFM is a verification artifact</h2>
+<section id="gfm-as-a-verification-step" class="level2">
+<h2 class="anchored" data-anchor-id="gfm-as-a-verification-step">GFM as a verification step</h2>
 <p>The published documentation site is the HTML build under <code>docs/</code>. The Markdown files under <code>gfm/</code> are not the publishing target — they exist because Clay’s GFM render also writes a generated test file per notebook to <code>test/zulipdata_book/&lt;name&gt;_generated_test.clj</code>. Each <code>kind/test-last</code> form in a notebook becomes a <code>clojure.test</code> assertion in that file.</p>
 <p>The standard test runner picks up both the hand-written tests under <code>test/scicloj/zulipdata/</code> and the generated tests, so a full pass guarantees that every notebook example evaluates to what its prose claims.</p>
 <p>The flow when you change a notebook:</p>

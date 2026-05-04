@@ -12,7 +12,7 @@
 (def
  v3_l37
  (def
-  fixture-channels
+  sample-channels
   ["clojurecivitas" "scicloj-webpublic" "gratitude" "events"]))
 
 
@@ -21,7 +21,7 @@
  (def
   messages
   (->>
-   (pull/pull-channels! fixture-channels)
+   (pull/pull-channels! sample-channels)
    (filter (fn [[k _]] (string? k)))
    (mapcat (fn [[_ r]] (pull/all-messages r))))))
 
@@ -155,6 +155,6 @@
    (->
     lifecycles
     (tc/select-rows
-     (fn* [p1__52433#] (= "clojurecivitas" (:channel p1__52433#))))
+     (fn* [p1__53537#] (= "clojurecivitas" (:channel p1__53537#))))
     :total
     first))))

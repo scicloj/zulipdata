@@ -13,7 +13,7 @@
 (def
  v3_l37
  (def
-  fixture-channels
+  sample-channels
   ["clojurecivitas" "scicloj-webpublic" "gratitude" "events"]))
 
 
@@ -22,7 +22,7 @@
  (def
   timeline
   (->>
-   (pull/pull-channels! fixture-channels)
+   (pull/pull-channels! sample-channels)
    (filter (fn [[k _]] (string? k)))
    (mapcat (fn [[_ r]] (pull/all-messages r)))
    anon/anonymized-timeline
@@ -56,7 +56,7 @@
 (def v15_l82 (.vertexSet co-channel))
 
 
-(deftest t16_l84 (is (= v15_l82 (set fixture-channels))))
+(deftest t16_l84 (is (= v15_l82 (set sample-channels))))
 
 
 (def v17_l87 (count (.edgeSet co-channel)))
@@ -122,26 +122,26 @@
 (deftest t33_l158 (is (= v32_l156 true)))
 
 
-(def v35_l170 (graph/girvan-newman co-channel 2))
+(def v35_l169 (graph/girvan-newman co-channel 2))
 
 
-(def v36_l172 (count (graph/girvan-newman co-channel 2)))
+(def v36_l171 (count (graph/girvan-newman co-channel 2)))
 
 
-(deftest t37_l174 (is (= v36_l172 2)))
+(deftest t37_l173 (is (= v36_l171 2)))
 
 
-(def v39_l181 (graph/label-propagation co-channel))
+(def v39_l180 (graph/label-propagation co-channel))
 
 
-(def v40_l183 (count (graph/label-propagation co-channel)))
+(def v40_l182 (count (graph/label-propagation co-channel)))
 
 
-(deftest t41_l185 (is (= v40_l183 1)))
+(deftest t41_l184 (is (= v40_l182 1)))
 
 
 (def
- v43_l196
+ v43_l195
  (kind/cytoscape
   {:elements (graph/->cytoscape-elements co-channel),
    :style
@@ -151,7 +151,7 @@
 
 
 (def
- v45_l211
+ v45_l210
  (def
   co-channel-dot
   (graph/->dot
@@ -162,4 +162,4 @@
    (fn [[_ _ w]] (str (long w))))))
 
 
-(def v46_l216 (kind/graphviz co-channel-dot))
+(def v46_l215 (kind/graphviz co-channel-dot))

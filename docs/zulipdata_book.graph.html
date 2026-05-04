@@ -259,7 +259,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#a-multi-channel-fixture" id="toc-a-multi-channel-fixture" class="nav-link active" data-scroll-target="#a-multi-channel-fixture">A multi-channel fixture</a></li>
+  <li><a href="#a-multi-channel-sample" id="toc-a-multi-channel-sample" class="nav-link active" data-scroll-target="#a-multi-channel-sample">A multi-channel sample</a></li>
   <li><a href="#users-to-channels" id="toc-users-to-channels" class="nav-link" data-scroll-target="#users-to-channels">Users to channels</a></li>
   <li><a href="#channel-co-membership" id="toc-channel-co-membership" class="nav-link" data-scroll-target="#channel-co-membership">Channel co-membership</a></li>
   <li><a href="#user-co-presence" id="toc-user-co-presence" class="nav-link" data-scroll-target="#user-co-presence">User co-presence</a></li>
@@ -309,7 +309,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js" type="text/javascript"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.23.0/cytoscape.min.js" type="text/javascript"></script>
 <script src="https://cdn.jsdelivr.net/npm/@viz-js/viz@3.17.0/dist/viz-global.min.js" type="text/javascript"></script>
-<p><code>scicloj.zulipdata.graph</code> lifts the corpus into graph-shaped structures backed by <a href="https://jgrapht.org/">JGraphT</a>. Two graphs cover most analyses:</p>
+<p><code>scicloj.zulipdata.graph</code> turns the corpus into graph-shaped structures backed by <a href="https://jgrapht.org/">JGraphT</a>. Two graphs cover most analyses:</p>
 <ul>
 <li><p><strong>Channel co-membership</strong> — undirected weighted; nodes are channel names, edges weighted by the number of users who post in both endpoints.</p></li>
 <li><p><strong>User co-presence</strong> — undirected weighted; nodes are anonymized user-keys, edges weighted by the number of channels the two users share.</p></li>
@@ -326,16 +326,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>   [scicloj.kindly.v4.kind <span class="at">:as</span> kind]</span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>   [tablecloth.api <span class="at">:as</span> tc]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<section id="a-multi-channel-fixture" class="level2">
-<h2 class="anchored" data-anchor-id="a-multi-channel-fixture">A multi-channel fixture</h2>
+<section id="a-multi-channel-sample" class="level2">
+<h2 class="anchored" data-anchor-id="a-multi-channel-sample">A multi-channel sample</h2>
 <p>The same web-public anonymized timeline used in <a href="./zulipdata_book.narrative.html"><strong>Narrative</strong></a> — small enough to render, large enough to have non-trivial structure.</p>
 <div class="sourceClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>(<span class="bu">def</span><span class="fu"> fixture-channels</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>(<span class="bu">def</span><span class="fu"> sample-channels</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  [<span class="st">"clojurecivitas"</span> <span class="st">"scicloj-webpublic"</span> <span class="st">"gratitude"</span> <span class="st">"events"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>(<span class="bu">def</span><span class="fu"> timeline</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  (<span class="kw">-&gt;&gt;</span> (pull/pull-channels! fixture-channels)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  (<span class="kw">-&gt;&gt;</span> (pull/pull-channels! sample-channels)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>       (<span class="kw">filter</span> (<span class="kw">fn</span> [[k _]] (<span class="kw">string?</span> k)))</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>       (<span class="kw">mapcat</span> (<span class="kw">fn</span> [[_ r]] (pull/all-messages r)))</span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>       anon/anonymized-timeline</span>
@@ -402,7 +402,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="printedClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="dv">6</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>The graph is complete on the four channels — every pair shares at least one user — so there are <code>C(4,2) = 6</code> edges:</p>
+<p>The graph is complete — every pair of channels shares at least one user, so every possible pair becomes an edge:</p>
 <p>The edge-weight table:</p>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">-&gt;&gt;</span> (.edgeSet co-channel)</span>
@@ -460,7 +460,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="user-co-presence" class="level2">
 <h2 class="anchored" data-anchor-id="user-co-presence">User co-presence</h2>
-<p><code>user-copresence-graph</code> flips the construction: nodes are users, edges are weighted by shared-channel count. The defaults (<code>:min-shared 3 :min-channels 3</code>) are tuned for corpus-scale runs where you want to see only the densely-connected core. We loosen them for our four-channel fixture.</p>
+<p><code>user-copresence-graph</code> flips the construction: nodes are users, edges are weighted by shared-channel count. The defaults (<code>:min-shared 3 :min-channels 3</code>) are tuned for corpus-scale runs where you want to see only the densely-connected core. We loosen them for our small sample.</p>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>(<span class="bu">def</span><span class="fu"> co-user</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  (graph/user-copresence-graph timeline <span class="at">:min-shared</span> <span class="dv">2</span> <span class="at">:min-channels</span> <span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -477,7 +477,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="migration-where-did-people-go-next" class="level2">
 <h2 class="anchored" data-anchor-id="migration-where-did-people-go-next">Migration: where did people go next?</h2>
 <p><code>migration-graph</code> is directed. For each user with at least five posts in <code>from-set</code>, it looks at every channel they posted in <em>after</em> their last <code>from-set</code> post, and adds an edge from each <code>from-set</code> source they used to each later destination. Edges with fewer than <code>:min-users</code> are dropped.</p>
-<p>In our fixture, taking <code>clojurecivitas</code> as the seed shows where clojurecivitas posters subsequently appeared (within the four channels we pulled).</p>
+<p>In our sample, taking <code>clojurecivitas</code> as the seed shows where clojurecivitas posters subsequently appeared (within the four channels we pulled).</p>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>(<span class="bu">def</span><span class="fu"> migration</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  (graph/migration-graph timeline #{<span class="st">"clojurecivitas"</span>} <span class="at">:min-users</span> <span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -520,7 +520,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="printedClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>{<span class="st">"clojurecivitas"</span> <span class="fl">0.0</span>, <span class="st">"gratitude"</span> <span class="fl">0.0</span>, <span class="st">"scicloj-webpublic"</span> <span class="fl">0.0</span>, <span class="st">"events"</span> <span class="fl">0.0</span>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>All four scores are zero on this graph — every pair of channels is directly connected, so no node ever lies on the <em>interior</em> of a shortest path. Betweenness becomes informative on graphs with structural bottlenecks; on a four-node clique there are none.</p>
+<p>All scores are zero on this graph — every pair of channels is directly connected, so no node lies on the <em>interior</em> of a shortest path. Betweenness becomes informative on graphs with structural bottlenecks; on a small clique there are none.</p>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">every?</span> <span class="kw">zero?</span> (<span class="kw">vals</span> (graph/betweenness co-channel)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -531,12 +531,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="communities" class="level2">
 <h2 class="anchored" data-anchor-id="communities">Communities</h2>
 <p>Two algorithms, both returning a vector of node-sets — one set per cluster.</p>
-<p>Girvan-Newman needs you to pick <code>k</code> (the desired number of clusters). On a four-node graph, <code>k = 2</code> produces the most useful split.</p>
+<p>Girvan-Newman needs you to pick <code>k</code> (the desired number of clusters). On this small graph, <code>k = 2</code> produces a useful split.</p>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>(graph/girvan-newman co-channel <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="printedClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>[#{<span class="st">"gratitude"</span> <span class="st">"scicloj-webpublic"</span> <span class="st">"events"</span>} #{<span class="st">"clojurecivitas"</span>}]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>[#{<span class="st">"gratitude"</span> <span class="st">"scicloj-webpublic"</span> <span class="st">"clojurecivitas"</span>} #{<span class="st">"events"</span>}]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">count</span> (graph/girvan-newman co-channel <span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -544,7 +544,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="printedClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Label propagation chooses <code>k</code> itself. On a small dense graph it will often collapse to one cluster — which is informative in its own right.</p>
+<p>Label propagation chooses <code>k</code> itself. On a small dense graph it will often produce only one cluster — which is informative in its own right.</p>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>(graph/label-propagation co-channel)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -560,7 +560,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="rendering-kindcytoscape" class="level2">
 <h2 class="anchored" data-anchor-id="rendering-kindcytoscape">Rendering: <code>kind/cytoscape</code></h2>
-<p><code>-&gt;cytoscape-elements</code> converts a JGraphT graph to the <code>:elements</code> shape that <code>kind/cytoscape</code> consumes. Optional <code>:node-attrs</code> and <code>:edge-attrs</code> functions inject extra attributes into each <code>:data</code> map — handy for colour-coding by community or thickness by weight.</p>
+<p><code>-&gt;cytoscape-elements</code> converts a JGraphT graph to the <code>:elements</code> shape that <code>kind/cytoscape</code> consumes. Optional <code>:node-attrs</code> and <code>:edge-attrs</code> functions add extra attributes to each <code>:data</code> map — useful for colour-coding by community or thickness by weight.</p>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>(kind/cytoscape</span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a> {<span class="at">:elements</span> (graph/-&gt;cytoscape-elements co-channel)</span>
@@ -580,7 +580,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="rendering-kindgraphviz" class="level2">
 <h2 class="anchored" data-anchor-id="rendering-kindgraphviz">Rendering: <code>kind/graphviz</code></h2>
-<p><code>-&gt;dot</code> returns a Graphviz DOT string. Pass it straight to <code>kind/graphviz</code> for a static rendering. <code>directed?</code>, <code>node-label</code>, and <code>edge-label</code> are optional knobs.</p>
+<p><code>-&gt;dot</code> returns a Graphviz DOT string. Pass it straight to <code>kind/graphviz</code> for a static rendering. <code>directed?</code>, <code>node-label</code>, and <code>edge-label</code> are optional settings.</p>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>(<span class="bu">def</span><span class="fu"> co-channel-dot</span></span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  (graph/-&gt;dot co-channel</span>
@@ -619,7 +619,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="a-note-on-scale" class="level2">
 <h2 class="anchored" data-anchor-id="a-note-on-scale">A note on scale</h2>
-<p>All examples in this chapter use a four-channel slice. The graph helpers were designed for corpus-scale work — full-corpus analyses over <code>(pull/pull-public-channels!)</code> build co-membership graphs of dozens of channels and co-presence graphs of around a thousand users. The same functions, the same shapes, with larger inputs.</p>
+<p>All examples in this chapter use a small sample. The graph helpers were designed for corpus-scale work — full-corpus analyses over <code>(pull/pull-public-channels!)</code> build co-membership graphs of dozens of channels and co-presence graphs of around a thousand users. The same functions, the same shapes, with larger inputs.</p>
 </section>
 <section id="where-to-go-next" class="level2">
 <h2 class="anchored" data-anchor-id="where-to-go-next">Where to go next</h2>

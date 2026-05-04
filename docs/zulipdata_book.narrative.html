@@ -259,7 +259,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#a-multi-channel-fixture" id="toc-a-multi-channel-fixture" class="nav-link active" data-scroll-target="#a-multi-channel-fixture">A multi-channel fixture</a></li>
+  <li><a href="#a-multi-channel-sample" id="toc-a-multi-channel-sample" class="nav-link active" data-scroll-target="#a-multi-channel-sample">A multi-channel sample</a></li>
   <li><a href="#adding-date-columns" id="toc-adding-date-columns" class="nav-link" data-scroll-target="#adding-date-columns">Adding date columns</a></li>
   <li><a href="#channel-lifecycles" id="toc-channel-lifecycles" class="nav-link" data-scroll-target="#channel-lifecycles">Channel lifecycles</a></li>
   <li><a href="#selecting-channels-by-name-pattern" id="toc-selecting-channels-by-name-pattern" class="nav-link" data-scroll-target="#selecting-channels-by-name-pattern">Selecting channels by name pattern</a></li>
@@ -316,16 +316,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>   [scicloj.kindly.v4.kind <span class="at">:as</span> kind]</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>   [tablecloth.api <span class="at">:as</span> tc]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<section id="a-multi-channel-fixture" class="level2">
-<h2 class="anchored" data-anchor-id="a-multi-channel-fixture">A multi-channel fixture</h2>
-<p>This chapter needs more than one channel — <code>channels-by-shared-users</code> and <code>prior-channels-of-newcomers</code> are about cross-channel structure. We use the same web-public fixture as the <a href="./zulipdata_book.views.html">Tablecloth views</a> chapter: four small-to-medium scicloj-adjacent channels with overlapping contributors. Subsequent runs are cache-served.</p>
+<section id="a-multi-channel-sample" class="level2">
+<h2 class="anchored" data-anchor-id="a-multi-channel-sample">A multi-channel sample</h2>
+<p>This chapter needs more than one channel — <code>channels-by-shared-users</code> and <code>prior-channels-of-newcomers</code> are about cross-channel structure. We use the same web-public sample as the <a href="./zulipdata_book.views.html">Tablecloth views</a> chapter: small-to-medium scicloj-adjacent channels with overlapping contributors. Later runs are served from the cache.</p>
 <div class="sourceClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>(<span class="bu">def</span><span class="fu"> fixture-channels</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>(<span class="bu">def</span><span class="fu"> sample-channels</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  [<span class="st">"clojurecivitas"</span> <span class="st">"scicloj-webpublic"</span> <span class="st">"gratitude"</span> <span class="st">"events"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>(<span class="bu">def</span><span class="fu"> messages</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  (<span class="kw">-&gt;&gt;</span> (pull/pull-channels! fixture-channels)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  (<span class="kw">-&gt;&gt;</span> (pull/pull-channels! sample-channels)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>       (<span class="kw">filter</span> (<span class="kw">fn</span> [[k _]] (<span class="kw">string?</span> k)))</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>       (<span class="kw">mapcat</span> (<span class="kw">fn</span> [[_ r]] (pull/all-messages r)))))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -441,14 +441,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="printedClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>{<span class="at">:ts</span> <span class="dv">1757619820</span>,</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a> <span class="at">:month-date</span> #object[java.<span class="kw">time</span>.LocalDate <span class="bn">0x56e7a54</span> <span class="st">"2025-09-01"</span>],</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a> <span class="at">:month-date</span> #object[java.<span class="kw">time</span>.LocalDate <span class="bn">0x88a1849</span> <span class="st">"2025-09-01"</span>],</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a> <span class="at">:year-month</span> <span class="st">"2025-09"</span>,</span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a> <span class="at">:year</span> <span class="dv">2025</span>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="channel-lifecycles" class="level2">
 <h2 class="anchored" data-anchor-id="channel-lifecycles">Channel lifecycles</h2>
-<p><code>channel-lifecycle</code> is the one-row-per-channel summary used in activity reports. It collapses every message in the timeline into five columns per channel: first month, last month, total messages, distinct active months, and distinct (anonymized) users. Sorted ascending by first-date.</p>
+<p><code>channel-lifecycle</code> is the one-row-per-channel summary used in activity reports. It summarises every message in the timeline into five columns per channel: first month, last month, total messages, distinct active months, and distinct (anonymized) users. Sorted ascending by first-date.</p>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>(<span class="bu">def</span><span class="fu"> lifecycles </span>(nar/channel-lifecycle timeline))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -522,7 +522,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="selecting-channels-by-name-pattern" class="level2">
 <h2 class="anchored" data-anchor-id="selecting-channels-by-name-pattern">Selecting channels by name pattern</h2>
-<p><code>channels-by-name-pattern</code> is a thin convenience around <code>re-find</code> against the distinct <code>:channel</code> values. Cheap and useful for grabbing a name-defined cluster — but fragile because it depends on naming conventions.</p>
+<p><code>channels-by-name-pattern</code> is a thin convenience around <code>re-find</code> against the distinct <code>:channel</code> values. Quick and useful for picking out a name-defined cluster — but fragile because it depends on naming conventions.</p>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>(nar/channels-by-name-pattern timeline <span class="ss">#"civitas|gratitude"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -533,7 +533,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="selecting-channels-by-shared-user-base" class="level2">
 <h2 class="anchored" data-anchor-id="selecting-channels-by-shared-user-base">Selecting channels by shared user-base</h2>
 <p><code>channels-by-shared-users</code> is the user-overlap counterpart to the name pattern. Pick a <code>seed-channel</code>, take its top-N posters, and return every channel where those users account for at least <code>share</code> of activity. Use this to build a cluster around a seed channel by who posts there, rather than by name.</p>
-<p>Tightening <code>:share</code> shrinks the result: at <code>0.3</code> the seed’s top posters reach all four channels in our fixture; at <code>0.5</code> they only account for that fraction of activity in three of them.</p>
+<p>Tightening <code>:share</code> shrinks the result: at <code>0.3</code> the seed’s top posters reach every channel in our sample; at <code>0.5</code> they only account for that fraction of activity in three of them.</p>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>(nar/channels-by-shared-users timeline <span class="st">"clojurecivitas"</span></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>                              <span class="at">:share</span> <span class="fl">0.5</span> <span class="at">:min-msgs</span> <span class="dv">5</span> <span class="at">:top-n</span> <span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -595,7 +595,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="tracing-newcomers-prior-channels" class="level2">
 <h2 class="anchored" data-anchor-id="tracing-newcomers-prior-channels">Tracing newcomers’ prior channels</h2>
 <p><code>prior-channels-of-newcomers</code> answers: for everyone whose first post in <code>channel</code> falls in <code>year-month</code>, where else had they been posting in the timeline before that first post? Returns one row per prior channel with the count of newcomers who passed through it.</p>
-<p><strong>A note on scope.</strong> “Prior channels” is restricted to whatever you pulled. In our four-channel fixture, anyone whose only prior activity was outside the four will not show up. Run the same call on a corpus-wide timeline and the answer covers the whole community.</p>
+<p><strong>A note on scope.</strong> “Prior channels” is restricted to whatever you pulled. In our small sample, anyone whose only prior activity was outside the four will not show up. Run the same call on a corpus-wide timeline and the answer covers the whole community.</p>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>(nar/prior-channels-of-newcomers timeline <span class="st">"clojurecivitas"</span> <span class="st">"2025-10"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>

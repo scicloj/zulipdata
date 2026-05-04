@@ -306,7 +306,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" type="text/javascript"></script>
 <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js" type="text/javascript"></script>
-<p><code>scicloj.zulipdata.client</code> is the lowest layer of the library: a thin wrapper over <a href="https://zulip.com/api/">Zulip’s HTTP REST API</a> for the <a href="https://clojurians.zulipchat.com">Clojurians</a> instance. Almost all analyses can stay on the higher-level <code>pull</code> namespace, but it helps to know what is happening underneath, and the client is the right tool when you need to call an endpoint the rest of the library does not cover.</p>
+<p><code>scicloj.zulipdata.client</code> is the library’s lowest level: a thin wrapper over <a href="https://zulip.com/api/">Zulip’s HTTP REST API</a> for the <a href="https://clojurians.zulipchat.com">Clojurians</a> instance. Most analyses can use the higher-level <code>pull</code> namespace. The client is useful to understand, and is what you call directly for any endpoint the rest of the library does not cover.</p>
 <p>This chapter walks through:</p>
 <ul>
 <li><p>How credentials are resolved.</p></li>
@@ -326,7 +326,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>The environment variables <code>ZULIP_EMAIL</code> and <code>ZULIP_API_KEY</code>.</li>
 <li>The <code>[api]</code> section of <code>~/.zuliprc</code> (the standard Zulip CLI config file), with <code>email</code>, <code>key</code>, and <code>site = https://clojurians.zulipchat.com</code>.</li>
 </ol>
-<p>The environment wins if both are present. If <code>~/.zuliprc</code> points at a different <code>site</code> value, the client refuses rather than hitting the wrong host. If neither path yields a complete pair, the first request raises an exception with instructions for fixing it.</p>
+<p>If both are present, the environment variables take precedence. If <code>~/.zuliprc</code> points at a different <code>site</code> value, the client raises an error rather than calling the wrong host. If neither path yields a complete pair, the first request raises an exception with instructions for fixing it.</p>
 <p>You can generate an API key from <strong>Settings → Account &amp; privacy → API key</strong> in any Clojurians Zulip account — admin rights are not required.</p>
 <p>Credentials are resolved lazily and memoized — the file is read at most once per JVM.</p>
 </section>
@@ -354,7 +354,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="printedClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>(<span class="at">:email</span> <span class="at">:full-name</span> <span class="at">:user-id</span> <span class="at">:is-bot</span> <span class="at">:is-admin</span> <span class="at">:role</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>If you need the full <code>/users/me</code> response — including fields <code>whoami</code> does not surface, like timezone or avatar URL — use <code>get-me</code>. We print the count of fields here:</p>
+<p>If you need the full <code>/users/me</code> response — including fields <code>whoami</code> does not include, like timezone or avatar URL — use <code>get-me</code>. We print the count of fields here:</p>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">-&gt;</span> (client/get-me) <span class="kw">keys</span> <span class="kw">count</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -459,13 +459,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a> <span class="st">"xtdb"</span></span>
 <span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a> <span class="st">"zulip"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>The distinction matters when sharing data — content from a non-web-public channel should not appear in artifacts that leave your machine, while content from web-public channels is suitable for sharing. The book’s tutorial chapters (<a href="./zulipdata_book.views.html"><strong>Tablecloth views</strong></a>, <a href="./zulipdata_book.narrative.html"><strong>Narrative</strong></a>, <a href="./zulipdata_book.graph.html"><strong>Graph views</strong></a>) deliberately use a four-channel <strong>web-public</strong> fixture so the rendered output can show real names, topic strings, and message content without leaking anything login-gated. For analyses on non-web-public channels, see <a href="./zulipdata_book.anonymize.html"><strong>Anonymized views</strong></a>.</p>
+<p>The distinction matters when sharing data — content from a non-web-public channel should not appear in artifacts that leave your machine, while content from web-public channels is suitable for sharing. The book’s tutorial chapters (<a href="./zulipdata_book.views.html"><strong>Tablecloth views</strong></a>, <a href="./zulipdata_book.narrative.html"><strong>Narrative</strong></a>, <a href="./zulipdata_book.graph.html"><strong>Graph views</strong></a>) deliberately use a small <strong>web-public</strong> sample so the rendered output can show real names, topic strings, and message content without leaking anything login-gated. For analyses on non-web-public channels, see <a href="./zulipdata_book.anonymize.html"><strong>Anonymized views</strong></a>.</p>
 </section>
 </section>
 <section id="fetching-messages" class="level2">
 <h2 class="anchored" data-anchor-id="fetching-messages">Fetching messages</h2>
 <p><a href="https://zulip.com/api/get-messages"><code>get-messages</code></a> is the message-history endpoint. It takes a <a href="https://zulip.com/api/construct-narrow"><em>narrow</em></a> (a vector of operator/operand maps), an <em>anchor</em> (an id, or one of the keywords <code>"newest"</code>, <code>"oldest"</code>, <code>"first_unread"</code>), and counts of messages to fetch before and after the anchor.</p>
-<p>A single message from <code>clojurecivitas</code>, one of the web-public channels we reuse as a fixture throughout this book:</p>
+<p>A single message from <code>clojurecivitas</code>, one of the web-public channels we reuse as a sample throughout this book:</p>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>(<span class="bu">def</span><span class="fu"> one-message-response</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  (client/get-messages</span>
@@ -512,7 +512,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a> <span class="at">:avatar</span>_url</span>
 <span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a> <span class="st">"https://avatars.zulip.com/9096/ae339dcb9dd0c56484977aeb0b0236822df7e6da.png"</span>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>The response also tells you whether the window touches the start or end of the channel’s history — this is what <code>pull/pull-channel!</code> uses to decide when to stop walking forward:</p>
+<p>The response also indicates whether the window touches the start or end of the channel’s history — this is what <code>pull/pull-channel!</code> uses to decide when to stop walking forward:</p>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">select-keys</span> one-message-response</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>             [<span class="at">:found</span>_anchor <span class="at">:found</span>_oldest <span class="at">:found</span>_newest])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -544,7 +544,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="reliability-timeouts-and-retries" class="level2">
 <h2 class="anchored" data-anchor-id="reliability-timeouts-and-retries">Reliability: timeouts and retries</h2>
-<p>The client wraps every request in a small retry loop with exponential backoff (up to four retries) for I/O errors and timeouts. A single request times out after ninety seconds. This is opaque from the outside — calls succeed or, after exhausting retries, throw — but it is worth knowing when interpreting unusual latencies.</p>
+<p>The client wraps every request in a small retry loop with longer waits between retries (up to four retries) for network errors and timeouts. A single request times out after ninety seconds. This is invisible from the outside — calls succeed or, after exhausting retries, throw — but it is worth knowing when explaining occasional slow responses.</p>
 </section>
 <section id="where-to-go-next" class="level2">
 <h2 class="anchored" data-anchor-id="where-to-go-next">Where to go next</h2>

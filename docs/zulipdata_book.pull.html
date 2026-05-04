@@ -307,7 +307,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" type="text/javascript"></script>
 <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js" type="text/javascript"></script>
-<p><code>scicloj.zulipdata.pull</code> sits above the <a href="./zulipdata_book.client.html">REST client</a>. It walks a channel’s full message history in <em>windows</em>, caches each window on disk, and stitches the windows back together. This chapter explains the cache model, then tours every public function.</p>
+<p><code>scicloj.zulipdata.pull</code> sits above the <a href="./zulipdata_book.client.html">REST client</a>. It walks a channel’s full message history in <em>windows</em>, caches each window on disk, and combines the windows back into one history. This chapter explains the cache model, then tours every public function.</p>
 <p>The model: each window is identified by <code>(channel-name, anchor-id, batch-size)</code>. Once a window has been fetched, it is cached, and any future call with the same triple is served from disk. That makes pulls <strong>resumable</strong> (a crashed pull picks up where it left off), <strong>idempotent</strong> (re-running is free), and <strong>incremental</strong> (only new tail windows need to be re-fetched).</p>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">ns</span> zulipdata-book.pull</span>
@@ -318,11 +318,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="where-the-cache-lives" class="level2">
 <h2 class="anchored" data-anchor-id="where-the-cache-lives">Where the cache lives</h2>
 <p>The cache is backed by <a href="https://github.com/scicloj/pocket">pocket</a>, which serialises values with <a href="https://github.com/taoensso/nippy">nippy</a> under a directory we control. The directory is read from <code>ZULIP_CACHE_DIR</code>, falling back to <code>~/.cache/zulipdata-clojurians/</code>. The directory is created on first use.</p>
-<p>Each cached window lives in a sharded subdirectory keyed by a hash of the call. You should not need to inspect the cache directly — but if you ever need to start over for a particular window, use <code>(pocket/invalidate! ...)</code> rather than <code>rm -rf</code>.</p>
+<p>Each cached window lives in a subdirectory keyed by a hash of the call. You should not need to inspect the cache directly — but if you ever need to start over for a particular window, use <code>(pocket/invalidate! ...)</code> rather than <code>rm -rf</code>.</p>
 </section>
 <section id="listing-channels-you-can-pull" class="level2">
 <h2 class="anchored" data-anchor-id="listing-channels-you-can-pull">Listing channels you can pull</h2>
-<p><code>public-channel-names</code> filters <code>/streams</code> down to channels that are either fully public or web-public — i.e.&nbsp;the ones a research bot can read.</p>
+<p><code>public-channel-names</code> filters <code>/streams</code> down to channels that are either fully public or web-public — i.e.&nbsp;the channels the API key can access.</p>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>(<span class="bu">def</span><span class="fu"> public-channels </span>(pull/public-channel-names))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -359,7 +359,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="printedClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="va">false</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>The walker stops once it sees <code>:found_newest</code> true, but a single small window like this one usually does not reach the tip:</p>
+<p>The walker stops once it encounters <code>:found_newest</code> true, but a single small window like this one usually does not reach the most recent message:</p>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>(<span class="at">:found</span>_newest first-window)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -505,7 +505,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="pulling-many-channels-in-parallel" class="level2">
 <h2 class="anchored" data-anchor-id="pulling-many-channels-in-parallel">Pulling many channels in parallel</h2>
 <p><code>pull-channels!</code> accepts a <code>:parallelism</code> option (default <code>pull/default-parallelism</code>, currently 8). Channels are independent — separate cache keys, separate Zulip endpoints — so per-channel work parallelises cleanly.</p>
-<p>The cap is small to be respectful of the Zulip API’s rate limits. Pass <code>:parallelism 1</code> for fully sequential pulls. Empirically, on the warm-cache refresh path:</p>
+<p>The cap is small to be respectful of the Zulip API’s rate limits. Pass <code>:parallelism 1</code> for fully sequential pulls. Empirically, when refreshing with the cache already populated:</p>
 <ul>
 <li>sequential (<code>:parallelism 1</code>) is ~24 s for 15 channels</li>
 <li>parallel (<code>:parallelism 8</code>, default) is ~3 s — about 8× faster</li>

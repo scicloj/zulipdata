@@ -11,7 +11,7 @@
 (def
  v3_l43
  (def
-  fixture-channels
+  sample-channels
   ["clojurecivitas" "scicloj-webpublic" "gratitude" "events"]))
 
 
@@ -20,7 +20,7 @@
  (def
   messages
   (->>
-   (pull/pull-channels! fixture-channels)
+   (pull/pull-channels! sample-channels)
    (filter (fn [[k _]] (string? k)))
    (mapcat (fn [[_ r]] (pull/all-messages r))))))
 
@@ -165,7 +165,7 @@
    (fn
     [ds]
     (mapv
-     (fn* [p1__52315#] (some-> p1__52315# (java.net.URI.) .getHost))
+     (fn* [p1__53419#] (some-> p1__53419# (java.net.URI.) .getHost))
      (:link-url ds))))
   (tc/group-by [:host])
   (tc/aggregate {:n tc/row-count})
