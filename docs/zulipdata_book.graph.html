@@ -268,7 +268,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#communities" id="toc-communities" class="nav-link" data-scroll-target="#communities">Communities</a></li>
   <li><a href="#rendering-kindcytoscape" id="toc-rendering-kindcytoscape" class="nav-link" data-scroll-target="#rendering-kindcytoscape">Rendering: <code>kind/cytoscape</code></a></li>
   <li><a href="#rendering-kindgraphviz" id="toc-rendering-kindgraphviz" class="nav-link" data-scroll-target="#rendering-kindgraphviz">Rendering: <code>kind/graphviz</code></a></li>
-  <li><a href="#a-note-on-scale" id="toc-a-note-on-scale" class="nav-link" data-scroll-target="#a-note-on-scale">A note on scale</a></li>
   <li><a href="#where-to-go-next" id="toc-where-to-go-next" class="nav-link" data-scroll-target="#where-to-go-next">Where to go next</a></li>
   </ul>
 </nav>
@@ -328,10 +327,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <section id="a-multi-channel-sample" class="level2">
 <h2 class="anchored" data-anchor-id="a-multi-channel-sample">A multi-channel sample</h2>
-<p>The same web-public anonymized timeline used in <a href="./zulipdata_book.narrative.html"><strong>Narrative</strong></a> — small enough to render, large enough to have non-trivial structure.</p>
+<p>The same web-public anonymized timeline used in <a href="./zulipdata_book.narrative.html"><strong>Narrative</strong></a> — every web-public channel of the Clojurians Zulip. Pulling all of them is fine because the cache backs every fetch.</p>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>(<span class="bu">def</span><span class="fu"> sample-channels</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  [<span class="st">"clojurecivitas"</span> <span class="st">"scicloj-webpublic"</span> <span class="st">"gratitude"</span> <span class="st">"events"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  (pull/web-public-channel-names))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>(<span class="bu">def</span><span class="fu"> timeline</span></span>
@@ -345,7 +344,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>(tc/row-count timeline)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="printedClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1096</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1407577</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="users-to-channels" class="level2">
@@ -358,18 +357,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">count</span> u-&gt;chans)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="printedClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="dv">61</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="dv">489</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The first five entries:</p>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">-&gt;&gt;</span> u-&gt;chans (<span class="kw">take</span> <span class="dv">5</span>) (<span class="kw">into</span> {}))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="printedClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>{<span class="st">"b7b54d61bcd4"</span> #{<span class="st">"scicloj-webpublic"</span>},</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a> <span class="st">"4c2ee1e5143c"</span> #{<span class="st">"scicloj-webpublic"</span>},</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a> <span class="st">"d0ab824194bf"</span> #{<span class="st">"scicloj-webpublic"</span>},</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a> <span class="st">"d3a87fc057dc"</span> #{<span class="st">"gratitude"</span> <span class="st">"scicloj-webpublic"</span>},</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a> <span class="st">"3a6ab2db8b6f"</span> #{<span class="st">"gratitude"</span>}}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>{<span class="st">"95fd1d24b210fb87"</span> #{<span class="st">"beginners"</span>},</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a> <span class="st">"63bf1e56e529b2ec"</span> #{<span class="st">"clojure"</span>},</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a> <span class="st">"49fcca3f0ea902f4"</span> #{<span class="st">"beginners"</span> <span class="st">"clojurescript"</span>},</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a> <span class="st">"1ace669129c315c3"</span> #{<span class="st">"beginners"</span>},</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a> <span class="st">"e80fe68877055f84"</span> #{<span class="st">"beginners"</span>}}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The distribution over how many channels users participate in:</p>
 <div class="sourceClojure">
@@ -380,7 +379,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>     (<span class="kw">into</span> (<span class="kw">sorted-map</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="printedClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>{<span class="dv">1</span> <span class="dv">44</span>, <span class="dv">2</span> <span class="dv">9</span>, <span class="dv">3</span> <span class="dv">6</span>, <span class="dv">4</span> <span class="dv">2</span>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>{<span class="dv">1</span> <span class="dv">315</span>,</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a> <span class="dv">2</span> <span class="dv">78</span>,</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a> <span class="dv">3</span> <span class="dv">35</span>,</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a> <span class="dv">4</span> <span class="dv">27</span>,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a> <span class="dv">5</span> <span class="dv">6</span>,</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a> <span class="dv">6</span> <span class="dv">6</span>,</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a> <span class="dv">7</span> <span class="dv">9</span>,</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a> <span class="dv">8</span> <span class="dv">3</span>,</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a> <span class="dv">9</span> <span class="dv">3</span>,</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a> <span class="dv">10</span> <span class="dv">2</span>,</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a> <span class="dv">14</span> <span class="dv">1</span>,</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a> <span class="dv">15</span> <span class="dv">2</span>,</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a> <span class="dv">17</span> <span class="dv">1</span>,</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a> <span class="dv">26</span> <span class="dv">1</span>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="channel-co-membership" class="level2">
@@ -394,13 +406,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>(.vertexSet co-channel)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="printedClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>#{<span class="st">"gratitude"</span> <span class="st">"scicloj-webpublic"</span> <span class="st">"clojurecivitas"</span> <span class="st">"events"</span>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>#{<span class="st">"calva"</span> <span class="st">"windows-clojure"</span> <span class="st">"gratitude"</span> <span class="st">"project-announcements"</span> <span class="st">"slack-archive"</span> <span class="st">"std.lang-dev"</span> <span class="st">"xtdb"</span> <span class="st">"clojure-ohio"</span> <span class="st">"scicloj-webpublic"</span> <span class="st">"clojars"</span> <span class="st">"honeysql"</span> <span class="st">"news-and-articles"</span> <span class="st">"beginners"</span> <span class="st">"clojure-europe"</span> <span class="st">"clojurescript"</span> <span class="st">"jobs"</span> <span class="st">"off-topic"</span> <span class="st">"clojurecivitas"</span> <span class="st">"zulip"</span> <span class="st">"announce"</span> <span class="st">"events"</span> <span class="st">"sql"</span> <span class="st">"general"</span> <span class="st">"bubble-up"</span> <span class="st">"clojure"</span> <span class="st">"clojure-uk"</span>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">count</span> (.edgeSet co-channel))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="printedClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="dv">6</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="dv">325</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The graph is complete — every pair of channels shares at least one user, so every possible pair becomes an edge:</p>
 <p>The edge-weight table:</p>
@@ -414,7 +426,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>     tc/dataset)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="clay-dataset">
-<p>_unnamed [6 3]:</p>
+<p>_unnamed [325 3]:</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -425,34 +437,114 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td>clojurecivitas</td>
-<td>scicloj-webpublic</td>
-<td style="text-align: right;">10.0</td>
+<td>beginners</td>
+<td>clojure</td>
+<td style="text-align: right;">75.0</td>
 </tr>
 <tr class="even">
-<td>gratitude</td>
-<td>scicloj-webpublic</td>
-<td style="text-align: right;">7.0</td>
+<td>clojure</td>
+<td>clojurescript</td>
+<td style="text-align: right;">50.0</td>
 </tr>
 <tr class="odd">
-<td>events</td>
-<td>scicloj-webpublic</td>
-<td style="text-align: right;">7.0</td>
+<td>beginners</td>
+<td>clojurescript</td>
+<td style="text-align: right;">41.0</td>
 </tr>
 <tr class="even">
-<td>events</td>
-<td>gratitude</td>
-<td style="text-align: right;">6.0</td>
+<td>clojure</td>
+<td>off-topic</td>
+<td style="text-align: right;">39.0</td>
 </tr>
 <tr class="odd">
-<td>clojurecivitas</td>
-<td>gratitude</td>
-<td style="text-align: right;">5.0</td>
+<td>clojure</td>
+<td>zulip</td>
+<td style="text-align: right;">39.0</td>
 </tr>
 <tr class="even">
-<td>clojurecivitas</td>
+<td>clojure</td>
+<td>general</td>
+<td style="text-align: right;">36.0</td>
+</tr>
+<tr class="odd">
+<td>beginners</td>
+<td>zulip</td>
+<td style="text-align: right;">33.0</td>
+</tr>
+<tr class="even">
+<td>beginners</td>
+<td>general</td>
+<td style="text-align: right;">31.0</td>
+</tr>
+<tr class="odd">
+<td>announce</td>
+<td>clojure</td>
+<td style="text-align: right;">28.0</td>
+</tr>
+<tr class="even">
+<td>announce</td>
+<td>beginners</td>
+<td style="text-align: right;">27.0</td>
+</tr>
+<tr class="odd">
+<td>…</td>
+<td>…</td>
+<td style="text-align: right;">…</td>
+</tr>
+<tr class="even">
+<td>clojure-ohio</td>
+<td>std.lang-dev</td>
+<td style="text-align: right;">1.0</td>
+</tr>
+<tr class="odd">
+<td>clojure-ohio</td>
+<td>news-and-articles</td>
+<td style="text-align: right;">1.0</td>
+</tr>
+<tr class="even">
+<td>clojars</td>
+<td>off-topic</td>
+<td style="text-align: right;">1.0</td>
+</tr>
+<tr class="odd">
+<td>gratitude</td>
+<td>windows-clojure</td>
+<td style="text-align: right;">1.0</td>
+</tr>
+<tr class="even">
+<td>project-announcements</td>
+<td>windows-clojure</td>
+<td style="text-align: right;">1.0</td>
+</tr>
+<tr class="odd">
+<td>bubble-up</td>
 <td>events</td>
-<td style="text-align: right;">4.0</td>
+<td style="text-align: right;">1.0</td>
+</tr>
+<tr class="even">
+<td>jobs</td>
+<td>scicloj-webpublic</td>
+<td style="text-align: right;">1.0</td>
+</tr>
+<tr class="odd">
+<td>project-announcements</td>
+<td>std.lang-dev</td>
+<td style="text-align: right;">1.0</td>
+</tr>
+<tr class="even">
+<td>clojure-uk</td>
+<td>project-announcements</td>
+<td style="text-align: right;">1.0</td>
+</tr>
+<tr class="odd">
+<td>clojure-ohio</td>
+<td>clojurecivitas</td>
+<td style="text-align: right;">1.0</td>
+</tr>
+<tr class="even">
+<td>news-and-articles</td>
+<td>sql</td>
+<td style="text-align: right;">1.0</td>
 </tr>
 </tbody>
 </table>
@@ -460,10 +552,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="user-co-presence" class="level2">
 <h2 class="anchored" data-anchor-id="user-co-presence">User co-presence</h2>
-<p><code>user-copresence-graph</code> flips the construction: nodes are users, edges are weighted by shared-channel count. The defaults (<code>:min-shared 3 :min-channels 3</code>) are tuned for corpus-scale runs where you want to see only the densely-connected core. We loosen them for our small sample.</p>
+<p><code>user-copresence-graph</code> flips the construction: nodes are users, edges are weighted by shared-channel count. The defaults (<code>:min-shared 3 :min-channels 3</code>) keep only the densely-connected core — users active in at least three channels, paired only when they share at least three.</p>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>(<span class="bu">def</span><span class="fu"> co-user</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  (graph/user-copresence-graph timeline <span class="at">:min-shared</span> <span class="dv">2</span> <span class="at">:min-channels</span> <span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  (graph/user-copresence-graph timeline <span class="at">:min-shared</span> <span class="dv">3</span> <span class="at">:min-channels</span> <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Node and edge counts:</p>
 <div class="sourceClojure">
@@ -471,13 +563,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a> <span class="at">:edges</span> (<span class="kw">count</span> (.edgeSet co-user))}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="printedClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>{<span class="at">:nodes</span> <span class="dv">17</span>, <span class="at">:edges</span> <span class="dv">83</span>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>{<span class="at">:nodes</span> <span class="dv">96</span>, <span class="at">:edges</span> <span class="dv">1579</span>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="migration-where-did-people-go-next" class="level2">
 <h2 class="anchored" data-anchor-id="migration-where-did-people-go-next">Migration: where did people go next?</h2>
 <p><code>migration-graph</code> is directed. For each user with at least five posts in <code>from-set</code>, it looks at every channel they posted in <em>after</em> their last <code>from-set</code> post, and adds an edge from each <code>from-set</code> source they used to each later destination. Edges with fewer than <code>:min-users</code> are dropped.</p>
-<p>In our sample, taking <code>clojurecivitas</code> as the seed shows where clojurecivitas posters subsequently appeared (within the four channels we pulled).</p>
+<p>Taking <code>clojurecivitas</code> as the seed shows where clojurecivitas posters subsequently appeared.</p>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>(<span class="bu">def</span><span class="fu"> migration</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  (graph/migration-graph timeline #{<span class="st">"clojurecivitas"</span>} <span class="at">:min-users</span> <span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -492,7 +584,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>     tc/dataset)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="clay-dataset">
-<p>_unnamed [1 3]:</p>
+<p>_unnamed [3 3]:</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -507,22 +599,39 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>gratitude</td>
 <td style="text-align: right;">1.0</td>
 </tr>
+<tr class="even">
+<td>clojurecivitas</td>
+<td>clojure</td>
+<td style="text-align: right;">1.0</td>
+</tr>
+<tr class="odd">
+<td>clojurecivitas</td>
+<td>off-topic</td>
+<td style="text-align: right;">1.0</td>
+</tr>
 </tbody>
 </table>
 </div>
 </section>
 <section id="centrality" class="level2">
 <h2 class="anchored" data-anchor-id="centrality">Centrality</h2>
-<p><code>betweenness</code> returns a map from node to its betweenness centrality score — the share of shortest paths that pass through the node.</p>
+<p><code>betweenness</code> returns a map from node to its betweenness centrality score — the share of shortest paths that pass through the node. The top scores:</p>
 <div class="sourceClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>(graph/betweenness co-channel)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">-&gt;&gt;</span> (graph/betweenness co-channel)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>     (<span class="kw">sort-by</span> <span class="kw">val</span> <span class="kw">&gt;</span>)</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>     (<span class="kw">take</span> <span class="dv">5</span>)</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>     (<span class="kw">into</span> (<span class="kw">array-map</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="printedClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>{<span class="st">"clojurecivitas"</span> <span class="fl">0.0</span>, <span class="st">"gratitude"</span> <span class="fl">0.0</span>, <span class="st">"scicloj-webpublic"</span> <span class="fl">0.0</span>, <span class="st">"events"</span> <span class="fl">0.0</span>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>{<span class="st">"bubble-up"</span> <span class="fl">98.4686507936508</span>,</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a> <span class="st">"clojars"</span> <span class="fl">76.46865079365078</span>,</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a> <span class="st">"project-announcements"</span> <span class="fl">15.754761904761907</span>,</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a> <span class="st">"clojure-ohio"</span> <span class="fl">4.2067460317460315</span>,</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a> <span class="st">"windows-clojure"</span> <span class="fl">4.2067460317460315</span>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>All scores are zero on this graph — every pair of channels is directly connected, so no node lies on the <em>interior</em> of a shortest path. Betweenness becomes informative on graphs with structural bottlenecks; on a small <a href="https://en.wikipedia.org/wiki/Clique_(graph_theory)">clique</a> there are none.</p>
+<p>The graph is a <a href="https://en.wikipedia.org/wiki/Clique_(graph_theory)">clique</a> (every pair of channels is directly connected), yet betweenness is not uniformly zero. JGraphT treats edge weights as distances when computing shortest paths. With weight = shared-user count, a heavily-shared pair has a <em>long</em> direct edge, and a 2-hop detour through a thin-overlap channel can be shorter. The high scorers here are channels with thin overlap to most others — they sit on the cheap detours.</p>
 <div class="sourceClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">every?</span> <span class="kw">zero?</span> (<span class="kw">vals</span> (graph/betweenness co-channel)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">boolean</span> (<span class="kw">some</span> <span class="kw">pos?</span> (<span class="kw">vals</span> (graph/betweenness co-channel))))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="printedClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="va">true</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -536,7 +645,32 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>(graph/girvan-newman co-channel <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="printedClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>[#{<span class="st">"gratitude"</span> <span class="st">"scicloj-webpublic"</span> <span class="st">"events"</span>} #{<span class="st">"clojurecivitas"</span>}]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>[#{<span class="st">"clojure-uk"</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>   <span class="st">"news-and-articles"</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>   <span class="st">"gratitude"</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>   <span class="st">"clojure"</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>   <span class="st">"clojure-europe"</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>   <span class="st">"clojure-ohio"</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>   <span class="st">"windows-clojure"</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>   <span class="st">"clojurecivitas"</span></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>   <span class="st">"project-announcements"</span></span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>   <span class="st">"clojars"</span></span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>   <span class="st">"slack-archive"</span></span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a>   <span class="st">"general"</span></span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>   <span class="st">"announce"</span></span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>   <span class="st">"calva"</span></span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>   <span class="st">"beginners"</span></span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>   <span class="st">"events"</span></span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a>   <span class="st">"honeysql"</span></span>
+<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a>   <span class="st">"jobs"</span></span>
+<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a>   <span class="st">"xtdb"</span></span>
+<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a>   <span class="st">"bubble-up"</span></span>
+<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a>   <span class="st">"std.lang-dev"</span></span>
+<span id="cb29-22"><a href="#cb29-22" aria-hidden="true" tabindex="-1"></a>   <span class="st">"sql"</span></span>
+<span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a>   <span class="st">"zulip"</span></span>
+<span id="cb29-24"><a href="#cb29-24" aria-hidden="true" tabindex="-1"></a>   <span class="st">"off-topic"</span></span>
+<span id="cb29-25"><a href="#cb29-25" aria-hidden="true" tabindex="-1"></a>   <span class="st">"clojurescript"</span>}</span>
+<span id="cb29-26"><a href="#cb29-26" aria-hidden="true" tabindex="-1"></a> #{<span class="st">"scicloj-webpublic"</span>}]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">count</span> (graph/girvan-newman co-channel <span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -549,7 +683,32 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>(graph/label-propagation co-channel)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="printedClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>[#{<span class="st">"gratitude"</span> <span class="st">"scicloj-webpublic"</span> <span class="st">"clojurecivitas"</span> <span class="st">"events"</span>}]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>[#{<span class="st">"clojure-uk"</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>   <span class="st">"news-and-articles"</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>   <span class="st">"gratitude"</span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>   <span class="st">"clojure"</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>   <span class="st">"scicloj-webpublic"</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>   <span class="st">"clojure-europe"</span></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>   <span class="st">"clojure-ohio"</span></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>   <span class="st">"windows-clojure"</span></span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>   <span class="st">"clojurecivitas"</span></span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>   <span class="st">"project-announcements"</span></span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>   <span class="st">"clojars"</span></span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>   <span class="st">"slack-archive"</span></span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>   <span class="st">"general"</span></span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>   <span class="st">"announce"</span></span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a>   <span class="st">"calva"</span></span>
+<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a>   <span class="st">"beginners"</span></span>
+<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a>   <span class="st">"events"</span></span>
+<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a>   <span class="st">"honeysql"</span></span>
+<span id="cb33-19"><a href="#cb33-19" aria-hidden="true" tabindex="-1"></a>   <span class="st">"jobs"</span></span>
+<span id="cb33-20"><a href="#cb33-20" aria-hidden="true" tabindex="-1"></a>   <span class="st">"xtdb"</span></span>
+<span id="cb33-21"><a href="#cb33-21" aria-hidden="true" tabindex="-1"></a>   <span class="st">"bubble-up"</span></span>
+<span id="cb33-22"><a href="#cb33-22" aria-hidden="true" tabindex="-1"></a>   <span class="st">"std.lang-dev"</span></span>
+<span id="cb33-23"><a href="#cb33-23" aria-hidden="true" tabindex="-1"></a>   <span class="st">"sql"</span></span>
+<span id="cb33-24"><a href="#cb33-24" aria-hidden="true" tabindex="-1"></a>   <span class="st">"zulip"</span></span>
+<span id="cb33-25"><a href="#cb33-25" aria-hidden="true" tabindex="-1"></a>   <span class="st">"off-topic"</span></span>
+<span id="cb33-26"><a href="#cb33-26" aria-hidden="true" tabindex="-1"></a>   <span class="st">"clojurescript"</span>}]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">count</span> (graph/label-propagation co-channel))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -561,19 +720,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="rendering-kindcytoscape" class="level2">
 <h2 class="anchored" data-anchor-id="rendering-kindcytoscape">Rendering: <code>kind/cytoscape</code></h2>
 <p><code>-&gt;cytoscape-elements</code> converts a JGraphT graph to the <code>:elements</code> shape that <code>kind/cytoscape</code> consumes. Optional <code>:node-attrs</code> and <code>:edge-attrs</code> functions add extra attributes to each <code>:data</code> map — useful for colour-coding by community or thickness by weight.</p>
+<p>For rendering we filter to a higher <code>:min-shared</code>. The full clique would be a hairball; a tighter threshold keeps only the structurally meaningful edges.</p>
 <div class="sourceClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>(kind/cytoscape</span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a> {<span class="at">:elements</span> (graph/-&gt;cytoscape-elements co-channel)</span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">:style</span>    [{<span class="at">:selector</span> <span class="st">"node"</span></span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">:css</span>      {<span class="at">:label</span>   <span class="st">"data(id)"</span></span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>                         <span class="at">:content</span> <span class="st">"data(id)"</span>}}</span>
-<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>             {<span class="at">:selector</span> <span class="st">"edge"</span></span>
-<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">:css</span>      {<span class="at">:width</span> <span class="st">"mapData(weight, 0, 50, 1, 8)"</span>}}]</span>
-<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">:layout</span>   {<span class="at">:name</span> <span class="st">"cose"</span>}})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>(<span class="bu">def</span><span class="fu"> co-channel-tight</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  (graph/channel-comembership-graph timeline <span class="at">:min-shared</span> <span class="dv">5</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="sourceClojure">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>(kind/cytoscape</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a> {<span class="at">:elements</span> (graph/-&gt;cytoscape-elements co-channel-tight)</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">:style</span>    [{<span class="at">:selector</span> <span class="st">"node"</span></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">:css</span>      {<span class="at">:label</span>   <span class="st">"data(id)"</span></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>                         <span class="at">:content</span> <span class="st">"data(id)"</span>}}</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>             {<span class="at">:selector</span> <span class="st">"edge"</span></span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">:css</span>      {<span class="at">:width</span> <span class="st">"mapData(weight, 0, 50, 1, 8)"</span>}}]</span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">:layout</span>   {<span class="at">:name</span> <span class="st">"cose"</span>}})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div style="height:400px;width:100%;"><script>
 {
-  value = {"elements":{"nodes":[{"data":{"id":"gratitude"}},{"data":{"id":"scicloj-webpublic"}},{"data":{"id":"clojurecivitas"}},{"data":{"id":"events"}}],"edges":[{"data":{"id":"gratitude->scicloj-webpublic","source":"gratitude","target":"scicloj-webpublic","weight":7.0}},{"data":{"id":"clojurecivitas->scicloj-webpublic","source":"clojurecivitas","target":"scicloj-webpublic","weight":10.0}},{"data":{"id":"clojurecivitas->events","source":"clojurecivitas","target":"events","weight":4.0}},{"data":{"id":"events->scicloj-webpublic","source":"events","target":"scicloj-webpublic","weight":7.0}},{"data":{"id":"clojurecivitas->gratitude","source":"clojurecivitas","target":"gratitude","weight":5.0}},{"data":{"id":"events->gratitude","source":"events","target":"gratitude","weight":6.0}}]},"style":[{"selector":"node","css":{"label":"data(id)","content":"data(id)"}},{"selector":"edge","css":{"width":"mapData(weight, 0, 50, 1, 8)"}}],"layout":{"name":"cose"}};
+  value = {"elements":{"nodes":[{"data":{"id":"beginners"}},{"data":{"id":"clojure-europe"}},{"data":{"id":"clojurecivitas"}},{"data":{"id":"news-and-articles"}},{"data":{"id":"zulip"}},{"data":{"id":"clojurescript"}},{"data":{"id":"jobs"}},{"data":{"id":"announce"}},{"data":{"id":"calva"}},{"data":{"id":"sql"}},{"data":{"id":"gratitude"}},{"data":{"id":"off-topic"}},{"data":{"id":"events"}},{"data":{"id":"xtdb"}},{"data":{"id":"slack-archive"}},{"data":{"id":"general"}},{"data":{"id":"clojure-uk"}},{"data":{"id":"clojure"}},{"data":{"id":"scicloj-webpublic"}},{"data":{"id":"std.lang-dev"}}],"edges":[{"data":{"id":"beginners->clojure-europe","source":"beginners","target":"clojure-europe","weight":10.0}},{"data":{"id":"clojurecivitas->news-and-articles","source":"clojurecivitas","target":"news-and-articles","weight":6.0}},{"data":{"id":"beginners->zulip","source":"beginners","target":"zulip","weight":33.0}},{"data":{"id":"clojurescript->jobs","source":"clojurescript","target":"jobs","weight":5.0}},{"data":{"id":"announce->beginners","source":"announce","target":"beginners","weight":27.0}},{"data":{"id":"calva->sql","source":"calva","target":"sql","weight":5.0}},{"data":{"id":"announce->clojure-europe","source":"announce","target":"clojure-europe","weight":8.0}},{"data":{"id":"clojurecivitas->gratitude","source":"clojurecivitas","target":"gratitude","weight":5.0}},{"data":{"id":"beginners->off-topic","source":"beginners","target":"off-topic","weight":27.0}},{"data":{"id":"announce->events","source":"announce","target":"events","weight":9.0}},{"data":{"id":"calva->xtdb","source":"calva","target":"xtdb","weight":5.0}},{"data":{"id":"slack-archive->zulip","source":"slack-archive","target":"zulip","weight":5.0}},{"data":{"id":"clojurescript->news-and-articles","source":"clojurescript","target":"news-and-articles","weight":6.0}},{"data":{"id":"clojure-europe->clojurecivitas","source":"clojure-europe","target":"clojurecivitas","weight":6.0}},{"data":{"id":"announce->gratitude","source":"announce","target":"gratitude","weight":6.0}},{"data":{"id":"events->off-topic","source":"events","target":"off-topic","weight":7.0}},{"data":{"id":"clojure-europe->general","source":"clojure-europe","target":"general","weight":5.0}},{"data":{"id":"calva->off-topic","source":"calva","target":"off-topic","weight":9.0}},{"data":{"id":"beginners->clojure-uk","source":"beginners","target":"clojure-uk","weight":7.0}},{"data":{"id":"announce->slack-archive","source":"announce","target":"slack-archive","weight":7.0}},{"data":{"id":"events->gratitude","source":"events","target":"gratitude","weight":6.0}},{"data":{"id":"announce->sql","source":"announce","target":"sql","weight":6.0}},{"data":{"id":"general->news-and-articles","source":"general","target":"news-and-articles","weight":6.0}},{"data":{"id":"clojure->gratitude","source":"clojure","target":"gratitude","weight":9.0}},{"data":{"id":"clojurescript->xtdb","source":"clojurescript","target":"xtdb","weight":5.0}},{"data":{"id":"beginners->slack-archive","source":"beginners","target":"slack-archive","weight":8.0}},{"data":{"id":"clojure->news-and-articles","source":"clojure","target":"news-and-articles","weight":10.0}},{"data":{"id":"general->xtdb","source":"general","target":"xtdb","weight":7.0}},{"data":{"id":"clojure-europe->events","source":"clojure-europe","target":"events","weight":7.0}},{"data":{"id":"clojure-europe->zulip","source":"clojure-europe","target":"zulip","weight":9.0}},{"data":{"id":"announce->off-topic","source":"announce","target":"off-topic","weight":17.0}},{"data":{"id":"slack-archive->xtdb","source":"slack-archive","target":"xtdb","weight":5.0}},{"data":{"id":"clojurescript->sql","source":"clojurescript","target":"sql","weight":5.0}},{"data":{"id":"announce->xtdb","source":"announce","target":"xtdb","weight":6.0}},{"data":{"id":"beginners->clojurescript","source":"beginners","target":"clojurescript","weight":41.0}},{"data":{"id":"off-topic->xtdb","source":"off-topic","target":"xtdb","weight":6.0}},{"data":{"id":"clojure->clojure-uk","source":"clojure","target":"clojure-uk","weight":9.0}},{"data":{"id":"clojure-uk->off-topic","source":"clojure-uk","target":"off-topic","weight":7.0}},{"data":{"id":"calva->gratitude","source":"calva","target":"gratitude","weight":5.0}},{"data":{"id":"calva->clojure","source":"calva","target":"clojure","weight":13.0}},{"data":{"id":"announce->clojure","source":"announce","target":"clojure","weight":28.0}},{"data":{"id":"general->off-topic","source":"general","target":"off-topic","weight":19.0}},{"data":{"id":"announce->scicloj-webpublic","source":"announce","target":"scicloj-webpublic","weight":10.0}},{"data":{"id":"gratitude->off-topic","source":"gratitude","target":"off-topic","weight":10.0}},{"data":{"id":"calva->scicloj-webpublic","source":"calva","target":"scicloj-webpublic","weight":5.0}},{"data":{"id":"announce->clojurescript","source":"announce","target":"clojurescript","weight":16.0}},{"data":{"id":"gratitude->scicloj-webpublic","source":"gratitude","target":"scicloj-webpublic","weight":7.0}},{"data":{"id":"general->slack-archive","source":"general","target":"slack-archive","weight":6.0}},{"data":{"id":"clojure->clojurecivitas","source":"clojure","target":"clojurecivitas","weight":8.0}},{"data":{"id":"calva->general","source":"calva","target":"general","weight":8.0}},{"data":{"id":"clojure->events","source":"clojure","target":"events","weight":14.0}},{"data":{"id":"sql->zulip","source":"sql","target":"zulip","weight":5.0}},{"data":{"id":"calva->clojure-europe","source":"calva","target":"clojure-europe","weight":5.0}},{"data":{"id":"clojure->sql","source":"clojure","target":"sql","weight":7.0}},{"data":{"id":"scicloj-webpublic->zulip","source":"scicloj-webpublic","target":"zulip","weight":6.0}},{"data":{"id":"clojurescript->off-topic","source":"clojurescript","target":"off-topic","weight":22.0}},{"data":{"id":"calva->clojure-uk","source":"calva","target":"clojure-uk","weight":5.0}},{"data":{"id":"clojure->clojurescript","source":"clojure","target":"clojurescript","weight":50.0}},{"data":{"id":"clojure-uk->zulip","source":"clojure-uk","target":"zulip","weight":6.0}},{"data":{"id":"clojure->clojure-europe","source":"clojure","target":"clojure-europe","weight":10.0}},{"data":{"id":"beginners->xtdb","source":"beginners","target":"xtdb","weight":6.0}},{"data":{"id":"announce->calva","source":"announce","target":"calva","weight":12.0}},{"data":{"id":"beginners->events","source":"beginners","target":"events","weight":14.0}},{"data":{"id":"calva->clojurescript","source":"calva","target":"clojurescript","weight":9.0}},{"data":{"id":"clojurecivitas->general","source":"clojurecivitas","target":"general","weight":5.0}},{"data":{"id":"beginners->general","source":"beginners","target":"general","weight":31.0}},{"data":{"id":"off-topic->sql","source":"off-topic","target":"sql","weight":6.0}},{"data":{"id":"announce->general","source":"announce","target":"general","weight":17.0}},{"data":{"id":"clojure-europe->gratitude","source":"clojure-europe","target":"gratitude","weight":5.0}},{"data":{"id":"clojurescript->slack-archive","source":"clojurescript","target":"slack-archive","weight":6.0}},{"data":{"id":"clojure->slack-archive","source":"clojure","target":"slack-archive","weight":8.0}},{"data":{"id":"clojurescript->general","source":"clojurescript","target":"general","weight":22.0}},{"data":{"id":"gratitude->std.lang-dev","source":"gratitude","target":"std.lang-dev","weight":5.0}},{"data":{"id":"beginners->news-and-articles","source":"beginners","target":"news-and-articles","weight":7.0}},{"data":{"id":"beginners->scicloj-webpublic","source":"beginners","target":"scicloj-webpublic","weight":10.0}},{"data":{"id":"clojurescript->scicloj-webpublic","source":"clojurescript","target":"scicloj-webpublic","weight":6.0}},{"data":{"id":"clojurecivitas->clojurescript","source":"clojurecivitas","target":"clojurescript","weight":7.0}},{"data":{"id":"clojurescript->gratitude","source":"clojurescript","target":"gratitude","weight":7.0}},{"data":{"id":"clojurescript->events","source":"clojurescript","target":"events","weight":7.0}},{"data":{"id":"general->sql","source":"general","target":"sql","weight":5.0}},{"data":{"id":"clojure-uk->clojurescript","source":"clojure-uk","target":"clojurescript","weight":6.0}},{"data":{"id":"news-and-articles->scicloj-webpublic","source":"news-and-articles","target":"scicloj-webpublic","weight":8.0}},{"data":{"id":"beginners->calva","source":"beginners","target":"calva","weight":14.0}},{"data":{"id":"clojure->off-topic","source":"clojure","target":"off-topic","weight":39.0}},{"data":{"id":"beginners->jobs","source":"beginners","target":"jobs","weight":8.0}},{"data":{"id":"off-topic->scicloj-webpublic","source":"off-topic","target":"scicloj-webpublic","weight":8.0}},{"data":{"id":"announce->news-and-articles","source":"announce","target":"news-and-articles","weight":6.0}},{"data":{"id":"clojure-uk->general","source":"clojure-uk","target":"general","weight":6.0}},{"data":{"id":"beginners->clojure","source":"beginners","target":"clojure","weight":75.0}},{"data":{"id":"general->zulip","source":"general","target":"zulip","weight":18.0}},{"data":{"id":"xtdb->zulip","source":"xtdb","target":"zulip","weight":5.0}},{"data":{"id":"news-and-articles->off-topic","source":"news-and-articles","target":"off-topic","weight":6.0}},{"data":{"id":"beginners->gratitude","source":"beginners","target":"gratitude","weight":10.0}},{"data":{"id":"clojure-europe->scicloj-webpublic","source":"clojure-europe","target":"scicloj-webpublic","weight":5.0}},{"data":{"id":"clojure->zulip","source":"clojure","target":"zulip","weight":39.0}},{"data":{"id":"clojure->xtdb","source":"clojure","target":"xtdb","weight":7.0}},{"data":{"id":"clojurescript->zulip","source":"clojurescript","target":"zulip","weight":22.0}},{"data":{"id":"clojure->general","source":"clojure","target":"general","weight":36.0}},{"data":{"id":"clojurecivitas->zulip","source":"clojurecivitas","target":"zulip","weight":6.0}},{"data":{"id":"clojurecivitas->off-topic","source":"clojurecivitas","target":"off-topic","weight":8.0}},{"data":{"id":"announce->clojure-uk","source":"announce","target":"clojure-uk","weight":5.0}},{"data":{"id":"beginners->sql","source":"beginners","target":"sql","weight":7.0}},{"data":{"id":"calva->zulip","source":"calva","target":"zulip","weight":8.0}},{"data":{"id":"announce->clojurecivitas","source":"announce","target":"clojurecivitas","weight":10.0}},{"data":{"id":"clojure-europe->off-topic","source":"clojure-europe","target":"off-topic","weight":9.0}},{"data":{"id":"off-topic->zulip","source":"off-topic","target":"zulip","weight":25.0}},{"data":{"id":"clojurecivitas->scicloj-webpublic","source":"clojurecivitas","target":"scicloj-webpublic","weight":10.0}},{"data":{"id":"events->zulip","source":"events","target":"zulip","weight":7.0}},{"data":{"id":"events->general","source":"events","target":"general","weight":8.0}},{"data":{"id":"general->scicloj-webpublic","source":"general","target":"scicloj-webpublic","weight":5.0}},{"data":{"id":"gratitude->zulip","source":"gratitude","target":"zulip","weight":8.0}},{"data":{"id":"calva->slack-archive","source":"calva","target":"slack-archive","weight":5.0}},{"data":{"id":"clojure->jobs","source":"clojure","target":"jobs","weight":10.0}},{"data":{"id":"off-topic->slack-archive","source":"off-topic","target":"slack-archive","weight":6.0}},{"data":{"id":"announce->zulip","source":"announce","target":"zulip","weight":17.0}},{"data":{"id":"beginners->clojurecivitas","source":"beginners","target":"clojurecivitas","weight":10.0}},{"data":{"id":"events->scicloj-webpublic","source":"events","target":"scicloj-webpublic","weight":7.0}},{"data":{"id":"clojure->scicloj-webpublic","source":"clojure","target":"scicloj-webpublic","weight":10.0}},{"data":{"id":"clojure-europe->clojurescript","source":"clojure-europe","target":"clojurescript","weight":6.0}},{"data":{"id":"calva->events","source":"calva","target":"events","weight":7.0}}]},"style":[{"selector":"node","css":{"label":"data(id)","content":"data(id)"}},{"selector":"edge","css":{"width":"mapData(weight, 0, 50, 1, 8)"}}],"layout":{"name":"cose"}};
   value['container'] = document.currentScript.parentElement;
   cytoscape(value);
 };</script></div>
@@ -582,13 +746,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="rendering-kindgraphviz">Rendering: <code>kind/graphviz</code></h2>
 <p><code>-&gt;dot</code> returns a Graphviz DOT string. Pass it straight to <code>kind/graphviz</code> for a static rendering. <code>directed?</code>, <code>node-label</code>, and <code>edge-label</code> are optional settings.</p>
 <div class="sourceClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>(<span class="bu">def</span><span class="fu"> co-channel-dot</span></span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  (graph/-&gt;dot co-channel</span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">:directed</span> <span class="va">false</span></span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">:edge-label</span> (<span class="kw">fn</span> [[_ _ w]] (<span class="kw">str</span> (<span class="kw">long</span> w)))))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb38"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>(<span class="bu">def</span><span class="fu"> co-channel-dot</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  (graph/-&gt;dot co-channel-tight</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">:directed</span> <span class="va">false</span></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">:edge-label</span> (<span class="kw">fn</span> [[_ _ w]] (<span class="kw">str</span> (<span class="kw">long</span> w)))))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="sourceClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb38"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>(kind/graphviz co-channel-dot)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>(kind/graphviz co-channel-dot)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div><script type="text/javascript">(function() {
   const el = document.currentScript.parentElement
@@ -597,16 +761,146 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       const svg = viz.renderSVGElement(`graph G {
   rankdir=LR;
   node [shape=box, style=rounded];
-  "gratitude" [label="gratitude"];
-  "scicloj-webpublic" [label="scicloj-webpublic"];
+  "beginners" [label="beginners"];
+  "clojure-europe" [label="clojure-europe"];
   "clojurecivitas" [label="clojurecivitas"];
+  "news-and-articles" [label="news-and-articles"];
+  "zulip" [label="zulip"];
+  "clojurescript" [label="clojurescript"];
+  "jobs" [label="jobs"];
+  "announce" [label="announce"];
+  "calva" [label="calva"];
+  "sql" [label="sql"];
+  "gratitude" [label="gratitude"];
+  "off-topic" [label="off-topic"];
   "events" [label="events"];
-  "gratitude" -- "scicloj-webpublic" [label="7"];
-  "clojurecivitas" -- "scicloj-webpublic" [label="10"];
-  "clojurecivitas" -- "events" [label="4"];
-  "events" -- "scicloj-webpublic" [label="7"];
+  "xtdb" [label="xtdb"];
+  "slack-archive" [label="slack-archive"];
+  "general" [label="general"];
+  "clojure-uk" [label="clojure-uk"];
+  "clojure" [label="clojure"];
+  "scicloj-webpublic" [label="scicloj-webpublic"];
+  "std.lang-dev" [label="std.lang-dev"];
+  "beginners" -- "clojure-europe" [label="10"];
+  "clojurecivitas" -- "news-and-articles" [label="6"];
+  "beginners" -- "zulip" [label="33"];
+  "clojurescript" -- "jobs" [label="5"];
+  "announce" -- "beginners" [label="27"];
+  "calva" -- "sql" [label="5"];
+  "announce" -- "clojure-europe" [label="8"];
   "clojurecivitas" -- "gratitude" [label="5"];
+  "beginners" -- "off-topic" [label="27"];
+  "announce" -- "events" [label="9"];
+  "calva" -- "xtdb" [label="5"];
+  "slack-archive" -- "zulip" [label="5"];
+  "clojurescript" -- "news-and-articles" [label="6"];
+  "clojure-europe" -- "clojurecivitas" [label="6"];
+  "announce" -- "gratitude" [label="6"];
+  "events" -- "off-topic" [label="7"];
+  "clojure-europe" -- "general" [label="5"];
+  "calva" -- "off-topic" [label="9"];
+  "beginners" -- "clojure-uk" [label="7"];
+  "announce" -- "slack-archive" [label="7"];
   "events" -- "gratitude" [label="6"];
+  "announce" -- "sql" [label="6"];
+  "general" -- "news-and-articles" [label="6"];
+  "clojure" -- "gratitude" [label="9"];
+  "clojurescript" -- "xtdb" [label="5"];
+  "beginners" -- "slack-archive" [label="8"];
+  "clojure" -- "news-and-articles" [label="10"];
+  "general" -- "xtdb" [label="7"];
+  "clojure-europe" -- "events" [label="7"];
+  "clojure-europe" -- "zulip" [label="9"];
+  "announce" -- "off-topic" [label="17"];
+  "slack-archive" -- "xtdb" [label="5"];
+  "clojurescript" -- "sql" [label="5"];
+  "announce" -- "xtdb" [label="6"];
+  "beginners" -- "clojurescript" [label="41"];
+  "off-topic" -- "xtdb" [label="6"];
+  "clojure" -- "clojure-uk" [label="9"];
+  "clojure-uk" -- "off-topic" [label="7"];
+  "calva" -- "gratitude" [label="5"];
+  "calva" -- "clojure" [label="13"];
+  "announce" -- "clojure" [label="28"];
+  "general" -- "off-topic" [label="19"];
+  "announce" -- "scicloj-webpublic" [label="10"];
+  "gratitude" -- "off-topic" [label="10"];
+  "calva" -- "scicloj-webpublic" [label="5"];
+  "announce" -- "clojurescript" [label="16"];
+  "gratitude" -- "scicloj-webpublic" [label="7"];
+  "general" -- "slack-archive" [label="6"];
+  "clojure" -- "clojurecivitas" [label="8"];
+  "calva" -- "general" [label="8"];
+  "clojure" -- "events" [label="14"];
+  "sql" -- "zulip" [label="5"];
+  "calva" -- "clojure-europe" [label="5"];
+  "clojure" -- "sql" [label="7"];
+  "scicloj-webpublic" -- "zulip" [label="6"];
+  "clojurescript" -- "off-topic" [label="22"];
+  "calva" -- "clojure-uk" [label="5"];
+  "clojure" -- "clojurescript" [label="50"];
+  "clojure-uk" -- "zulip" [label="6"];
+  "clojure" -- "clojure-europe" [label="10"];
+  "beginners" -- "xtdb" [label="6"];
+  "announce" -- "calva" [label="12"];
+  "beginners" -- "events" [label="14"];
+  "calva" -- "clojurescript" [label="9"];
+  "clojurecivitas" -- "general" [label="5"];
+  "beginners" -- "general" [label="31"];
+  "off-topic" -- "sql" [label="6"];
+  "announce" -- "general" [label="17"];
+  "clojure-europe" -- "gratitude" [label="5"];
+  "clojurescript" -- "slack-archive" [label="6"];
+  "clojure" -- "slack-archive" [label="8"];
+  "clojurescript" -- "general" [label="22"];
+  "gratitude" -- "std.lang-dev" [label="5"];
+  "beginners" -- "news-and-articles" [label="7"];
+  "beginners" -- "scicloj-webpublic" [label="10"];
+  "clojurescript" -- "scicloj-webpublic" [label="6"];
+  "clojurecivitas" -- "clojurescript" [label="7"];
+  "clojurescript" -- "gratitude" [label="7"];
+  "clojurescript" -- "events" [label="7"];
+  "general" -- "sql" [label="5"];
+  "clojure-uk" -- "clojurescript" [label="6"];
+  "news-and-articles" -- "scicloj-webpublic" [label="8"];
+  "beginners" -- "calva" [label="14"];
+  "clojure" -- "off-topic" [label="39"];
+  "beginners" -- "jobs" [label="8"];
+  "off-topic" -- "scicloj-webpublic" [label="8"];
+  "announce" -- "news-and-articles" [label="6"];
+  "clojure-uk" -- "general" [label="6"];
+  "beginners" -- "clojure" [label="75"];
+  "general" -- "zulip" [label="18"];
+  "xtdb" -- "zulip" [label="5"];
+  "news-and-articles" -- "off-topic" [label="6"];
+  "beginners" -- "gratitude" [label="10"];
+  "clojure-europe" -- "scicloj-webpublic" [label="5"];
+  "clojure" -- "zulip" [label="39"];
+  "clojure" -- "xtdb" [label="7"];
+  "clojurescript" -- "zulip" [label="22"];
+  "clojure" -- "general" [label="36"];
+  "clojurecivitas" -- "zulip" [label="6"];
+  "clojurecivitas" -- "off-topic" [label="8"];
+  "announce" -- "clojure-uk" [label="5"];
+  "beginners" -- "sql" [label="7"];
+  "calva" -- "zulip" [label="8"];
+  "announce" -- "clojurecivitas" [label="10"];
+  "clojure-europe" -- "off-topic" [label="9"];
+  "off-topic" -- "zulip" [label="25"];
+  "clojurecivitas" -- "scicloj-webpublic" [label="10"];
+  "events" -- "zulip" [label="7"];
+  "events" -- "general" [label="8"];
+  "general" -- "scicloj-webpublic" [label="5"];
+  "gratitude" -- "zulip" [label="8"];
+  "calva" -- "slack-archive" [label="5"];
+  "clojure" -- "jobs" [label="10"];
+  "off-topic" -- "slack-archive" [label="6"];
+  "announce" -- "zulip" [label="17"];
+  "beginners" -- "clojurecivitas" [label="10"];
+  "events" -- "scicloj-webpublic" [label="7"];
+  "clojure" -- "scicloj-webpublic" [label="10"];
+  "clojure-europe" -- "clojurescript" [label="6"];
+  "calva" -- "events" [label="7"];
 }
 `);
 
@@ -616,10 +910,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    }
   })})
 ();</script></div>
-</section>
-<section id="a-note-on-scale" class="level2">
-<h2 class="anchored" data-anchor-id="a-note-on-scale">A note on scale</h2>
-<p>All examples in this chapter use a small sample. The graph helpers were designed for corpus-scale work — full-corpus analyses over <code>(pull/pull-public-channels!)</code> build co-membership graphs of dozens of channels and co-presence graphs of around a thousand users. The same functions, the same shapes, with larger inputs.</p>
 </section>
 <section id="where-to-go-next" class="level2">
 <h2 class="anchored" data-anchor-id="where-to-go-next">Where to go next</h2>

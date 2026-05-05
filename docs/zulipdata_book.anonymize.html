@@ -307,7 +307,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The plain views in <a href="./zulipdata_book.views.html"><code>scicloj.zulipdata.views</code></a> carry real names, topic strings, and message text. That is fine for analyses that stay on your machine — but the moment a chart, a markdown table, or an exported dataset leaves your laptop, real identities and quoted content go with it.</p>
 <p><code>scicloj.zulipdata.anonymize</code> produces parallel views with:</p>
 <ul>
-<li>sender ids replaced by stable 12-hex-character <code>:user-key</code>s,</li>
+<li>sender ids replaced by stable 16-hex-character <code>:user-key</code>s,</li>
 <li>topic strings replaced by stable 16-hex-character <code>:subject-key</code>s,</li>
 <li>message content dropped (only <code>:content-length</code> survives).</li>
 </ul>
@@ -324,7 +324,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="how-the-keys-are-derived">How the keys are derived</h2>
 <p>Both keys come from <a href="https://en.wikipedia.org/wiki/HMAC">HMAC-SHA256</a> (a one-way cryptographic hash) with a single committed salt — see <code>src/scicloj/zulipdata/anonymize.clj</code>. The salt is in source on purpose: re-running the analysis must produce the same keys, so that follow-up work links back to prior artifacts.</p>
 <p>This means the published artifacts are <strong>pseudonymous, not anonymous</strong>. Anyone with the salt and access to the original Zulip data can re-identify by re-hashing. The goal is to keep real names and message text from appearing in checked-in markdown, slides, or dashboards — not to be unbreakable.</p>
-<p>The key sizes were chosen so collisions are not a practical concern at this corpus’s scale: 48 bits for users (with low-thousands of users) and 64 bits for subjects (with low-thousands of subjects).</p>
+<p>Both keys are 16 hex characters (64 bits) — wide enough that collisions are not a practical concern at this corpus’s scale (low-thousands of users, low-thousands of subjects).</p>
 </section>
 <section id="hashing-one-value" class="level2">
 <h2 class="anchored" data-anchor-id="hashing-one-value">Hashing one value</h2>
@@ -333,7 +333,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>(anon/user-key <span class="dv">42</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="printedClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="st">"62b81b15a641"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="st">"62b81b15a6414d9b"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The output is stable: hashing the same input always returns the same key.</p>
 <div class="sourceClojure">
@@ -415,7 +415,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <col style="width: 10%">
 <col style="width: 11%">
 <col style="width: 11%">
-<col style="width: 13%">
+<col style="width: 17%">
 <col style="width: 17%">
 <col style="width: 16%">
 <col style="width: 16%">
@@ -436,7 +436,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td style="text-align: right;">468115793</td>
 <td style="text-align: right;">1725611765</td>
 <td>kindly-dev</td>
-<td>a150cbcc9f0e</td>
+<td>a150cbcc9f0efb7d</td>
 <td>28c21dbfe5d7f7c2</td>
 <td style="text-align: right;">109</td>
 <td style="text-align: right;">0</td>
@@ -445,7 +445,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td style="text-align: right;">468115883</td>
 <td style="text-align: right;">1725611792</td>
 <td>kindly-dev</td>
-<td>d19c7e5c3106</td>
+<td>d19c7e5c3106f475</td>
 <td>4335e23a0728e371</td>
 <td style="text-align: right;">124</td>
 <td style="text-align: right;">0</td>
@@ -454,7 +454,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td style="text-align: right;">468617117</td>
 <td style="text-align: right;">1725824082</td>
 <td>kindly-dev</td>
-<td>d19c7e5c3106</td>
+<td>d19c7e5c3106f475</td>
 <td>4335e23a0728e371</td>
 <td style="text-align: right;">124</td>
 <td style="text-align: right;">0</td>
