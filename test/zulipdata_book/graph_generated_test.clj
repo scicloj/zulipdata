@@ -162,16 +162,28 @@
 
 (def
  v43_l211
- (kind/cytoscape
-  {:elements (graph/->cytoscape-elements co-channel),
-   :style
-   [{:selector "node", :css {:label "data(id)", :content "data(id)"}}
-    {:selector "edge", :css {:width "mapData(weight, 0, 50, 1, 8)"}}],
-   :layout {:name "cose"}}))
+ (let
+  [weights
+   (map
+    (fn* [p1__50894#] (.getEdgeWeight co-channel p1__50894#))
+    (.edgeSet co-channel))
+   w-min
+   (apply min weights)
+   w-max
+   (apply max weights)]
+  (kind/cytoscape
+   {:elements (graph/->cytoscape-elements co-channel),
+    :style
+    [{:selector "node",
+      :css {:label "data(id)", :content "data(id)", :font-size 9}}
+     {:selector "edge",
+      :css
+      {:width (str "mapData(weight, " w-min ", " w-max ", 1, 8)")}}],
+    :layout {:name "cose"}})))
 
 
 (def
- v45_l226
+ v45_l231
  (def
   co-channel-dot
   (graph/->dot
@@ -182,4 +194,4 @@
    (fn [[_ _ w]] (str (long w))))))
 
 
-(def v46_l231 (kind/graphviz co-channel-dot))
+(def v46_l236 (kind/graphviz co-channel-dot))

@@ -208,14 +208,19 @@ timeline
 ;; each `:data` map — useful for colour-coding by community or
 ;; thickness by weight.
 
-(kind/cytoscape
- {:elements (graph/->cytoscape-elements co-channel)
-  :style    [{:selector "node"
-              :css      {:label   "data(id)"
-                         :content "data(id)"}}
-             {:selector "edge"
-              :css      {:width "mapData(weight, 0, 50, 1, 8)"}}]
-  :layout   {:name "cose"}})
+^{:kindly/options {:element/style {:height "500px" :width "100%"}}}
+(let [weights (map #(.getEdgeWeight co-channel %) (.edgeSet co-channel))
+      w-min   (apply min weights)
+      w-max   (apply max weights)]
+  (kind/cytoscape
+   {:elements (graph/->cytoscape-elements co-channel)
+    :style    [{:selector "node"
+                :css      {:label     "data(id)"
+                           :content   "data(id)"
+                           :font-size 9}}
+               {:selector "edge"
+                :css      {:width (str "mapData(weight, " w-min ", " w-max ", 1, 8)")}}]
+    :layout   {:name "cose"}}))
 
 ;; ## Rendering: `kind/graphviz`
 ;;
