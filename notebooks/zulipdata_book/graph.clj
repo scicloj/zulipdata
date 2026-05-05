@@ -38,13 +38,12 @@
 
 ;; ## A multi-channel sample
 ;;
-;; The same web-public anonymized timeline used in
-;; [**Narrative**](./zulipdata_book.narrative.html) — every
-;; web-public channel of the Clojurians Zulip. Pulling all of
-;; them is fine because the cache backs every fetch.
+;; A small set of web-public channels — small enough to render
+;; cleanly, large enough to expose non-trivial graph structure.
 
 (def sample-channels
-  (pull/web-public-channel-names))
+  ["clojurecivitas" "scicloj-webpublic" "gratitude" "events"
+   "calva" "clojure-uk" "clojure-europe" "news-and-articles"])
 
 (def timeline
   (->> (pull/pull-channels! sample-channels)
@@ -208,16 +207,9 @@ timeline
 ;; `:node-attrs` and `:edge-attrs` functions add extra attributes to
 ;; each `:data` map — useful for colour-coding by community or
 ;; thickness by weight.
-;;
-;; For rendering we filter to a higher `:min-shared`. The full
-;; clique would be a hairball; a tighter threshold keeps only the
-;; structurally meaningful edges.
-
-(def co-channel-tight
-  (graph/channel-comembership-graph timeline :min-shared 5))
 
 (kind/cytoscape
- {:elements (graph/->cytoscape-elements co-channel-tight)
+ {:elements (graph/->cytoscape-elements co-channel)
   :style    [{:selector "node"
               :css      {:label   "data(id)"
                          :content "data(id)"}}
@@ -232,7 +224,7 @@ timeline
 ;; and `edge-label` are optional settings.
 
 (def co-channel-dot
-  (graph/->dot co-channel-tight
+  (graph/->dot co-channel
                :directed false
                :edge-label (fn [[_ _ w]] (str (long w)))))
 

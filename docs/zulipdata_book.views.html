@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-d93cf1df1d846d9a6957868a5a9aa8ac.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-29a984f0d072d2ff4e2b078b505f0607.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -259,7 +259,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#setting-up-a-sample" id="toc-setting-up-a-sample" class="nav-link active" data-scroll-target="#setting-up-a-sample">Setting up a sample</a></li>
+  <li><a href="#whats-a-tablecloth-dataset" id="toc-whats-a-tablecloth-dataset" class="nav-link active" data-scroll-target="#whats-a-tablecloth-dataset">What’s a Tablecloth dataset?</a></li>
+  <li><a href="#setting-up-a-sample" id="toc-setting-up-a-sample" class="nav-link" data-scroll-target="#setting-up-a-sample">Setting up a sample</a></li>
   <li><a href="#one-row-per-message" id="toc-one-row-per-message" class="nav-link" data-scroll-target="#one-row-per-message">One row per message</a></li>
   <li><a href="#one-row-per-reaction" id="toc-one-row-per-reaction" class="nav-link" data-scroll-target="#one-row-per-reaction">One row per reaction</a></li>
   <li><a href="#one-row-per-edit" id="toc-one-row-per-edit" class="nav-link" data-scroll-target="#one-row-per-edit">One row per edit</a></li>
@@ -312,11 +313,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">ns</span> zulipdata-book.views</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  (<span class="at">:require</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>   [scicloj.zulipdata.pull <span class="at">:as</span> pull]</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>   [scicloj.zulipdata.views <span class="at">:as</span> views]</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>   [scicloj.kindly.v4.kind <span class="at">:as</span> kind]</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>   [tablecloth.api <span class="at">:as</span> tc]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>   <span class="co">;; Zulipdata pull -- paginated, cached channel history</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>   [scicloj.zulipdata.pull <span class="at">:as</span> pull]</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>   <span class="co">;; Zulipdata views -- tablecloth projections of raw messages</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>   [scicloj.zulipdata.views <span class="at">:as</span> views]</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>   <span class="co">;; Kindly -- notebook rendering protocol</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>   [scicloj.kindly.v4.kind <span class="at">:as</span> kind]</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>   <span class="co">;; Tablecloth -- dataset manipulation</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>   [tablecloth.api <span class="at">:as</span> tc]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+<section id="whats-a-tablecloth-dataset" class="level2">
+<h2 class="anchored" data-anchor-id="whats-a-tablecloth-dataset">What’s a Tablecloth dataset?</h2>
+<p>The four views below produce <a href="https://scicloj.github.io/tablecloth/">Tablecloth</a> datasets — columnar tables backed by typed arrays, the Clojure equivalent of an R data frame or a Python pandas DataFrame. The core implementation is <a href="https://techascent.github.io/tech.ml.dataset/">tech.ml.dataset</a>; Tablecloth is a higher-level wrapper with ergonomic operations for filtering, grouping, and aggregating.</p>
+<p>This chapter does not teach Tablecloth — see its documentation for that. The views are ordinary datasets: any Tablecloth operation works on them directly.</p>
+</section>
 <section id="setting-up-a-sample" class="level2">
 <h2 class="anchored" data-anchor-id="setting-up-a-sample">Setting up a sample</h2>
 <p>We use a small <strong>web-public</strong> sample throughout this chapter so the view contents — sender names, topic strings, message bodies — can be shown without leaking anything login-gated. Web-public means the channel is readable on <code>clojurians.zulipchat.com</code> without a Zulip account; see <a href="./zulipdata_book.client.html#web-public-channels"><strong>Web-public channels</strong></a> in the client chapter.</p>
