@@ -8,7 +8,8 @@ history on the
 |||
 |-|-|
 |Website | [https://scicloj.github.io/zulipdata/](https://scicloj.github.io/zulipdata/) |
-|Source  | [https://github.com/scicloj/zulipdata](https://github.com/scicloj/zulipdata) |
+|Source  | [![(GitHub repo)](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/scicloj/zulipdata) |
+|Deps    | [![Clojars Project](https://img.shields.io/clojars/v/org.scicloj/zulipdata.svg)](https://clojars.org/org.scicloj/zulipdata) |
 |License | [MIT](LICENSE) |
 |Status  | 🛠alpha — actively rewriting🛠 |
 
