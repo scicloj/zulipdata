@@ -379,147 +379,881 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceClojure">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>(<span class="bu">def</span><span class="fu"> anon-timeline </span>(anon/anonymized-timeline messages))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
+<p>Note that <code>:user-key</code> and <code>:subject-key</code> are hex strings, and there is no <code>:content</code> column.</p>
 <div class="sourceClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>(tc/row-count anon-timeline)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div class="printedClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1134</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div class="sourceClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>(tc/column-names anon-timeline)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div class="printedClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>(<span class="at">:last-edit-ts</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a> <span class="at">:client</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a> <span class="at">:reaction-count</span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a> <span class="at">:channel</span></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a> <span class="at">:user-key</span></span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a> <span class="at">:stream-id</span></span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a> <span class="at">:edited</span></span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a> <span class="at">:content-length</span></span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a> <span class="at">:id</span></span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a> <span class="at">:subject-key</span></span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a> <span class="at">:timestamp</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>A few rows — note that <code>:user-key</code> and <code>:subject-key</code> are hex strings, and there is no <code>:content</code> column.</p>
-<div class="sourceClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">-&gt;</span> anon-timeline</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    (tc/select-columns [<span class="at">:id</span> <span class="at">:timestamp</span> <span class="at">:channel</span> <span class="at">:user-key</span> <span class="at">:subject-key</span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>                        <span class="at">:content-length</span> <span class="at">:reaction-count</span>])</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    (tc/head <span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>anon-timeline</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="clay-dataset">
-<p>_unnamed [3 7]:</p>
+<p>_unnamed [1134 11]:</p>
 <table class="caption-top table">
 <colgroup>
+<col style="width: 9%">
+<col style="width: 9%">
 <col style="width: 10%">
+<col style="width: 7%">
 <col style="width: 11%">
+<col style="width: 7%">
+<col style="width: 5%">
+<col style="width: 10%">
+<col style="width: 7%">
 <col style="width: 11%">
-<col style="width: 17%">
-<col style="width: 17%">
-<col style="width: 16%">
-<col style="width: 16%">
+<col style="width: 7%">
 </colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: right;">:id</th>
-<th style="text-align: right;">:timestamp</th>
+<th style="text-align: right;">:last-edit-ts</th>
+<th>:client</th>
+<th style="text-align: right;">:reaction-count</th>
 <th>:channel</th>
 <th>:user-key</th>
-<th>:subject-key</th>
+<th style="text-align: right;">:stream-id</th>
+<th>:edited</th>
 <th style="text-align: right;">:content-length</th>
-<th style="text-align: right;">:reaction-count</th>
+<th style="text-align: right;">:id</th>
+<th>:subject-key</th>
+<th style="text-align: right;">:timestamp</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">468115793</td>
-<td style="text-align: right;">1725611765</td>
+<td style="text-align: right;"></td>
+<td>Internal</td>
+<td style="text-align: right;">0</td>
 <td>kindly-dev</td>
 <td>a150cbcc9f0efb7d</td>
-<td>28c21dbfe5d7f7c2</td>
+<td style="text-align: right;">454856</td>
+<td>false</td>
 <td style="text-align: right;">109</td>
-<td style="text-align: right;">0</td>
+<td style="text-align: right;">468115793</td>
+<td>28c21dbfe5d7f7c2</td>
+<td style="text-align: right;">1725611765</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">468115883</td>
-<td style="text-align: right;">1725611792</td>
+<td style="text-align: right;">1725824532</td>
+<td>website</td>
+<td style="text-align: right;">0</td>
 <td>kindly-dev</td>
 <td>d19c7e5c3106f475</td>
-<td>4335e23a0728e371</td>
+<td style="text-align: right;">454856</td>
+<td>true</td>
 <td style="text-align: right;">124</td>
-<td style="text-align: right;">0</td>
+<td style="text-align: right;">468115883</td>
+<td>4335e23a0728e371</td>
+<td style="text-align: right;">1725611792</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">468617117</td>
-<td style="text-align: right;">1725824082</td>
+<td style="text-align: right;">1725828308</td>
+<td>website</td>
+<td style="text-align: right;">0</td>
 <td>kindly-dev</td>
 <td>d19c7e5c3106f475</td>
-<td>4335e23a0728e371</td>
+<td style="text-align: right;">454856</td>
+<td>true</td>
 <td style="text-align: right;">124</td>
+<td style="text-align: right;">468617117</td>
+<td>4335e23a0728e371</td>
+<td style="text-align: right;">1725824082</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1725832278</td>
+<td>website</td>
 <td style="text-align: right;">0</td>
+<td>kindly-dev</td>
+<td>d19c7e5c3106f475</td>
+<td style="text-align: right;">454856</td>
+<td>true</td>
+<td style="text-align: right;">110</td>
+<td style="text-align: right;">468624650</td>
+<td>4335e23a0728e371</td>
+<td style="text-align: right;">1725828301</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"></td>
+<td>ZulipElectron</td>
+<td style="text-align: right;">1</td>
+<td>kindly-dev</td>
+<td>2a7920fa288b6ac5</td>
+<td style="text-align: right;">454856</td>
+<td>false</td>
+<td style="text-align: right;">88</td>
+<td style="text-align: right;">469159581</td>
+<td>a902c6f46a0525a5</td>
+<td style="text-align: right;">1725988465</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1726053034</td>
+<td>website</td>
+<td style="text-align: right;">0</td>
+<td>kindly-dev</td>
+<td>d19c7e5c3106f475</td>
+<td style="text-align: right;">454856</td>
+<td>true</td>
+<td style="text-align: right;">251</td>
+<td style="text-align: right;">469366033</td>
+<td>4335e23a0728e371</td>
+<td style="text-align: right;">1726053020</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"></td>
+<td>website</td>
+<td style="text-align: right;">0</td>
+<td>kindly-dev</td>
+<td>d19c7e5c3106f475</td>
+<td style="text-align: right;">454856</td>
+<td>false</td>
+<td style="text-align: right;">188</td>
+<td style="text-align: right;">469366364</td>
+<td>4335e23a0728e371</td>
+<td style="text-align: right;">1726053109</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"></td>
+<td>ZulipElectron</td>
+<td style="text-align: right;">0</td>
+<td>kindly-dev</td>
+<td>2a7920fa288b6ac5</td>
+<td style="text-align: right;">454856</td>
+<td>false</td>
+<td style="text-align: right;">122</td>
+<td style="text-align: right;">470083364</td>
+<td>5ae277ebef633a96</td>
+<td style="text-align: right;">1726283759</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"></td>
+<td>website</td>
+<td style="text-align: right;">0</td>
+<td>kindly-dev</td>
+<td>d19c7e5c3106f475</td>
+<td style="text-align: right;">454856</td>
+<td>false</td>
+<td style="text-align: right;">110</td>
+<td style="text-align: right;">470117042</td>
+<td>5ae277ebef633a96</td>
+<td style="text-align: right;">1726298921</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"></td>
+<td>website</td>
+<td style="text-align: right;">3</td>
+<td>kindly-dev</td>
+<td>f936fd411b38fdf2</td>
+<td style="text-align: right;">454856</td>
+<td>false</td>
+<td style="text-align: right;">120</td>
+<td style="text-align: right;">470188381</td>
+<td>bae18381bff69790</td>
+<td style="text-align: right;">1726328425</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">…</td>
+<td>…</td>
+<td style="text-align: right;">…</td>
+<td>…</td>
+<td>…</td>
+<td style="text-align: right;">…</td>
+<td>…</td>
+<td style="text-align: right;">…</td>
+<td style="text-align: right;">…</td>
+<td>…</td>
+<td style="text-align: right;">…</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"></td>
+<td>ZulipElectron</td>
+<td style="text-align: right;">0</td>
+<td>kindly-dev</td>
+<td>2a7920fa288b6ac5</td>
+<td style="text-align: right;">454856</td>
+<td>false</td>
+<td style="text-align: right;">2204</td>
+<td style="text-align: right;">584802081</td>
+<td>6373027f93f758f9</td>
+<td style="text-align: right;">1775887757</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"></td>
+<td>ZulipElectron</td>
+<td style="text-align: right;">0</td>
+<td>kindly-dev</td>
+<td>2a7920fa288b6ac5</td>
+<td style="text-align: right;">454856</td>
+<td>false</td>
+<td style="text-align: right;">82</td>
+<td style="text-align: right;">584862300</td>
+<td>fcaafb397059b579</td>
+<td style="text-align: right;">1775888506</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"></td>
+<td>ZulipFlutter</td>
+<td style="text-align: right;">0</td>
+<td>kindly-dev</td>
+<td>5ccd816e6ea3fe7f</td>
+<td style="text-align: right;">454856</td>
+<td>false</td>
+<td style="text-align: right;">107</td>
+<td style="text-align: right;">584937524</td>
+<td>fcaafb397059b579</td>
+<td style="text-align: right;">1775900223</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"></td>
+<td>ZulipFlutter</td>
+<td style="text-align: right;">0</td>
+<td>kindly-dev</td>
+<td>d19c7e5c3106f475</td>
+<td style="text-align: right;">454856</td>
+<td>false</td>
+<td style="text-align: right;">181</td>
+<td style="text-align: right;">584964602</td>
+<td>6373027f93f758f9</td>
+<td style="text-align: right;">1775924790</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"></td>
+<td>ZulipFlutter</td>
+<td style="text-align: right;">0</td>
+<td>kindly-dev</td>
+<td>d19c7e5c3106f475</td>
+<td style="text-align: right;">454856</td>
+<td>false</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">584968058</td>
+<td>6373027f93f758f9</td>
+<td style="text-align: right;">1775927975</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"></td>
+<td>ZulipElectron</td>
+<td style="text-align: right;">0</td>
+<td>kindly-dev</td>
+<td>2a7920fa288b6ac5</td>
+<td style="text-align: right;">454856</td>
+<td>false</td>
+<td style="text-align: right;">1128</td>
+<td style="text-align: right;">584974476</td>
+<td>6373027f93f758f9</td>
+<td style="text-align: right;">1775934118</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"></td>
+<td>ZulipElectron</td>
+<td style="text-align: right;">0</td>
+<td>kindly-dev</td>
+<td>2a7920fa288b6ac5</td>
+<td style="text-align: right;">454856</td>
+<td>false</td>
+<td style="text-align: right;">38</td>
+<td style="text-align: right;">584974566</td>
+<td>fcaafb397059b579</td>
+<td style="text-align: right;">1775934196</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"></td>
+<td>website</td>
+<td style="text-align: right;">0</td>
+<td>kindly-dev</td>
+<td>d19c7e5c3106f475</td>
+<td style="text-align: right;">454856</td>
+<td>false</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">584978922</td>
+<td>6373027f93f758f9</td>
+<td style="text-align: right;">1775938908</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"></td>
+<td>ZulipElectron</td>
+<td style="text-align: right;">0</td>
+<td>kindly-dev</td>
+<td>2a7920fa288b6ac5</td>
+<td style="text-align: right;">454856</td>
+<td>false</td>
+<td style="text-align: right;">677</td>
+<td style="text-align: right;">585768804</td>
+<td>fcaafb397059b579</td>
+<td style="text-align: right;">1776292063</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"></td>
+<td>website</td>
+<td style="text-align: right;">0</td>
+<td>kindly-dev</td>
+<td>d19c7e5c3106f475</td>
+<td style="text-align: right;">454856</td>
+<td>false</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">585827259</td>
+<td>fcaafb397059b579</td>
+<td style="text-align: right;">1776324973</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"></td>
+<td>ZulipFlutter</td>
+<td style="text-align: right;">0</td>
+<td>kindly-dev</td>
+<td>5ccd816e6ea3fe7f</td>
+<td style="text-align: right;">454856</td>
+<td>false</td>
+<td style="text-align: right;">220</td>
+<td style="text-align: right;">586159679</td>
+<td>fcaafb397059b579</td>
+<td style="text-align: right;">1776439559</td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>The number of distinct user-keys in this channel:</p>
 <div class="sourceClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">-&gt;</span> anon-timeline <span class="at">:user-key</span> <span class="kw">distinct</span> <span class="kw">count</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>(tc/row-count anon-timeline)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="printedClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="dv">21</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1134</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The distinct user-keys in this channel:</p>
+<div class="sourceClojure">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">-&gt;</span> anon-timeline <span class="at">:user-key</span> <span class="kw">distinct</span> <span class="kw">sort</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="printedClojure">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>(<span class="st">"0f228145198d6bce"</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a> <span class="st">"1d7079ea9e63dc37"</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a> <span class="st">"1f708947496ccc88"</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a> <span class="st">"2a7920fa288b6ac5"</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a> <span class="st">"2dbe557be94bc5b0"</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a> <span class="st">"3783b4b149fcde59"</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a> <span class="st">"3a6ab2db8b6fdeee"</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a> <span class="st">"4c9e777783eb9222"</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a> <span class="st">"563648fe0ef5e5d8"</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a> <span class="st">"56f8fdabad6761cb"</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a> <span class="st">"5ccd816e6ea3fe7f"</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a> <span class="st">"73c3354ec3c7165d"</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a> <span class="st">"858005e0ca117ee3"</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a> <span class="st">"928916c8cb9db868"</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a> <span class="st">"a150cbcc9f0efb7d"</span></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a> <span class="st">"b384f0e07335b9de"</span></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a> <span class="st">"b6e916f8e4b1f3cc"</span></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a> <span class="st">"b7b54d61bcd4fb14"</span></span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a> <span class="st">"d19c7e5c3106f475"</span></span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a> <span class="st">"e991fe149be52ac1"</span></span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a> <span class="st">"f936fd411b38fdf2"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="one-row-per-reaction-anonymized" class="level2">
 <h2 class="anchored" data-anchor-id="one-row-per-reaction-anonymized">One row per reaction — anonymized</h2>
 <p><code>anonymized-reactions</code> mirrors <a href="./zulipdata_book.views.html#one-row-per-reaction"><code>views/reactions-long</code></a>. The emoji name (a community-sentiment signal, not message content) is preserved; the reactor’s identity and the message’s subject are both anonymized.</p>
 <div class="sourceClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>(<span class="bu">def</span><span class="fu"> anon-reactions </span>(anon/anonymized-reactions messages))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>(<span class="bu">def</span><span class="fu"> anon-reactions </span>(anon/anonymized-reactions messages))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="sourceClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>(tc/row-count anon-reactions)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>anon-reactions</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div class="printedClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="dv">113</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div class="sourceClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>(tc/column-names anon-reactions)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div class="printedClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>(<span class="at">:message-id</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a> <span class="at">:channel</span></span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a> <span class="at">:stream-id</span></span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a> <span class="at">:emoji-name</span></span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a> <span class="at">:message-ts</span></span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a> <span class="at">:emoji-code</span></span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a> <span class="at">:subject-key</span></span>
-<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a> <span class="at">:reactor-user-key</span></span>
-<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a> <span class="at">:reaction-type</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="clay-dataset">
+<p>_unnamed [113 9]:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 10%">
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 13%">
+<col style="width: 14%">
+<col style="width: 12%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">:message-id</th>
+<th>:channel</th>
+<th style="text-align: right;">:stream-id</th>
+<th>:emoji-name</th>
+<th style="text-align: right;">:message-ts</th>
+<th>:emoji-code</th>
+<th>:subject-key</th>
+<th>:reactor-user-key</th>
+<th>:reaction-type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">469159581</td>
+<td>kindly-dev</td>
+<td style="text-align: right;">454856</td>
+<td>thank_you</td>
+<td style="text-align: right;">1725988465</td>
+<td>1f64f</td>
+<td>a902c6f46a0525a5</td>
+<td>d19c7e5c3106f475</td>
+<td>unicode_emoji</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">470188381</td>
+<td>kindly-dev</td>
+<td style="text-align: right;">454856</td>
+<td>tada</td>
+<td style="text-align: right;">1726328425</td>
+<td>1f389</td>
+<td>bae18381bff69790</td>
+<td>d19c7e5c3106f475</td>
+<td>unicode_emoji</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">470188381</td>
+<td>kindly-dev</td>
+<td style="text-align: right;">454856</td>
+<td>heart</td>
+<td style="text-align: right;">1726328425</td>
+<td>2764</td>
+<td>bae18381bff69790</td>
+<td>2a7920fa288b6ac5</td>
+<td>unicode_emoji</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">470188381</td>
+<td>kindly-dev</td>
+<td style="text-align: right;">454856</td>
+<td>tada</td>
+<td style="text-align: right;">1726328425</td>
+<td>1f389</td>
+<td>bae18381bff69790</td>
+<td>d3a87fc057dceac5</td>
+<td>unicode_emoji</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">472817130</td>
+<td>kindly-dev</td>
+<td style="text-align: right;">454856</td>
+<td>smiley</td>
+<td style="text-align: right;">1727328746</td>
+<td>1f603</td>
+<td>a016942505f43e89</td>
+<td>f936fd411b38fdf2</td>
+<td>unicode_emoji</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">474132755</td>
+<td>kindly-dev</td>
+<td style="text-align: right;">454856</td>
+<td>pray</td>
+<td style="text-align: right;">1727818951</td>
+<td>1f64f</td>
+<td>12a57bced4aecea6</td>
+<td>117523698ec5b5f5</td>
+<td>unicode_emoji</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">474132755</td>
+<td>kindly-dev</td>
+<td style="text-align: right;">454856</td>
+<td>tada</td>
+<td style="text-align: right;">1727818951</td>
+<td>1f389</td>
+<td>12a57bced4aecea6</td>
+<td>e991fe149be52ac1</td>
+<td>unicode_emoji</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">475886087</td>
+<td>kindly-dev</td>
+<td style="text-align: right;">454856</td>
+<td>thank_you</td>
+<td style="text-align: right;">1728485510</td>
+<td>1f64f</td>
+<td>a09271f1ca7d309e</td>
+<td>d19c7e5c3106f475</td>
+<td>unicode_emoji</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">475912396</td>
+<td>kindly-dev</td>
+<td style="text-align: right;">454856</td>
+<td>heart</td>
+<td style="text-align: right;">1728491269</td>
+<td>2764</td>
+<td>a09271f1ca7d309e</td>
+<td>858005e0ca117ee3</td>
+<td>unicode_emoji</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">477014516</td>
+<td>kindly-dev</td>
+<td style="text-align: right;">454856</td>
+<td>+1</td>
+<td style="text-align: right;">1729005919</td>
+<td>1f44d</td>
+<td>4335e23a0728e371</td>
+<td>e991fe149be52ac1</td>
+<td>unicode_emoji</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">…</td>
+<td>…</td>
+<td style="text-align: right;">…</td>
+<td>…</td>
+<td style="text-align: right;">…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+<td>…</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">539389999</td>
+<td>kindly-dev</td>
+<td style="text-align: right;">454856</td>
+<td>innocent</td>
+<td style="text-align: right;">1757836051</td>
+<td>1f607</td>
+<td>cba143563e94cf64</td>
+<td>b7b54d61bcd4fb14</td>
+<td>unicode_emoji</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">539390132</td>
+<td>kindly-dev</td>
+<td style="text-align: right;">454856</td>
+<td>+1</td>
+<td style="text-align: right;">1757836249</td>
+<td>1f44d</td>
+<td>cba143563e94cf64</td>
+<td>b7b54d61bcd4fb14</td>
+<td>unicode_emoji</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">539728157</td>
+<td>kindly-dev</td>
+<td style="text-align: right;">454856</td>
+<td>slight_smile</td>
+<td style="text-align: right;">1758016808</td>
+<td>1f642</td>
+<td>cba143563e94cf64</td>
+<td>2a7920fa288b6ac5</td>
+<td>unicode_emoji</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">553199550</td>
+<td>kindly-dev</td>
+<td style="text-align: right;">454856</td>
+<td>+1</td>
+<td style="text-align: right;">1762040995</td>
+<td>1f44d</td>
+<td>e57e9fabe80d53e5</td>
+<td>1f708947496ccc88</td>
+<td>unicode_emoji</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">553199550</td>
+<td>kindly-dev</td>
+<td style="text-align: right;">454856</td>
+<td>+1</td>
+<td style="text-align: right;">1762040995</td>
+<td>1f44d</td>
+<td>e57e9fabe80d53e5</td>
+<td>b6e916f8e4b1f3cc</td>
+<td>unicode_emoji</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">564174719</td>
+<td>kindly-dev</td>
+<td style="text-align: right;">454856</td>
+<td>plus</td>
+<td style="text-align: right;">1765948953</td>
+<td>2795</td>
+<td>fcaafb397059b579</td>
+<td>1d7079ea9e63dc37</td>
+<td>unicode_emoji</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">571198343</td>
+<td>kindly-dev</td>
+<td style="text-align: right;">454856</td>
+<td>plus</td>
+<td style="text-align: right;">1769867829</td>
+<td>2795</td>
+<td>9816c22ac615420f</td>
+<td>b6e916f8e4b1f3cc</td>
+<td>unicode_emoji</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">571199039</td>
+<td>kindly-dev</td>
+<td style="text-align: right;">454856</td>
+<td>bulb</td>
+<td style="text-align: right;">1769868479</td>
+<td>1f4a1</td>
+<td>9816c22ac615420f</td>
+<td>d19c7e5c3106f475</td>
+<td>unicode_emoji</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">571261632</td>
+<td>kindly-dev</td>
+<td style="text-align: right;">454856</td>
+<td>plus</td>
+<td style="text-align: right;">1769927171</td>
+<td>2795</td>
+<td>5a9cf25a508fc2ae</td>
+<td>1d7079ea9e63dc37</td>
+<td>unicode_emoji</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">571262798</td>
+<td>kindly-dev</td>
+<td style="text-align: right;">454856</td>
+<td>+1</td>
+<td style="text-align: right;">1769928544</td>
+<td>1f44d</td>
+<td>5a9cf25a508fc2ae</td>
+<td>d19c7e5c3106f475</td>
+<td>unicode_emoji</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">571498286</td>
+<td>kindly-dev</td>
+<td style="text-align: right;">454856</td>
+<td>bulb</td>
+<td style="text-align: right;">1770056363</td>
+<td>1f4a1</td>
+<td>d6c9ae29a0615fb9</td>
+<td>d19c7e5c3106f475</td>
+<td>unicode_emoji</td>
+</tr>
+</tbody>
+</table>
 </div>
 </section>
 <section id="one-row-per-edit-anonymized" class="level2">
 <h2 class="anchored" data-anchor-id="one-row-per-edit-anonymized">One row per edit — anonymized</h2>
 <p><code>anonymized-edits</code> mirrors <a href="./zulipdata_book.views.html#one-row-per-edit"><code>views/edits-long</code></a> with the editor and prior subject anonymized and prior content dropped. <code>:prev-stream</code> (a numeric stream id, not personal data) is left as-is.</p>
 <div class="sourceClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>(<span class="bu">def</span><span class="fu"> anon-edits </span>(anon/anonymized-edits messages))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>(<span class="bu">def</span><span class="fu"> anon-edits </span>(anon/anonymized-edits messages))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="sourceClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>(tc/row-count anon-edits)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>anon-edits</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div class="printedClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="dv">362</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div class="sourceClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>(tc/column-names anon-edits)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<div class="printedClojure">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>(<span class="at">:message-id</span></span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a> <span class="at">:stream-id</span></span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a> <span class="at">:channel</span></span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a> <span class="at">:edit-ts</span></span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a> <span class="at">:editor-user-key</span></span>
-<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a> <span class="at">:prev-subject-key</span></span>
-<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a> <span class="at">:prev-stream</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="clay-dataset">
+<p>_unnamed [362 7]:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 18%">
+<col style="width: 19%">
+<col style="width: 14%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">:message-id</th>
+<th style="text-align: right;">:stream-id</th>
+<th>:channel</th>
+<th style="text-align: right;">:edit-ts</th>
+<th>:editor-user-key</th>
+<th>:prev-subject-key</th>
+<th style="text-align: right;">:prev-stream</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">468115883</td>
+<td style="text-align: right;">454856</td>
+<td>kindly-dev</td>
+<td style="text-align: right;">1725824532</td>
+<td>d19c7e5c3106f475</td>
+<td></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">468617117</td>
+<td style="text-align: right;">454856</td>
+<td>kindly-dev</td>
+<td style="text-align: right;">1725828308</td>
+<td>d19c7e5c3106f475</td>
+<td></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">468617117</td>
+<td style="text-align: right;">454856</td>
+<td>kindly-dev</td>
+<td style="text-align: right;">1725828272</td>
+<td>d19c7e5c3106f475</td>
+<td></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">468617117</td>
+<td style="text-align: right;">454856</td>
+<td>kindly-dev</td>
+<td style="text-align: right;">1725824096</td>
+<td>d19c7e5c3106f475</td>
+<td></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">468624650</td>
+<td style="text-align: right;">454856</td>
+<td>kindly-dev</td>
+<td style="text-align: right;">1725832278</td>
+<td>d19c7e5c3106f475</td>
+<td></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">469366033</td>
+<td style="text-align: right;">454856</td>
+<td>kindly-dev</td>
+<td style="text-align: right;">1726053034</td>
+<td>d19c7e5c3106f475</td>
+<td></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">474132755</td>
+<td style="text-align: right;">454856</td>
+<td>kindly-dev</td>
+<td style="text-align: right;">1727819201</td>
+<td>d19c7e5c3106f475</td>
+<td></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">474132755</td>
+<td style="text-align: right;">454856</td>
+<td>kindly-dev</td>
+<td style="text-align: right;">1727819135</td>
+<td>d19c7e5c3106f475</td>
+<td></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">474132755</td>
+<td style="text-align: right;">454856</td>
+<td>kindly-dev</td>
+<td style="text-align: right;">1727819103</td>
+<td>d19c7e5c3106f475</td>
+<td></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">474132755</td>
+<td style="text-align: right;">454856</td>
+<td>kindly-dev</td>
+<td style="text-align: right;">1727818984</td>
+<td>d19c7e5c3106f475</td>
+<td></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">…</td>
+<td style="text-align: right;">…</td>
+<td>…</td>
+<td style="text-align: right;">…</td>
+<td>…</td>
+<td>…</td>
+<td style="text-align: right;">…</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">564856994</td>
+<td style="text-align: right;">454856</td>
+<td>kindly-dev</td>
+<td style="text-align: right;">1766268837</td>
+<td>5ccd816e6ea3fe7f</td>
+<td></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">564859953</td>
+<td style="text-align: right;">454856</td>
+<td>kindly-dev</td>
+<td style="text-align: right;">1766273466</td>
+<td>2a7920fa288b6ac5</td>
+<td></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">564860698</td>
+<td style="text-align: right;">454856</td>
+<td>kindly-dev</td>
+<td style="text-align: right;">1766274811</td>
+<td>5ccd816e6ea3fe7f</td>
+<td></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">564862263</td>
+<td style="text-align: right;">454856</td>
+<td>kindly-dev</td>
+<td style="text-align: right;">1766277762</td>
+<td>2a7920fa288b6ac5</td>
+<td></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">564862263</td>
+<td style="text-align: right;">454856</td>
+<td>kindly-dev</td>
+<td style="text-align: right;">1766277651</td>
+<td>2a7920fa288b6ac5</td>
+<td></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">571147459</td>
+<td style="text-align: right;">454856</td>
+<td>kindly-dev</td>
+<td style="text-align: right;">1769820449</td>
+<td>2a7920fa288b6ac5</td>
+<td></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">571177970</td>
+<td style="text-align: right;">454856</td>
+<td>kindly-dev</td>
+<td style="text-align: right;">1769849800</td>
+<td>d19c7e5c3106f475</td>
+<td></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">571199039</td>
+<td style="text-align: right;">454856</td>
+<td>kindly-dev</td>
+<td style="text-align: right;">1769868572</td>
+<td>1d7079ea9e63dc37</td>
+<td></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">571199039</td>
+<td style="text-align: right;">454856</td>
+<td>kindly-dev</td>
+<td style="text-align: right;">1769868495</td>
+<td>1d7079ea9e63dc37</td>
+<td></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">571303192</td>
+<td style="text-align: right;">454856</td>
+<td>kindly-dev</td>
+<td style="text-align: right;">1769967729</td>
+<td>d19c7e5c3106f475</td>
+<td></td>
+<td style="text-align: right;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">584758936</td>
+<td style="text-align: right;">454856</td>
+<td>kindly-dev</td>
+<td style="text-align: right;">1775855685</td>
+<td>2a7920fa288b6ac5</td>
+<td></td>
+<td style="text-align: right;"></td>
+</tr>
+</tbody>
+</table>
 </div>
 </section>
 <section id="what-the-anonymized-data-can-and-cannot-answer" class="level2">
