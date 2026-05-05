@@ -315,7 +315,7 @@
 
 (deftest
  t72_l228
- (is ((fn [s] (and (string? s) (= 12 (count s)))) v71_l226)))
+ (is ((fn [s] (and (string? s) (= 16 (count s)))) v71_l226)))
 
 
 (def

@@ -225,7 +225,7 @@ pull/default-batch-size
 
 (anon/user-key 42)
 
-(kind/test-last [(fn [s] (and (string? s) (= 12 (count s))))])
+(kind/test-last [(fn [s] (and (string? s) (= 16 (count s))))])
 
 ;; Stable across calls; `nil` passes through:
 
