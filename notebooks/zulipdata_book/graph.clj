@@ -33,12 +33,12 @@
 ;; ## A multi-channel sample
 ;;
 ;; The same web-public anonymized timeline used in
-;; [**Narrative**](./zulipdata_book.narrative.html) —
-;; small enough to render, large enough to have non-trivial
-;; structure.
+;; [**Narrative**](./zulipdata_book.narrative.html) — every
+;; web-public channel of the Clojurians Zulip. Pulling all of
+;; them is fine because the cache backs every fetch.
 
 (def sample-channels
-  ["clojurecivitas" "scicloj-webpublic" "gratitude" "events"])
+  (pull/web-public-channel-names))
 
 (def timeline
   (->> (pull/pull-channels! sample-channels)
@@ -93,7 +93,8 @@
 ;; one user, so every possible pair becomes an edge:
 
 (kind/test-last
- (= 6))
+ (= (let [n (count (.vertexSet co-channel))]
+      (/ (* n (dec n)) 2))))
 
 ;; The edge-weight table:
 
@@ -109,12 +110,12 @@
 ;;
 ;; `user-copresence-graph` flips the construction: nodes are users,
 ;; edges are weighted by shared-channel count. The defaults
-;; (`:min-shared 3 :min-channels 3`) are tuned for corpus-scale runs
-;; where you want to see only the densely-connected core. We loosen
-;; them for our small sample.
+;; (`:min-shared 3 :min-channels 3`) keep only the densely-connected
+;; core — users active in at least three channels, paired only when
+;; they share at least three.
 
 (def co-user
-  (graph/user-copresence-graph timeline :min-shared 2 :min-channels 2))
+  (graph/user-copresence-graph timeline :min-shared 3 :min-channels 3))
 
 ;; Node and edge counts:
 
@@ -129,9 +130,8 @@
 ;; `from-set` source they used to each later destination. Edges with
 ;; fewer than `:min-users` are dropped.
 ;;
-;; In our sample, taking `clojurecivitas` as the seed shows where
-;; clojurecivitas posters subsequently appeared (within the four
-;; channels we pulled).
+;; Taking `clojurecivitas` as the seed shows where clojurecivitas
+;; posters subsequently appeared.
 
 (def migration
   (graph/migration-graph timeline #{"clojurecivitas"} :min-users 1))
@@ -148,17 +148,23 @@
 ;;
 ;; `betweenness` returns a map from node to its betweenness centrality
 ;; score — the share of shortest paths that pass through the node.
+;; The top scores:
 
-(graph/betweenness co-channel)
+(->> (graph/betweenness co-channel)
+     (sort-by val >)
+     (take 5)
+     (into (array-map)))
 
-;; All scores are zero on this graph — every pair of channels is
-;; directly connected, so no node lies on the *interior* of a
-;; shortest path. Betweenness becomes informative on graphs with
-;; structural bottlenecks; on a small
-;; [clique](https://en.wikipedia.org/wiki/Clique_(graph_theory)) there
-;; are none.
+;; The graph is a [clique](https://en.wikipedia.org/wiki/Clique_(graph_theory))
+;; (every pair of channels is directly connected), yet betweenness is
+;; not uniformly zero. JGraphT treats edge weights as distances when
+;; computing shortest paths. With weight = shared-user count, a
+;; heavily-shared pair has a *long* direct edge, and a 2-hop detour
+;; through a thin-overlap channel can be shorter. The high scorers
+;; here are channels with thin overlap to most others — they sit on
+;; the cheap detours.
 
-(every? zero? (vals (graph/betweenness co-channel)))
+(boolean (some pos? (vals (graph/betweenness co-channel))))
 
 (kind/test-last
  (= true))
@@ -196,9 +202,16 @@
 ;; `:node-attrs` and `:edge-attrs` functions add extra attributes to
 ;; each `:data` map — useful for colour-coding by community or
 ;; thickness by weight.
+;;
+;; For rendering we filter to a higher `:min-shared`. The full
+;; clique would be a hairball; a tighter threshold keeps only the
+;; structurally meaningful edges.
+
+(def co-channel-tight
+  (graph/channel-comembership-graph timeline :min-shared 5))
 
 (kind/cytoscape
- {:elements (graph/->cytoscape-elements co-channel)
+ {:elements (graph/->cytoscape-elements co-channel-tight)
   :style    [{:selector "node"
               :css      {:label   "data(id)"
                          :content "data(id)"}}
@@ -213,19 +226,11 @@
 ;; and `edge-label` are optional settings.
 
 (def co-channel-dot
-  (graph/->dot co-channel
+  (graph/->dot co-channel-tight
                :directed false
                :edge-label (fn [[_ _ w]] (str (long w)))))
 
 (kind/graphviz co-channel-dot)
-
-;; ## A note on scale
-;;
-;; All examples in this chapter use a small sample. The graph
-;; helpers were designed for corpus-scale work — full-corpus analyses
-;; over `(pull/pull-public-channels!)` build co-membership graphs of
-;; dozens of channels and co-presence graphs of around a thousand
-;; users. The same functions, the same shapes, with larger inputs.
 
 ;; ## Where to go next
 ;;

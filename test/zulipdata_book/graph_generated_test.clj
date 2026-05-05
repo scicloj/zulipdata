@@ -10,11 +10,7 @@
   [clojure.test :refer [deftest is]]))
 
 
-(def
- v3_l40
- (def
-  sample-channels
-  ["clojurecivitas" "scicloj-webpublic" "gratitude" "events"]))
+(def v3_l40 (def sample-channels (pull/web-public-channel-names)))
 
 
 (def
@@ -62,11 +58,16 @@
 (def v17_l90 (count (.edgeSet co-channel)))
 
 
-(deftest t19_l95 (is (= v17_l90 6)))
+(deftest
+ t19_l95
+ (is
+  (=
+   v17_l90
+   (let [n (count (.vertexSet co-channel))] (/ (* n (dec n)) 2)))))
 
 
 (def
- v21_l100
+ v21_l101
  (->>
   (.edgeSet co-channel)
   (map
@@ -80,14 +81,14 @@
 
 
 (def
- v23_l116
+ v23_l117
  (def
   co-user
-  (graph/user-copresence-graph timeline :min-shared 2 :min-channels 2)))
+  (graph/user-copresence-graph timeline :min-shared 3 :min-channels 3)))
 
 
 (def
- v25_l121
+ v25_l122
  {:nodes (count (.vertexSet co-user)),
   :edges (count (.edgeSet co-user))})
 
@@ -113,37 +114,52 @@
   tc/dataset))
 
 
-(def v30_l152 (graph/betweenness co-channel))
-
-
-(def v32_l161 (every? zero? (vals (graph/betweenness co-channel))))
-
-
-(deftest t33_l163 (is (= v32_l161 true)))
-
-
-(def v35_l174 (graph/girvan-newman co-channel 2))
-
-
-(def v36_l176 (count (graph/girvan-newman co-channel 2)))
-
-
-(deftest t37_l178 (is (= v36_l176 2)))
-
-
-(def v39_l185 (graph/label-propagation co-channel))
-
-
-(def v40_l187 (count (graph/label-propagation co-channel)))
-
-
-(deftest t41_l189 (is (= v40_l187 1)))
+(def
+ v30_l153
+ (->>
+  (graph/betweenness co-channel)
+  (sort-by val >)
+  (take 5)
+  (into (array-map))))
 
 
 (def
- v43_l200
+ v32_l167
+ (boolean (some pos? (vals (graph/betweenness co-channel)))))
+
+
+(deftest t33_l169 (is (= v32_l167 true)))
+
+
+(def v35_l180 (graph/girvan-newman co-channel 2))
+
+
+(def v36_l182 (count (graph/girvan-newman co-channel 2)))
+
+
+(deftest t37_l184 (is (= v36_l182 2)))
+
+
+(def v39_l191 (graph/label-propagation co-channel))
+
+
+(def v40_l193 (count (graph/label-propagation co-channel)))
+
+
+(deftest t41_l195 (is (= v40_l193 1)))
+
+
+(def
+ v43_l210
+ (def
+  co-channel-tight
+  (graph/channel-comembership-graph timeline :min-shared 5)))
+
+
+(def
+ v44_l213
  (kind/cytoscape
-  {:elements (graph/->cytoscape-elements co-channel),
+  {:elements (graph/->cytoscape-elements co-channel-tight),
    :style
    [{:selector "node", :css {:label "data(id)", :content "data(id)"}}
     {:selector "edge", :css {:width "mapData(weight, 0, 50, 1, 8)"}}],
@@ -151,15 +167,15 @@
 
 
 (def
- v45_l215
+ v46_l228
  (def
   co-channel-dot
   (graph/->dot
-   co-channel
+   co-channel-tight
    :directed
    false
    :edge-label
    (fn [[_ _ w]] (str (long w))))))
 
 
-(def v46_l220 (kind/graphviz co-channel-dot))
+(def v47_l233 (kind/graphviz co-channel-dot))

@@ -29,13 +29,11 @@
 ;;
 ;; This chapter needs more than one channel — `channels-by-shared-users`
 ;; and `prior-channels-of-newcomers` are about cross-channel structure.
-;; We use the same web-public sample as the
-;; [Tablecloth views](./zulipdata_book.views.html) chapter:
-;; small-to-medium scicloj-adjacent channels with overlapping
-;; contributors. Later runs are served from the cache.
+;; We pull every web-public channel of the Clojurians Zulip; the cache
+;; serves repeated runs.
 
 (def sample-channels
-  ["clojurecivitas" "scicloj-webpublic" "gratitude" "events"])
+  (pull/web-public-channel-names))
 
 (def messages
   (->> (pull/pull-channels! sample-channels)
@@ -130,9 +128,9 @@ lifecycles
 ;; `share` of activity. Use this to build a cluster around a seed
 ;; channel by who posts there, rather than by name.
 ;;
-;; Tightening `:share` shrinks the result: at `0.3` the seed's top
-;; posters reach every channel in our sample; at `0.5` they only
-;; account for that fraction of activity in three of them.
+;; Tightening `:share` shrinks the result: at `0.5` the seed's top
+;; posters account for at least half the activity in only three
+;; channels (clojurecivitas itself, events, scicloj-webpublic).
 
 (nar/channels-by-shared-users timeline "clojurecivitas"
                               :share 0.5 :min-msgs 5 :top-n 5)
@@ -165,9 +163,9 @@ civitas-first-posters
 ;; it.
 ;;
 ;; **A note on scope.** "Prior channels" is restricted to whatever
-;; you pulled. In our small sample, anyone whose only prior
-;; activity was outside the four will not show up. Run the same call
-;; on a corpus-wide timeline and the answer covers the whole community.
+;; you pulled. We pulled every web-public channel, so the answer
+;; covers the whole web-public community; non-web-public prior
+;; activity is invisible.
 
 (nar/prior-channels-of-newcomers timeline "clojurecivitas" "2025-10")
 
