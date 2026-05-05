@@ -18,10 +18,29 @@
 
 (ns zulipdata-book.views
   (:require
+   ;; Zulipdata pull -- paginated, cached channel history
    [scicloj.zulipdata.pull :as pull]
+   ;; Zulipdata views -- tablecloth projections of raw messages
    [scicloj.zulipdata.views :as views]
+   ;; Kindly -- notebook rendering protocol
    [scicloj.kindly.v4.kind :as kind]
+   ;; Tablecloth -- dataset manipulation
    [tablecloth.api :as tc]))
+
+;; ## What's a Tablecloth dataset?
+;;
+;; The four views below produce
+;; [Tablecloth](https://scicloj.github.io/tablecloth/) datasets —
+;; columnar tables backed by typed arrays, the Clojure equivalent of
+;; an R data frame or a Python pandas DataFrame. The core
+;; implementation is
+;; [tech.ml.dataset](https://techascent.github.io/tech.ml.dataset/);
+;; Tablecloth is a higher-level wrapper with ergonomic operations for
+;; filtering, grouping, and aggregating.
+;;
+;; This chapter does not teach Tablecloth — see its documentation for
+;; that. The views are ordinary datasets: any Tablecloth operation
+;; works on them directly.
 
 ;; ## Setting up a sample
 ;;

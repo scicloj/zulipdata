@@ -15,7 +15,9 @@
 
 (ns zulipdata-book.pull
   (:require
+   ;; Zulipdata pull -- paginated, cached channel history
    [scicloj.zulipdata.pull :as pull]
+   ;; Kindly -- notebook rendering protocol
    [scicloj.kindly.v4.kind :as kind]))
 
 ;; ## Where the cache lives

@@ -11,10 +11,15 @@
 
 (ns zulipdata-book.quickstart
   (:require
+   ;; Zulipdata client -- Zulip REST API wrapper
    [scicloj.zulipdata.client :as client]
+   ;; Zulipdata pull -- paginated, cached channel history
    [scicloj.zulipdata.pull :as pull]
+   ;; Zulipdata views -- tablecloth projections of raw messages
    [scicloj.zulipdata.views :as views]
+   ;; Kindly -- notebook rendering protocol
    [scicloj.kindly.v4.kind :as kind]
+   ;; Tablecloth -- dataset manipulation
    [tablecloth.api :as tc]))
 
 ;; ## Authenticating

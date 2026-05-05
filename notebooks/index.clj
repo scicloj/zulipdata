@@ -7,6 +7,7 @@
    [clojure.edn :as edn]
    [clojure.java.io :as io]
    [clojure.string :as str]
+   ;; Kindly -- notebook rendering protocol
    [scicloj.kindly.v4.kind :as kind]))
 
 ^{:kindly/hide-code true

@@ -16,7 +16,9 @@
 
 (ns zulipdata-book.client
   (:require
+   ;; Zulipdata client -- Zulip REST API wrapper
    [scicloj.zulipdata.client :as client]
+   ;; Kindly -- notebook rendering protocol
    [scicloj.kindly.v4.kind :as kind]))
 
 ;; ## Credentials

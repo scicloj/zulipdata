@@ -9,6 +9,7 @@
 
 (ns zulipdata-book.repository
   (:require
+   ;; Kindly -- notebook rendering protocol
    [scicloj.kindly.v4.kind :as kind]))
 
 ;; ## Layout

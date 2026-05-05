@@ -6,124 +6,124 @@
   [clojure.test :refer [deftest is]]))
 
 
-(def v3_l41 (def public-channels (pull/public-channel-names)))
+(def v3_l43 (def public-channels (pull/public-channel-names)))
 
 
-(def v4_l43 (count public-channels))
+(def v4_l45 (count public-channels))
 
 
-(def v5_l45 (take 5 (sort public-channels)))
+(def v5_l47 (take 5 (sort public-channels)))
 
 
 (def
- v7_l57
+ v7_l59
  (def first-window (pull/fetch-window "clojurecivitas" 0 100)))
 
 
-(def v8_l60 (-> first-window :messages count))
+(def v8_l62 (-> first-window :messages count))
 
 
-(def v9_l62 (:found_anchor first-window))
+(def v9_l64 (:found_anchor first-window))
 
 
-(deftest t10_l64 (is (= v9_l62 false)))
+(deftest t10_l66 (is (= v9_l64 false)))
 
 
-(def v12_l71 (:found_newest first-window))
+(def v12_l73 (:found_newest first-window))
 
 
-(def v14_l81 pull/default-batch-size)
+(def v14_l83 pull/default-batch-size)
 
 
-(deftest t15_l83 (is (= v14_l81 5000)))
+(deftest t15_l85 (is (= v14_l83 5000)))
 
 
 (def
- v17_l96
+ v17_l98
  (def clojurecivitas-pull (pull/pull-channel! "clojurecivitas" 0)))
 
 
-(def v18_l99 (:message-count clojurecivitas-pull))
+(def v18_l101 (:message-count clojurecivitas-pull))
 
 
-(def v19_l101 (count (:pages clojurecivitas-pull)))
+(def v19_l103 (count (:pages clojurecivitas-pull)))
 
 
 (def
- v21_l110
+ v21_l112
  (def clojurecivitas-messages (pull/all-messages clojurecivitas-pull)))
 
 
-(def v22_l112 (count clojurecivitas-messages))
+(def v22_l114 (count clojurecivitas-messages))
 
 
 (deftest
- t23_l114
- (is (= v22_l112 (:message-count clojurecivitas-pull))))
+ t23_l116
+ (is (= v22_l114 (:message-count clojurecivitas-pull))))
 
 
-(def v25_l119 (first clojurecivitas-messages))
+(def v25_l121 (first clojurecivitas-messages))
 
 
 (def
- v27_l128
+ v27_l130
  (def
   pulled
   (pull/pull-channels!
    ["clojurecivitas" "definitely-not-a-real-channel"])))
 
 
-(def v28_l131 (get-in pulled ["clojurecivitas" :message-count]))
+(def v28_l133 (get-in pulled ["clojurecivitas" :message-count]))
 
 
-(deftest t29_l133 (is (> v28_l131 0)))
+(deftest t29_l135 (is (> v28_l133 0)))
 
 
 (def
- v31_l144
+ v31_l146
  (<=
   (get-in pulled ["clojurecivitas" :message-count])
   (:message-count clojurecivitas-pull)))
 
 
-(deftest t32_l147 (is (= v31_l144 true)))
+(deftest t32_l149 (is (= v31_l146 true)))
 
 
-(def v34_l152 (:not-found pulled))
+(def v34_l154 (:not-found pulled))
 
 
-(deftest t35_l154 (is (= v34_l152 ["definitely-not-a-real-channel"])))
+(deftest t35_l156 (is (= v34_l154 ["definitely-not-a-real-channel"])))
 
 
 (def
- v37_l161
+ v37_l163
  (->
   (get pulled "clojurecivitas")
   (select-keys [:stream-id :first-message-id :message-count])))
 
 
 (def
- v39_l184
+ v39_l186
  (def
   clojurecivitas-pull-fresh
   (pull/pull-channel! "clojurecivitas" 0 :refresh true)))
 
 
-(def v40_l187 (:message-count clojurecivitas-pull-fresh))
+(def v40_l189 (:message-count clojurecivitas-pull-fresh))
 
 
 (def
- v42_l192
+ v42_l194
  (>=
   (:message-count clojurecivitas-pull-fresh)
   (:message-count clojurecivitas-pull)))
 
 
-(deftest t43_l194 (is (= v42_l192 true)))
+(deftest t43_l196 (is (= v42_l194 true)))
 
 
 (def
- v45_l216
+ v45_l218
  (def
   two-channel-pull
   (pull/pull-channels!
@@ -133,7 +133,7 @@
 
 
 (def
- v46_l219
+ v46_l221
  (map
   (fn [[k v]] [k (:message-count v)])
   (dissoc two-channel-pull :not-found)))

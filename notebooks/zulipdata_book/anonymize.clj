@@ -17,9 +17,13 @@
 
 (ns zulipdata-book.anonymize
   (:require
+   ;; Zulipdata pull -- paginated, cached channel history
    [scicloj.zulipdata.pull :as pull]
+   ;; Zulipdata anonymize -- HMAC-keyed anonymized projections
    [scicloj.zulipdata.anonymize :as anon]
+   ;; Kindly -- notebook rendering protocol
    [scicloj.kindly.v4.kind :as kind]
+   ;; Tablecloth -- dataset manipulation
    [tablecloth.api :as tc]))
 
 ;; ## How the keys are derived
