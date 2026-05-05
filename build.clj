@@ -31,7 +31,7 @@
   opts)
 
 (defn- pom-template [version]
-  [[:description "A Clojure library"]
+  [[:description "Pull, anonymize, and analyze chat history on the Clojurians Zulip."]
    [:url "https://github.com/scicloj/zulipdata"]
    [:licenses
     [:license
