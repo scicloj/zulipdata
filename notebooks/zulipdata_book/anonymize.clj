@@ -93,24 +93,19 @@
 
 (def anon-timeline (anon/anonymized-timeline messages))
 
+;; Note that `:user-key` and `:subject-key` are hex strings, and
+;; there is no `:content` column.
+
+anon-timeline
+
 (tc/row-count anon-timeline)
 
 (kind/test-last
  (= (count messages)))
 
-(tc/column-names anon-timeline)
+;; The distinct user-keys in this channel:
 
-;; A few rows — note that `:user-key` and `:subject-key` are hex
-;; strings, and there is no `:content` column.
-
-(-> anon-timeline
-    (tc/select-columns [:id :timestamp :channel :user-key :subject-key
-                        :content-length :reaction-count])
-    (tc/head 3))
-
-;; The number of distinct user-keys in this channel:
-
-(-> anon-timeline :user-key distinct count)
+(-> anon-timeline :user-key distinct sort)
 
 ;; ## One row per reaction — anonymized
 ;;
@@ -122,9 +117,7 @@
 
 (def anon-reactions (anon/anonymized-reactions messages))
 
-(tc/row-count anon-reactions)
-
-(tc/column-names anon-reactions)
+anon-reactions
 
 ;; ## One row per edit — anonymized
 ;;
@@ -136,9 +129,7 @@
 
 (def anon-edits (anon/anonymized-edits messages))
 
-(tc/row-count anon-edits)
-
-(tc/column-names anon-edits)
+anon-edits
 
 ;; ## What the anonymized data can — and cannot — answer
 ;;

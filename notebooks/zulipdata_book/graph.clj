@@ -47,7 +47,7 @@
        anon/anonymized-timeline
        nar/with-time-columns))
 
-(tc/row-count timeline)
+timeline
 
 ;; ## Users to channels
 ;;

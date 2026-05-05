@@ -103,7 +103,7 @@
 
 (def reactions (views/reactions-long messages))
 
-(tc/row-count reactions)
+reactions
 
 (-> reactions tc/column-names sort)
 
@@ -130,21 +130,13 @@
 
 (def edits (views/edits-long messages))
 
-(tc/row-count edits)
+edits
 
 (-> edits tc/column-names sort)
 
 (kind/test-last
  (= '(:channel :edit-ts :edit-user-id :message-id
                :prev-content :prev-stream :prev-subject :stream-id)))
-
-;; A few rows. We project the columns to keep the table narrow:
-
-(-> edits
-    (tc/select-columns [:message-id :edit-ts :edit-user-id
-                        :prev-subject :prev-stream])
-    (tc/order-by :edit-ts :desc)
-    (tc/head 5))
 
 ;; ## One row per linked URL
 ;;
@@ -154,7 +146,7 @@
 
 (def links (views/topic-links-long messages))
 
-(tc/row-count links)
+links
 
 (tc/column-names links)
 

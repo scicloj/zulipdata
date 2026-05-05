@@ -75,7 +75,7 @@
 (def v21_l104 (def reactions (views/reactions-long messages)))
 
 
-(def v22_l106 (tc/row-count reactions))
+(def v22_l106 reactions)
 
 
 (def v23_l108 (-> reactions tc/column-names sort))
@@ -110,7 +110,7 @@
 (def v28_l131 (def edits (views/edits-long messages)))
 
 
-(def v29_l133 (tc/row-count edits))
+(def v29_l133 edits)
 
 
 (def v30_l135 (-> edits tc/column-names sort))
@@ -131,33 +131,23 @@
      :stream-id))))
 
 
-(def
- v33_l143
- (->
-  edits
-  (tc/select-columns
-   [:message-id :edit-ts :edit-user-id :prev-subject :prev-stream])
-  (tc/order-by :edit-ts :desc)
-  (tc/head 5)))
+(def v33_l147 (def links (views/topic-links-long messages)))
 
 
-(def v35_l155 (def links (views/topic-links-long messages)))
+(def v34_l149 links)
 
 
-(def v36_l157 (tc/row-count links))
-
-
-(def v37_l159 (tc/column-names links))
+(def v35_l151 (tc/column-names links))
 
 
 (deftest
- t38_l161
+ t36_l153
  (is
-  (= v37_l159 [:message-id :stream-id :channel :link-text :link-url])))
+  (= v35_l151 [:message-id :stream-id :channel :link-text :link-url])))
 
 
 (def
- v40_l166
+ v38_l158
  (->
   links
   (tc/add-column
@@ -165,7 +155,7 @@
    (fn
     [ds]
     (mapv
-     (fn* [p1__55033#] (some-> p1__55033# (java.net.URI.) .getHost))
+     (fn* [p1__40731#] (some-> p1__40731# (java.net.URI.) .getHost))
      (:link-url ds))))
   (tc/group-by [:host])
   (tc/aggregate {:n tc/row-count})

@@ -45,46 +45,25 @@
 (def v17_l94 (def anon-timeline (anon/anonymized-timeline messages)))
 
 
-(def v18_l96 (tc/row-count anon-timeline))
+(def v19_l99 anon-timeline)
 
 
-(deftest t19_l98 (is (= v18_l96 (count messages))))
+(def v20_l101 (tc/row-count anon-timeline))
 
 
-(def v20_l101 (tc/column-names anon-timeline))
+(deftest t21_l103 (is (= v20_l101 (count messages))))
 
 
-(def
- v22_l106
- (->
-  anon-timeline
-  (tc/select-columns
-   [:id
-    :timestamp
-    :channel
-    :user-key
-    :subject-key
-    :content-length
-    :reaction-count])
-  (tc/head 3)))
+(def v23_l108 (-> anon-timeline :user-key distinct sort))
 
 
-(def v24_l113 (-> anon-timeline :user-key distinct count))
+(def v25_l118 (def anon-reactions (anon/anonymized-reactions messages)))
 
 
-(def v26_l123 (def anon-reactions (anon/anonymized-reactions messages)))
+(def v26_l120 anon-reactions)
 
 
-(def v27_l125 (tc/row-count anon-reactions))
+(def v28_l130 (def anon-edits (anon/anonymized-edits messages)))
 
 
-(def v28_l127 (tc/column-names anon-reactions))
-
-
-(def v30_l137 (def anon-edits (anon/anonymized-edits messages)))
-
-
-(def v31_l139 (tc/row-count anon-edits))
-
-
-(def v32_l141 (tc/column-names anon-edits))
+(def v29_l132 anon-edits)

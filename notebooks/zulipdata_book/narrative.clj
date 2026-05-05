@@ -45,6 +45,8 @@
 (def base-timeline
   (anon/anonymized-timeline messages))
 
+base-timeline
+
 (tc/row-count base-timeline)
 
 (kind/test-last

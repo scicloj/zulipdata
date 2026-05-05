@@ -25,7 +25,7 @@
    nar/with-time-columns)))
 
 
-(def v5_l50 (tc/row-count timeline))
+(def v5_l50 timeline)
 
 
 (def v7_l59 (def u->chans (graph/user-channel-sets timeline)))
