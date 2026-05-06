@@ -263,6 +263,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#listing-channels" id="toc-listing-channels" class="nav-link" data-scroll-target="#listing-channels">Listing channels</a></li>
   <li><a href="#pulling-messages-from-one-channel" id="toc-pulling-messages-from-one-channel" class="nav-link" data-scroll-target="#pulling-messages-from-one-channel">Pulling messages from one channel</a></li>
   <li><a href="#building-a-timeline-view" id="toc-building-a-timeline-view" class="nav-link" data-scroll-target="#building-a-timeline-view">Building a timeline view</a></li>
+  <li><a href="#top-reactions" id="toc-top-reactions" class="nav-link" data-scroll-target="#top-reactions">Top reactions</a></li>
   <li><a href="#next-steps" id="toc-next-steps" class="nav-link" data-scroll-target="#next-steps">Next steps</a></li>
   </ul>
 </nav>
@@ -312,10 +313,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>   [scicloj.zulipdata.pull <span class="at">:as</span> pull]</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>   <span class="co">;; Zulipdata views -- tablecloth projections of raw messages</span></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>   [scicloj.zulipdata.views <span class="at">:as</span> views]</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>   <span class="co">;; Kindly -- notebook rendering protocol</span></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>   [scicloj.kindly.v4.kind <span class="at">:as</span> kind]</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>   <span class="co">;; Tablecloth -- dataset manipulation</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>   [tablecloth.api <span class="at">:as</span> tc]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>   <span class="co">;; Zulipdata emoji -- decode reaction emoji-codes for display</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>   [scicloj.zulipdata.emoji <span class="at">:as</span> emoji]</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>   <span class="co">;; Kindly -- notebook rendering protocol</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>   [scicloj.kindly.v4.kind <span class="at">:as</span> kind]</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>   <span class="co">;; Tablecloth -- dataset manipulation</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>   [tablecloth.api <span class="at">:as</span> tc]))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <section id="authenticating" class="level2">
 <h2 class="anchored" data-anchor-id="authenticating">Authenticating</h2>
@@ -1780,6 +1783,68 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a> <span class="at">:sender-id</span></span>
 <span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a> <span class="at">:timestamp</span></span>
 <span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a> <span class="at">:subject</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="top-reactions" class="level2">
+<h2 class="anchored" data-anchor-id="top-reactions">Top reactions</h2>
+<p><code>views/reactions-long</code> is another view, with one row per reaction. Reactions come in two kinds. Unicode emoji carry a hyphen-separated codepoint sequence in <code>:emoji-code</code> — <code>"1f64f"</code> for 🙏, <code>"1f1fa-1f1f8"</code> for 🇺🇸. Custom realm emoji are workspace-uploaded images; their <code>:emoji-code</code> is the realm emoji’s id, and the URL lives in <a href="https://zulip.com/api/get-custom-emoji"><code>/realm/emoji</code></a>.</p>
+<p>The <code>scicloj.zulipdata.emoji</code> namespace handles both kinds: <code>emoji/realm-emoji-map</code> fetches the workspace’s custom emoji, and <code>emoji/display</code> returns the unicode glyph or a <code>&lt;img&gt;</code> hiccup element ready to drop into a <code>kind/table</code> cell.</p>
+<div class="sourceClojure">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>(<span class="bu">def</span><span class="fu"> realm-emoji </span>(emoji/realm-emoji-map))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>A self-contained pipeline: pull a few crowded web-public channels, project, decode, aggregate, sort, render. Unicode glyphs become characters; realm emoji become inline <code>&lt;img&gt;</code> tags nested inside the table cells:</p>
+<div class="sourceClojure">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode clojure code-with-copy"><code class="sourceCode clojure"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">-&gt;</span> (pull/pull-channels! [<span class="st">"clojurecivitas"</span> <span class="st">"scicloj-webpublic"</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>                          <span class="st">"gratitude"</span> <span class="st">"events"</span>])</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>    pull/all-channel-messages</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>    views/reactions-long</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>    (tc/map-columns <span class="at">:emoji</span> [<span class="at">:reaction-type</span> <span class="at">:emoji-code</span> <span class="at">:emoji-name</span>]</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>                    (<span class="kw">partial</span> emoji/display realm-emoji))</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>    (tc/group-by [<span class="at">:emoji-name</span> <span class="at">:emoji</span>])</span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>    (tc/aggregate {<span class="at">:n</span> tc/row-count})</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>    (tc/order-by [<span class="at">:n</span>] [<span class="at">:desc</span>])</span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>    (tc/head <span class="dv">5</span>)</span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>    kind/table)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="clay-table">
+<div class="table-responsive">
+<table class="table table-hover clay-table caption-top">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">emoji-name</th>
+<th data-quarto-table-cell-role="th">emoji</th>
+<th data-quarto-table-cell-role="th">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>+1</td>
+<td>👍</td>
+<td>124</td>
+</tr>
+<tr class="even">
+<td>heart</td>
+<td>❤</td>
+<td>78</td>
+</tr>
+<tr class="odd">
+<td>tada</td>
+<td>🎉</td>
+<td>68</td>
+</tr>
+<tr class="even">
+<td>gratitude</td>
+<td><img src="https://avatars.zulip.com/9096/emoji/images/634b9160.png" width="24" height="24" alt="gratitude"></td>
+<td>39</td>
+</tr>
+<tr class="odd">
+<td>thank_you</td>
+<td>🙏</td>
+<td>20</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 </section>
 <section id="next-steps" class="level2">

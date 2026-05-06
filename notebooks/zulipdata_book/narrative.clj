@@ -41,9 +41,8 @@
   (pull/web-public-channel-names))
 
 (def messages
-  (->> (pull/pull-channels! sample-channels)
-       (filter (fn [[k _]] (string? k)))
-       (mapcat (fn [[_ r]] (pull/all-messages r)))))
+  (-> (pull/pull-channels! sample-channels)
+      pull/all-channel-messages))
 
 (count messages)
 

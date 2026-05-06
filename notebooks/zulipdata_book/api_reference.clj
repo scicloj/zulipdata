@@ -9,6 +9,8 @@
 ;;   paginated, cached pulls of channel history.
 ;; - [`scicloj.zulipdata.views`](./zulipdata_book.views.html) —
 ;;   tablecloth projections of raw messages.
+;; - [`scicloj.zulipdata.emoji`](./zulipdata_book.emoji.html) —
+;;   reaction emoji decoding and display helpers.
 ;; - [`scicloj.zulipdata.anonymize`](./zulipdata_book.anonymize.html) —
 ;;   anonymized projections suitable for sharing.
 ;; - [`scicloj.zulipdata.narrative`](./zulipdata_book.narrative.html) —
@@ -31,6 +33,8 @@
    [scicloj.zulipdata.pull :as pull]
    ;; Zulipdata views -- tablecloth projections of raw messages
    [scicloj.zulipdata.views :as views]
+   ;; Zulipdata emoji -- reaction emoji decoding and display
+   [scicloj.zulipdata.emoji :as emoji]
    ;; Zulipdata anonymize -- HMAC-keyed anonymized projections
    [scicloj.zulipdata.anonymize :as anon]
    ;; Zulipdata narrative -- date columns, lifecycles, newcomer tracking
@@ -57,9 +61,7 @@
   (pull/pull-channels! sample-channels))
 
 (def sample-messages
-  (->> sample-pull
-       (filter (fn [[k _]] (string? k)))
-       (mapcat (fn [[_ r]] (pull/all-messages r)))))
+  (pull/all-channel-messages sample-pull))
 
 (def sample-timeline
   (views/messages-timeline sample-messages))
@@ -172,6 +174,14 @@ pull/default-batch-size
 
 (kind/test-last [= ["no-such-channel"]])
 
+(kind/doc #'pull/all-channel-messages)
+
+(let [pulled (pull/pull-channels! ["clojurecivitas"])]
+  (= (count (pull/all-channel-messages pulled))
+     (count (pull/all-messages (get pulled "clojurecivitas")))))
+
+(kind/test-last [true?])
+
 (kind/doc #'pull/public-channel-names)
 
 (-> (pull/public-channel-names) count pos?)
@@ -226,6 +236,46 @@ pull/default-batch-size
 
 (kind/test-last [= '(:channel :link-text :link-url :message-id
                               :stream-id)])
+
+;; ## `scicloj.zulipdata.emoji`
+
+(kind/doc #'emoji/decode-unicode)
+
+(emoji/decode-unicode "1f64f")
+
+(kind/test-last [= "🙏"])
+
+;; Multi-codepoint sequences (flags, skin-tone modifiers) decode to
+;; the joined glyph:
+
+(emoji/decode-unicode "1f1fa-1f1f8")
+
+(kind/test-last [= "🇺🇸"])
+
+(kind/doc #'emoji/realm-emoji-map)
+
+(-> (emoji/realm-emoji-map) vals first keys set)
+
+(kind/test-last [(fn [s] (every? s [:id :name :source_url]))])
+
+(kind/doc #'emoji/display)
+
+;; For unicode emoji, `display` returns the glyph and ignores the
+;; realm map:
+
+(emoji/display nil "unicode_emoji" "1f44d" "+1")
+
+(kind/test-last [= "👍"])
+
+;; For realm emoji, `display` returns a `kind/hiccup` `<img>` element
+;; pointing at the source URL from the realm map:
+
+(let [rm     (emoji/realm-emoji-map)
+      one-id (-> rm keys first name)
+      result (emoji/display rm "realm_emoji" one-id "x")]
+  [(vector? result) (= :img (first result))])
+
+(kind/test-last [= [true true]])
 
 ;; ## `scicloj.zulipdata.anonymize`
 

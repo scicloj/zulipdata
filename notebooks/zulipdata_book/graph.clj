@@ -46,11 +46,10 @@
    "calva" "clojure-uk" "clojure-europe" "news-and-articles"])
 
 (def timeline
-  (->> (pull/pull-channels! sample-channels)
-       (filter (fn [[k _]] (string? k)))
-       (mapcat (fn [[_ r]] (pull/all-messages r)))
-       anon/anonymized-timeline
-       nar/with-time-columns))
+  (-> (pull/pull-channels! sample-channels)
+      pull/all-channel-messages
+      anon/anonymized-timeline
+      nar/with-time-columns))
 
 timeline
 

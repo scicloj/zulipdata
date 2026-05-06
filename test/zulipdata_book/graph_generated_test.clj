@@ -28,57 +28,56 @@
  v4_l48
  (def
   timeline
-  (->>
+  (->
    (pull/pull-channels! sample-channels)
-   (filter (fn [[k _]] (string? k)))
-   (mapcat (fn [[_ r]] (pull/all-messages r)))
+   pull/all-channel-messages
    anon/anonymized-timeline
    nar/with-time-columns)))
 
 
-(def v5_l55 timeline)
+(def v5_l54 timeline)
 
 
-(def v7_l64 (def u->chans (graph/user-channel-sets timeline)))
+(def v7_l63 (def u->chans (graph/user-channel-sets timeline)))
 
 
-(def v8_l66 (count u->chans))
+(def v8_l65 (count u->chans))
 
 
-(def v10_l70 (->> u->chans (take 5) (into {})))
+(def v10_l69 (->> u->chans (take 5) (into {})))
 
 
 (def
- v12_l74
+ v12_l73
  (->> u->chans vals (map count) frequencies (into (sorted-map))))
 
 
 (def
- v14_l87
+ v14_l86
  (def
   co-channel
   (graph/channel-comembership-graph timeline :min-shared 1)))
 
 
-(def v15_l90 (.vertexSet co-channel))
+(def v15_l89 (.vertexSet co-channel))
 
 
-(deftest t16_l92 (is (= v15_l90 (set sample-channels))))
+(deftest t16_l91 (is (= v15_l89 (set sample-channels))))
 
 
-(def v17_l95 (count (.edgeSet co-channel)))
+(def v17_l94 (count (.edgeSet co-channel)))
 
 
 (deftest
- t19_l100
+ t19_l99
  (is
   (=
-   v17_l95
+   v17_l94
    (let [n (count (.vertexSet co-channel))] (/ (* n (dec n)) 2)))))
 
 
 (def
- v21_l106
+ v21_l105
  (->>
   (.edgeSet co-channel)
   (map
@@ -92,27 +91,27 @@
 
 
 (def
- v23_l122
+ v23_l121
  (def
   co-user
   (graph/user-copresence-graph timeline :min-shared 3 :min-channels 3)))
 
 
 (def
- v25_l127
+ v25_l126
  {:nodes (count (.vertexSet co-user)),
   :edges (count (.edgeSet co-user))})
 
 
 (def
- v27_l141
+ v27_l140
  (def
   migration
   (graph/migration-graph timeline #{"clojurecivitas"} :min-users 1)))
 
 
 (def
- v28_l144
+ v28_l143
  (->>
   (.edgeSet migration)
   (map
@@ -126,7 +125,7 @@
 
 
 (def
- v30_l158
+ v30_l157
  (->>
   (graph/betweenness co-channel)
   (sort-by val >)
@@ -135,37 +134,37 @@
 
 
 (def
- v32_l172
+ v32_l171
  (boolean (some pos? (vals (graph/betweenness co-channel)))))
 
 
-(deftest t33_l174 (is (= v32_l172 true)))
+(deftest t33_l173 (is (= v32_l171 true)))
 
 
-(def v35_l185 (graph/girvan-newman co-channel 2))
+(def v35_l184 (graph/girvan-newman co-channel 2))
 
 
-(def v36_l187 (count (graph/girvan-newman co-channel 2)))
+(def v36_l186 (count (graph/girvan-newman co-channel 2)))
 
 
-(deftest t37_l189 (is (= v36_l187 2)))
+(deftest t37_l188 (is (= v36_l186 2)))
 
 
-(def v39_l196 (graph/label-propagation co-channel))
+(def v39_l195 (graph/label-propagation co-channel))
 
 
-(def v40_l198 (count (graph/label-propagation co-channel)))
+(def v40_l197 (count (graph/label-propagation co-channel)))
 
 
-(deftest t41_l200 (is (= v40_l198 1)))
+(deftest t41_l199 (is (= v40_l197 1)))
 
 
 (def
- v43_l211
+ v43_l210
  (let
   [weights
    (map
-    (fn* [p1__51325#] (.getEdgeWeight co-channel p1__51325#))
+    (fn* [p1__41981#] (.getEdgeWeight co-channel p1__41981#))
     (.edgeSet co-channel))
    w-min
    (apply min weights)
@@ -183,7 +182,7 @@
 
 
 (def
- v45_l231
+ v45_l230
  (def
   co-channel-dot
   (graph/->dot
@@ -194,4 +193,4 @@
    (fn [[_ _ w]] (str (long w))))))
 
 
-(def v46_l236 (kind/graphviz co-channel-dot))
+(def v46_l235 (kind/graphviz co-channel-dot))

@@ -4,9 +4,9 @@
   [scicloj.zulipdata.client :as client]
   [scicloj.zulipdata.pull :as pull]
   [scicloj.zulipdata.views :as views]
+  [scicloj.zulipdata.emoji :as emoji]
   [scicloj.kindly.v4.kind :as kind]
   [tablecloth.api :as tc]
-  [clojure.string :as str]
   [clojure.test :refer [deftest is]]))
 
 
@@ -71,47 +71,20 @@
 (def v29_l106 (tc/column-names timeline))
 
 
-(def
- v31_l117
- (def realm-emoji (-> (client/api-get "/realm/emoji") :emoji)))
+(def v31_l122 (def realm-emoji (emoji/realm-emoji-map)))
 
 
 (def
- v32_l120
- (defn
-  emoji-display
-  [reaction-type emoji-code emoji-name]
-  (case
-   reaction-type
-   "unicode_emoji"
-   (->>
-    (str/split emoji-code #"-")
-    (mapcat
-     (fn*
-      [p1__50185#]
-      (Character/toChars (Integer/parseInt p1__50185# 16))))
-    char-array
-    String.)
-   ("realm_emoji" "zulip_extra_emoji")
-   (when-let
-    [src (get-in realm-emoji [(keyword emoji-code) :source_url])]
-    (kind/hiccup
-     [:img {:src src, :width 24, :height 24, :alt emoji-name}]))
-   nil)))
-
-
-(def
- v34_l137
+ v33_l129
  (->
-  (->>
-   (pull/pull-channels!
-    ["clojurecivitas" "scicloj-webpublic" "gratitude" "events"])
-   (mapcat (fn [[_ r]] (pull/all-messages r))))
+  (pull/pull-channels!
+   ["clojurecivitas" "scicloj-webpublic" "gratitude" "events"])
+  pull/all-channel-messages
   views/reactions-long
   (tc/map-columns
    :emoji
    [:reaction-type :emoji-code :emoji-name]
-   emoji-display)
+   (partial emoji/display realm-emoji))
   (tc/group-by [:emoji-name :emoji])
   (tc/aggregate {:n tc/row-count})
   (tc/order-by [:n] [:desc])

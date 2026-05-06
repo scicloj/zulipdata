@@ -97,6 +97,22 @@
        (mapcat :messages)
        (into [] (distinct))))
 
+(defn all-channel-messages
+  "Flatten the result of `pull-channels!` into a single sequence of raw
+   messages across all pulled channels, de-duplicating by `:id`. The
+   `:not-found` entry contributes nothing.
+
+   Convenience for the common notebook pattern:
+
+       (-> (pull-channels! [\"a\" \"b\" \"c\"])
+           all-channel-messages
+           views/messages-timeline)"
+  [pulled]
+  (->> pulled
+       vals
+       (mapcat all-messages)
+       (into [] (distinct))))
+
 (defn- streams-by-name
   "Map of stream-name → stream entry, via a fresh /streams call."
   []

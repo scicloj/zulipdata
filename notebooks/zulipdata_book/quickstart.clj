@@ -17,12 +17,12 @@
    [scicloj.zulipdata.pull :as pull]
    ;; Zulipdata views -- tablecloth projections of raw messages
    [scicloj.zulipdata.views :as views]
+   ;; Zulipdata emoji -- decode reaction emoji-codes for display
+   [scicloj.zulipdata.emoji :as emoji]
    ;; Kindly -- notebook rendering protocol
    [scicloj.kindly.v4.kind :as kind]
    ;; Tablecloth -- dataset manipulation
-   [tablecloth.api :as tc]
-   ;; clojure.string -- string utilities
-   [clojure.string :as str]))
+   [tablecloth.api :as tc]))
 
 ;; ## Authenticating
 ;;
@@ -112,34 +112,26 @@ message-count
 ;; codepoint sequence in `:emoji-code` — `"1f64f"` for 🙏,
 ;; `"1f1fa-1f1f8"` for 🇺🇸. Custom realm emoji are workspace-uploaded
 ;; images; their `:emoji-code` is the realm emoji's id, and the URL
-;; lives in [`/realm/emoji`](https://zulip.com/api/get-custom-emoji):
+;; lives in [`/realm/emoji`](https://zulip.com/api/get-custom-emoji).
+;;
+;; The `scicloj.zulipdata.emoji` namespace handles both kinds:
+;; `emoji/realm-emoji-map` fetches the workspace's custom emoji,
+;; and `emoji/display` returns the unicode glyph or a `<img>` hiccup
+;; element ready to drop into a `kind/table` cell.
 
-(def realm-emoji
-  (-> (client/api-get "/realm/emoji") :emoji))
-
-(defn emoji-display [reaction-type emoji-code emoji-name]
-  (case reaction-type
-    "unicode_emoji"
-    (->> (str/split emoji-code #"-")
-         (mapcat #(Character/toChars (Integer/parseInt % 16)))
-         char-array
-         String.)
-    ("realm_emoji" "zulip_extra_emoji")
-    (when-let [src (get-in realm-emoji [(keyword emoji-code) :source_url])]
-      (kind/hiccup [:img {:src src :width 24 :height 24 :alt emoji-name}]))
-    nil))
+(def realm-emoji (emoji/realm-emoji-map))
 
 ;; A self-contained pipeline: pull a few crowded web-public channels,
 ;; project, decode, aggregate, sort, render. Unicode glyphs become
 ;; characters; realm emoji become inline `<img>` tags nested inside
 ;; the table cells:
 
-(-> (->> (pull/pull-channels! ["clojurecivitas" "scicloj-webpublic"
-                               "gratitude" "events"])
-         (mapcat (fn [[_ r]] (pull/all-messages r))))
+(-> (pull/pull-channels! ["clojurecivitas" "scicloj-webpublic"
+                          "gratitude" "events"])
+    pull/all-channel-messages
     views/reactions-long
     (tc/map-columns :emoji [:reaction-type :emoji-code :emoji-name]
-                    emoji-display)
+                    (partial emoji/display realm-emoji))
     (tc/group-by [:emoji-name :emoji])
     (tc/aggregate {:n tc/row-count})
     (tc/order-by [:n] [:desc])
