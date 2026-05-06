@@ -5,7 +5,8 @@
    `views/reactions-long` projection) determine what to render:
 
    - `\"unicode_emoji\"` — `:emoji-code` is a hyphen-separated sequence
-     of unicode codepoints. `\"1f64f\"` is 🙏, `\"1f1fa-1f1f8\"` is 🇺🇸.
+     of unicode codepoints. `\"1f64f\"` is 🙏,
+     `\"1f3f4-200d-2620-fe0f\"` is 🏴‍☠️.
    - `\"realm_emoji\"` / `\"zulip_extra_emoji\"` — `:emoji-code` is the
      workspace's custom-emoji id; the source URL lives in the
      `/realm/emoji` endpoint."
@@ -15,7 +16,7 @@
 
 (defn decode-unicode
   "Decode a hyphen-separated unicode codepoint sequence into a string.
-   `\"1f64f\"` → \"🙏\", `\"1f1fa-1f1f8\"` → \"🇺🇸\"."
+   `\"1f64f\"` → \"🙏\", `\"1f3f4-200d-2620-fe0f\"` → \"🏴‍☠️\"."
   [emoji-code]
   (->> (str/split emoji-code #"-")
        (mapcat #(Character/toChars (Integer/parseInt % 16)))

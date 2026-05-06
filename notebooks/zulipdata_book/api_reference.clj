@@ -245,12 +245,12 @@ pull/default-batch-size
 
 (kind/test-last [= "🙏"])
 
-;; Multi-codepoint sequences (flags, skin-tone modifiers) decode to
-;; the joined glyph:
+;; Multi-codepoint sequences (ZWJ-joined sequences, skin-tone
+;; modifiers, variation selectors) decode to the joined glyph:
 
-(emoji/decode-unicode "1f1fa-1f1f8")
+(emoji/decode-unicode "1f3f4-200d-2620-fe0f")
 
-(kind/test-last [= "🇺🇸"])
+(kind/test-last [= "🏴‍☠️"])
 
 (kind/doc #'emoji/realm-emoji-map)
 

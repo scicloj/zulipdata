@@ -110,7 +110,7 @@ message-count
 ;; `views/reactions-long` is another view, with one row per reaction.
 ;; Reactions come in two kinds. Unicode emoji carry a hyphen-separated
 ;; codepoint sequence in `:emoji-code` — `"1f64f"` for 🙏,
-;; `"1f1fa-1f1f8"` for 🇺🇸. Custom realm emoji are workspace-uploaded
+;; `"1f3f4-200d-2620-fe0f"` for 🏴‍☠️. Custom realm emoji are workspace-uploaded
 ;; images; their `:emoji-code` is the realm emoji's id, and the URL
 ;; lives in [`/realm/emoji`](https://zulip.com/api/get-custom-emoji).
 ;;
