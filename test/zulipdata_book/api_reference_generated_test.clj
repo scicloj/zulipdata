@@ -327,10 +327,10 @@
 (deftest t75_l246 (is (= v74_l244 "🙏")))
 
 
-(def v77_l251 (emoji/decode-unicode "1f1fa-1f1f8"))
+(def v77_l251 (emoji/decode-unicode "1f3f4-200d-2620-fe0f"))
 
 
-(deftest t78_l253 (is (= v77_l251 "🇺🇸")))
+(deftest t78_l253 (is (= v77_l251 "🏴‍☠️")))
 
 
 (def v79_l255 (kind/doc #'emoji/realm-emoji-map))

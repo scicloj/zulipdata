@@ -164,7 +164,7 @@
  (let
   [weights
    (map
-    (fn* [p1__41981#] (.getEdgeWeight co-channel p1__41981#))
+    (fn* [p1__49067#] (.getEdgeWeight co-channel p1__49067#))
     (.edgeSet co-channel))
    w-min
    (apply min weights)
